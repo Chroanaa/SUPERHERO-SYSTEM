@@ -6,6 +6,7 @@ $sql = "SELECT COUNT(DISTINCT case_number) AS total_cases FROM complaint";
 $stmt = $pdo->query($sql);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 $total_cases = $row['total_cases'];
+
 ?>
 
 <!DOCTYPE html>
@@ -41,11 +42,11 @@ $total_cases = $row['total_cases'];
             <div class="sidebar-content">
                 <div class="sidebar-header">Brgy. Sta. Lucia</div>
                 <div class="sidebar-category">
-                   <div class="sidebar-category-header">
-                    <a href="http://localhost:3000/views/dashboard/departments/BPSO/Dashboard/dashboard.php" class="category-link" style="text-decoration: none; color: inherit;">
-                      <span><i class="fa-solid fa-desktop category-icon"></i>Home</span>
-                    </a>
-                  </div>
+                    <div class="sidebar-category-header">
+                        <a href="http://localhost:3000/views/dashboard/departments/BPSO/Dashboard/dashboard.php" class="category-link" style="text-decoration: none; color: inherit;">
+                            <span><i class="fa-solid fa-desktop category-icon"></i>Home</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header" onclick="toggleSubMenu()">
@@ -60,34 +61,30 @@ $total_cases = $row['total_cases'];
                 </div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
-                    <a href="http://localhost:3000/views/dashboard/departments/BPSO/Team%20Schedule/teamschedule.php" class="category-link" style="text-decoration: none; color: inherit;">
-                        <span><i class="fa-solid fa-calendar category-icon"></i>Team Schedule</span>
-                    </a>
+                        <a href="http://localhost:3000/views/dashboard/departments/BPSO/Team%20Schedule/teamschedule.php" class="category-link" style="text-decoration: none; color: inherit;">
+                            <span><i class="fa-solid fa-calendar category-icon"></i>Team Schedule</span>
+                        </a>
                     </div>
                 </div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
-                    <a href="http://localhost:3000/views/dashboard/departments/BPSO/Vehicle%20Dispatchment/vehicle.php" class="category-link" style="text-decoration: none; color: inherit;">
-                        <span><i class="fa-solid fa-truck category-icon"></i>Vehicle Dispatchment</span>
-                    </a>
+                        <a href="http://localhost:3000/views/dashboard/departments/BPSO/Vehicle%20Dispatchment/vehicle.php" class="category-link" style="text-decoration: none; color: inherit;">
+                            <span><i class="fa-solid fa-truck category-icon"></i>Vehicle Dispatchment</span>
+                        </a>
                     </div>
                 </div>
-
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
-                    <a href="http://localhost:3000/views/dashboard/departments/BPSO/Notification/notification.php" class="category-link" style="text-decoration: none; color: inherit;">
-                    <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-
+                        <a href="http://localhost:3000/views/dashboard/departments/BPSO/Notification/notification.php" class="category-link" style="text-decoration: none; color: inherit;">
+                            <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
+                        </a>
                     </div>
                 </div>
-
-
                 <!-- <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
-                    </div>
-                </div> -->
+               <div class="sidebar-category-header">
+                   <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
+               </div>
+               </div> -->
                 <div class="sidebar-category">
                     <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
                         <span><i class="fa-solid fa-door-open category-icon"></i>Sign Out</span>
@@ -95,131 +92,103 @@ $total_cases = $row['total_cases'];
                 </div>
             </div>
         </nav>
-
         <div style="position: relative; top: 0; left: 0; height: 104px; width: 100%; border: 1px solid #d4d4d4; background-color: #ffffff; display: flex; align-items: center; padding-left: 20%; ">
-                <h1 style="font-size: 2rem;">DASHBOARD</h1>
-            </div>
-            <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; align-items: flex-start;">
-
-
+            <h1 style="font-size: 2rem;">DASHBOARD</h1>
+        </div>
+        <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; align-items: flex-start;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                <div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; margin-left: 250%;">
+                    <a href="http://localhost:3000/views/dashboard/departments/BPSO/Complaint%20main/complaints.php" style="text-decoration: none; color: inherit;">
+                        <div id="total-case" class="clickable-div" style="width: 280px; height: 150px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
+                            <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Complaint</span>
+                            <h1 style=" color: #303030; font-weight: 500; margin-top: 10%">
+                                <?php echo number_format($total_cases); ?>
+                            </h1>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- Sign Out Confirmation Modal -->
+            <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
+                data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <!-- Added modal-dialog-centered here -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="signOutModalLabel">Confirm Sign Out</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to sign out?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" id="confirmSignOutBtn" data-bs-dismiss="modal">Sign
+                                Out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+        <script>
+            const sidebar = document.querySelector('.sidebar-content');
+            const ps = new PerfectScrollbar(sidebar);
 
-    <div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; margin-left: 250%;">
+            function toggleSubmenu(element) {
+                const submenu = element.nextElementSibling;
+                const allSubmenus = document.querySelectorAll('.sidebar-submenu');
+                const allHeaders = document.querySelectorAll('.sidebar-category-header');
 
-    <a href="http://localhost:3000/views/dashboard/departments/BPSO/Complaint%20main/complaints.php"style="text-decoration: none; color: inherit;">
-    <div id="total-case" class="clickable-div" style="width: 280px; height: 150px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
-        <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Complaint</span>
-        <h1 style=" color: #303030; font-weight: 500; margin-top: 10%">
-            <?php echo number_format($total_cases); ?>
-        </h1>
-    </div>
-</a>
+                allSubmenus.forEach(menu => {
+                    if (menu !== submenu) {
+                        menu.classList.remove('show');
+                    }
+                });
 
+                allHeaders.forEach(header => {
+                    if (header !== element) {
+                        header.classList.remove('active');
+                    }
+                });
 
+                submenu.classList.toggle('show');
+                element.classList.toggle('active');
+                ps.update();
+            }
 
+            function createRipple(event) {
+                const button = event.currentTarget;
+                const ripple = document.createElement('span');
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = event.clientX - rect.left - size / 2;
+                const y = event.clientY - rect.top - size / 2;
 
-</div>
-</div>
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.classList.add('ripple');
 
+                button.appendChild(ripple);
 
+                ripple.addEventListener('animationend', () => {
+                    ripple.remove();
+                });
+            }
 
-                
-        <!-- Sign Out Confirmation Modal -->
-         <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
-         data-bs-backdrop="static" data-bs-keyboard="false">
-         <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title" id="signOutModalLabel">Confirm Sign Out</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                 </div>
-                 <div class="modal-body">
-                     Are you sure you want to sign out?
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                     <button type="button" class="btn btn-danger" id="confirmSignOutBtn" data-bs-dismiss="modal">Sign
-                         Out</button>
-                 </div>
-             </div>
-         </div>
-     </div>
-
-
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-    <script>
-        const sidebar = document.querySelector('.sidebar-content');
-        const ps = new PerfectScrollbar(sidebar);
-
-        function toggleSubmenu(element) {
-            const submenu = element.nextElementSibling;
-            const allSubmenus = document.querySelectorAll('.sidebar-submenu');
-            const allHeaders = document.querySelectorAll('.sidebar-category-header');
-
-            allSubmenus.forEach(menu => {
-                if (menu !== submenu) {
-                    menu.classList.remove('show');
-                }
+            document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
+                item.addEventListener('mouseenter', createRipple);
             });
 
-            allHeaders.forEach(header => {
-                if (header !== element) {
-                    header.classList.remove('active');
-                }
+            document.getElementById('confirmSignOutBtn').addEventListener('click', function() {
+                // Redirect to signout.php to handle session destruction and redirection
+                window.location.href = '../../../../../signout.php';
             });
-
-            submenu.classList.toggle('show');
-            element.classList.toggle('active');
-            ps.update();
-        }
-
-        function createRipple(event) {
-            const button = event.currentTarget;
-            const ripple = document.createElement('span');
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = event.clientX - rect.left - size / 2;
-            const y = event.clientY - rect.top - size / 2;
-
-            ripple.style.width = ripple.style.height = `${size}px`;
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            ripple.classList.add('ripple');
-
-            button.appendChild(ripple);
-
-            ripple.addEventListener('animationend', () => {
-                ripple.remove();
-            });
-        }
-
-        document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
-            item.addEventListener('mouseenter', createRipple);
-        });
-
-            document.getElementById('confirmSignOutBtn').addEventListener('click', function () {
-        // Redirect to signout.php to handle session destruction and redirection
-        window.location.href = '../../../../../signout.php';
-    });
-
-
-
-
-   
-    
-
-
-
-    </script>
-
-    <script src="../Complaint main/dashboard.js"></script>
-
-    
+        </script>
+        <script src="../Complaint main/dashboard.js"></script>
 </body>
-
 </html>
