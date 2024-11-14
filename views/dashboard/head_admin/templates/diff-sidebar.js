@@ -17,8 +17,7 @@ if (header) {
                     <div class="sidebar-submenu show">
                         <div class="sidebar-submenu-item main">Overview</div>
                         <div class="sidebar-submenu-item view-authorize">Authorization</div>
-                        <div class="sidebar-submenu-item document-process">Document Processing</div>
-                        <div class="sidebar-submenu-item document-records">Document Records</div>
+                        <div class="sidebar-submenu-item transactions">Transactions</div>
                     </div>
                 </div>
                 <div class="sidebar-category">
@@ -30,9 +29,10 @@ if (header) {
                         <div class="sidebar-submenu-item main-admin2">Overview</div>
                         <div class="sidebar-submenu-item admin2-view-pending">View Pending Request</div>
                         <div class="sidebar-submenu-item admin2-view-approval">View Approval Process</div>
-                        <div class="sidebar-submenu-item">View Disregarded Process</div>
-                        <div class="sidebar-submenu-item">Committees Tab</div>
+                        <div class="sidebar-submenu-item admin2-view-disregard">View Disregarded Process</div>
+                        <div class="sidebar-submenu-item admin2-city-ordinance">City Ordinance</div>
                         <div class="sidebar-submenu-item">E-Forms (Secretary)</div>
+                        <div class="sidebar-submenu-item admin2-notify">Notifications</div>
                     </div>
                 </div>
 
@@ -107,5 +107,5 @@ function createRipple(event) {
 
 document.getElementById('confirmSignOutBtn').addEventListener('click', function () {
     // Redirect to signout.php to handle session destruction and redirection
-    window.location.href = '../../../../../signout.php';
+    window.location.href = '../../../../../../../signout.php';
 });

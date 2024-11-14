@@ -33,16 +33,19 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .record-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
+
         .record-item.selected {
             background-color: #007bff;
             color: white;
         }
+
         .record-icon {
             font-size: 2rem;
             margin-bottom: 1rem;
@@ -53,45 +56,33 @@
 <body>
     <div id="app">
         <header class="header">
-            
+
         </header>
 
         <div class="main-content">
             <div class="welcome-message">
-                <h2 class="text-danger">Anti Drug Abuse Council</h2>
-                <p>Our safety ordinance to leverage our anti drug campaign.</p>
+                <h2 class="text-danger">City Ordinances</h2>
+                <p>This contains the streamlined processing made by other departments.</p>
             </div>
 
-            <div class="container mt-5">
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="0">
-                            <i class="fas fa-file-alt record-icon"></i>
-                            <h4>Incident Case Reports</h4>
-                            <p class="description">Click to expand more</p>
+            <div class="city-ordinances-container">
+                <div class="auth-divide">
+                    <aside class="notifications-container" style="max-height: 320px; overflow-y: auto;">
+                        <!-- Client Side operation starts here -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h2>Secretary Ordinances</h2>
+                            </div>
+                            <button type="button" class="btn btn-danger">
+                                <i class="fa-solid fa-plus category-icon"></i>Add New Ordinance
+                            </button>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="1">
-                            <i class="fa-solid fa-person-shelter record-icon"></i>
-                            <h4>Drug Monitoring</h4>
-                            <p class="description">Click to expand more</p>
+                        <!-- no notif found -->
+                        <div class="mt-3 rounded d-flex text-center flex-column" style="color: #c1c1c1; padding: 12px;">
+                            <p class="m-0">Your city ordinances will appear here.</p>
                         </div>
-                    </div>
-                    <!-- <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="1">
-                            <i class="fa-solid fa-person-shelter record-icon"></i>
-                            <h4>Blotter / Patawag</h4>
-                            <p class="description">Click to expand more</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="1">
-                            <i class="fa-solid fa-person-shelter record-icon"></i>
-                            <h4>Rehabilitation</h4>
-                            <p class="description">Click to expand more</p>
-                        </div>
-                    </div> -->
+                    </aside>
+
                 </div>
             </div>
         </div>
@@ -123,7 +114,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <script src="../../../user_data.js"></script>
+    <!-- <script src="../../../user_data.js"></script> -->
     <script src="../../../diff-sidebar.js" type="module"></script>
 </body>
 

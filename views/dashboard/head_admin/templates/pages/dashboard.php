@@ -1,5 +1,3 @@
-<!-- // STANDARD (DON'T MAKE ANY CHANGES) -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,26 +41,26 @@
             </div>
 
             <div class="user-table">
-            <h2>Existing Users in the Barangay</h2>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email Address</th>
-                        <th>User Role</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Table rows will be dynamically inserted here -->
-                </tbody>
-            </table>
-            <nav aria-label="User table navigation">
-                <ul class="pagination justify-content-center" id="pagination">
-                    <!-- Pagination buttons will be dynamically inserted here -->
-                </ul>
-            </nav>
-        </div>
+                <h2>Existing Users in the Barangay</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email Address</th>
+                            <th>User Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+
+                    </tbody>
+                </table>
+                <nav aria-label="User table navigation">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        
+                    </ul>
+                </nav>
+            </div>
         </div>
 
         <!-- Sign Out Confirmation Modal -->
