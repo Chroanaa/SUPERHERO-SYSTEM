@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once './vendor/autoload.php';
-// require_once './controllers/db_connection.php'; // Commented out the database connection
+require_once './controllers/db_connection.php'; // Include the database connection
 
-// Define hardcoded user credentials and types
+// Define user credentials and types
 $userCredentials = [
     ['email' => 'test_user@superadmin.ph', 'password' => 'kenneth', 'user_type' => 'super_admin'],
     ['email' => 'test_user@headadmin.ph', 'password' => 'kenneth', 'user_type' => 'head_admin'],
@@ -36,28 +36,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
+    // Fetch user from the database based on email
+    $dbConnections = getDatabaseConnections();
+    $stmt = $dbConnections['bms_account_portal']->prepare('SELECT * FROM brgy_admin_users WHERE brgy_email = :email');
+    $stmt->execute(['email' => $email]); 
+    $user = $stmt->fetch();
+
     // Initialize userType variable
     $userType = null;
 
-    // Check hardcoded credentials
-    foreach ($userCredentials as $hardcodedUser) {
-        if ($hardcodedUser['email'] === $email && $hardcodedUser['password'] === $password) {
-            $userType = $hardcodedUser['user_type'];
-            $_SESSION['user_type'] = $userType;
-            $_SESSION['email'] = $email; // Set session variable for email
-            break;
-        }
-    }
+    if ($user) {
+        // Log the hashed password and input password for debugging
+        error_log("Hashed Password in DB: " . $user['brgy_password_hashed']);
+        error_log("Input Password: " . $password);
 
-    if ($userType) {
-        // Get the template path based on user type
-        $templatePath = getTemplatePath($userType);
-        if ($templatePath) {
-            // Redirect to the appropriate template
-            header('Location: ' . $templatePath);
+        // Attempt to verify password using password_verify
+        $isPasswordValid = password_verify($password, $user['brgy_password_hashed']);
+
+        // If password_verify fails, check hardcoded credentials
+        if (!$isPasswordValid) {
+            foreach ($userCredentials as $hardcodedUser) {
+                if ($hardcodedUser['email'] === $email && $hardcodedUser['password'] === $password) {
+                    $userType = $hardcodedUser['user_type'];
+                    $_SESSION['user_type'] = $userType;
+                    $isPasswordValid = true; // Set as valid after matching hardcoded credentials
+                    break;
+                }
+            }
+        } else {
+            $userType = $user['user_type']; // Set user type from database
+            $_SESSION['user_type'] = $userType;
+        }
+
+        if ($isPasswordValid) {
+            // Set session variable for email
+            $_SESSION['email'] = $email;
+
+            // Check first_time_admin_user flag and redirect accordingly
+            if (strtolower($user['first_time_admin_user']) === 'yes') {
+                header('Location: views/confirmation/admin/new_user/onboard.php');
+                exit();
+            } else {
+                // Redirect to verification code page if first_time_admin_user is 'no'
+                header('Location: views/confirmation/admin/verification-code.php');
+                exit();
+            }
+        } else {
+            // Invalid password
+            $_SESSION['message'] = 'Invalid password. Please try again.';
+            header('Location: index.php'); // Redirect back to login page
             exit();
         }
     } else {
+        // User not found, check hardcoded credentials
+        foreach ($userCredentials as $hardcodedUser) {
+            if ($hardcodedUser['email'] === $email && $hardcodedUser['password'] === $password) {
+                $userType = $hardcodedUser['user_type'];
+                $_SESSION['user_type'] = $userType;
+                $_SESSION['email'] = $email; // Set session variable for email
+                break;
+            }
+        }
+
+        if ($userType) {
+            // Get the template path based on user type
+            $templatePath = getTemplatePath($userType);
+            if ($templatePath) {
+                // Redirect to the appropriate template
+                header('Location: ' . $templatePath);
+                exit();
+            }
+        }
+
         // Invalid credentials
         $_SESSION['message'] = 'Invalid email or password. Please try again.';
         header('Location: index.php'); // Redirect back to login page
@@ -65,3 +115,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
