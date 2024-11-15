@@ -17,6 +17,7 @@ const paths = {
         'views/registration/templates/**/*.twig',  
         'views/dashboard/**/templates/**/*.twig'
     ],
+    js: 'views/**/*.js',
     dist: 'dist/'
 };
 
@@ -53,6 +54,7 @@ function serve() {
     });
 
     gulp.watch(paths.html).on('change', browserSync.reload);
+    gulp.watch(paths.js).on('change', browserSync.reload);
     gulp.watch(paths.php).on('change', browserSync.reload);
     gulp.watch(paths.css).on('change', browserSync.reload);
     gulp.watch(paths.moduleCss, compileTwig).on('change', browserSync.reload);

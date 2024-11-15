@@ -58,40 +58,11 @@
 
         <div class="main-content">
             <div class="welcome-message">
-                <h2 class="text-danger">E-Forms</h2>
-                <p>Our available to automate streamline processing of documents.</p>
+                <h2 class="text-danger">View Disregarded Process</h2>
+                <p>This contains the streamlined processing made by other departments.</p>
             </div>
-            <div class="container mt-5">
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded" data-index="3">
-                            <div>
 
-                            </div>
-                            <div class="py-2">
-                                <h4>Brgy. Clearance</h4>
-                                <p class="description">Click to learn more about this record type.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded" data-index="4">
-                            <div class="py-2">
-                                <h4>Certificate of Indigency</h4>
-                                <p class="description">Click to learn more about this record type.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded" data-index="4">
-                            <div class="py-2">
-                                <h4>Brgy. Certificate</h4>
-                                <p class="description">Click to learn more about this record type.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
 
         <!-- Sign Out Confirmation Modal -->

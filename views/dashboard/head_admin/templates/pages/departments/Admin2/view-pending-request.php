@@ -59,7 +59,7 @@
         <div class="main-content">
             <div class="welcome-message">
                 <h2 class="text-danger">View Pending Request</h2>
-                <p>This contains the streamlined processing made by other departments.</p>
+                <p>This contains the streamlined processing made by other departments and also from residents.</p>
             </div>
 
 

@@ -38,8 +38,8 @@
 
         <div class="main-content">
             <div class="welcome-message">
-                <h2 class="text-danger">Document Processing</h2>
-                <p>This contains real-time processess made by other people per transactions.</p>
+                <h2 class="text-danger">Transactions</h2>
+                <p>This contains real-time processes made by other departments to record their transactions.</p>
             </div>
             
             

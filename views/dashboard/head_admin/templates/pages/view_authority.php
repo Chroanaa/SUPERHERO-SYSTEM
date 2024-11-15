@@ -44,35 +44,130 @@
 
             <div class="auth-tab-container">
                 <div class="auth-divide">
-                    <aside id="">
+                    <aside class="notifications-container" style="max-height: 320px; overflow-y: auto;">
                         <!-- Client Side operation starts here -->
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <h2>Notifications</h2>
+                                <h2>Login Attempts (0 unread)</h2>
                             </div>
                             <button type="button" class="btn btn-danger">
                                 <i class="fa-solid fa-rotate-right"></i> Reload
                             </button>
                         </div>
-                        <!-- Client Side operation starts here -->
-                        <div class="mt-3 rounded d-flex flex-column" style="border: 1px solid #d9d9d9; padding: 12px;">
-                            <div class="text-decoration-underline mb-2">
-                                <span>#0001 - Someone is attempting to login!</span>
+                        <!-- per rounded notifs data -->
+                        <div class="mt-3 rounded d-flex flex-column" style="border: 1px solid #d9d9d9; padding: 16px;">
+                            <section id="notifications-tab">
+                                <span class="text-decoration-underline">#0001 - Someone is attempting to login!</span>
+                                <p class="text-secondary">A new-user login attempt made from Barangay Public Safety Office (BPSO)</p>
+                            </section>
+                            <div class="">
+                                <button class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#detailsModal">View details</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#declineRequest">Decline Request</button>
                             </div>
-                            <button class="btn btn-danger">View details</button>
+                        </div>
+
+                        <div class="mt-3 rounded d-flex flex-column" style="border: 1px solid #d9d9d9; padding: 16px;">
+                            <section id="notifications-tab">
+                                <span class="text-decoration-underline">#0001 - Someone is attempting to login!</span>
+                                <p class="text-secondary">A new-user login attempt made from Barangay Public Safety Office (BPSO)</p>
+                            </section>
+                            <div class="">
+                                <button class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#detailsModal">View details</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#declineRequest">Decline Request</button>
+                            </div>
                         </div>
                         <!-- no notif found -->
-                        <!-- <div class="mt-3 rounded d-flex text-center flex-column" style="color: #c4c4c4; padding: 12px;">
+                        <div class="mt-3 rounded d-flex text-center flex-column" style="color: #c4c4c4; padding: 12px;">
                             <p class="m-0">Your notifications will appear here.</p>
-                        </div> -->
+                        </div>
                     </aside>
-                    <aside id="">
-                        <h2>New Brgy. Staffs</h2>
-                    </aside>
+
                 </div>
             </div>
 
         </div>
+
+        <!-- View Per Notification Details -->
+        <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailsModalLabel">View Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Content -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Brgy. Staff's Image Capture</label>
+                            <img src="https://i1.sndcdn.com/artworks-000133617614-ywuyai-t500x500.jpg" alt="Brgy. Staff Face Capture" class="img-fluid w-100 rounded object-fit-cover" style="height: 300px; object-position: center;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Brgy. Staff's Email Address</label>
+                            <span class="d-block">johndoe@email.com</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Brgy. Staff's First Name</label>
+                            <span class="d-block">John</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Brgy. Staff's Last Name</label>
+                            <span class="d-block">Doe</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Brgy. Staff's Office</label>
+                            <span class="d-block">Barangay Public Safety Office</span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Date Issued</label>
+                            <span class="d-block">14/11/2024, 02:30 PM (GMT+8)</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" id="confirmButton" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#successModal">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal to grant new user -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Success!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i class="fas fa-check-circle fa-3x text-success"></i>
+                        <h5 class="mt-2">New User Access Granted.</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decline Request Modal -->
+        <div class="modal fade" id="declineRequest" tabindex="-1" aria-labelledby="declineRequestLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineRequestLabel">Confirm Action</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure to decline this request? This action can be repeated immdiately.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeclineForm" data-bs-dismiss="modal">Proceed</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Sign Out Confirmation Modal -->
         <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -95,82 +190,6 @@
             </div>
         </div>
 
-        <!-- View Details Modal -->
-        <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="viewDetailsModalLabel">User Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="viewDetailsModalBody">
-                        <!-- User details will be dynamically inserted here -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Edit Details Modal -->
-        <div class="modal fade" id="editDetailsModal" tabindex="-1" aria-labelledby="editDetailsModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editDetailsModalLabel">Edit User Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editUserForm">
-                            <div class="mb-3">
-                                <label for="editFirstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="editFirstName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editLastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="editLastName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="editEmail" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editRole" class="form-label">Role</label>
-                                <input type="text" class="form-control" id="editRole" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="saveEditButton">Save Changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Deactivate User Modal -->
-        <div class="modal fade" id="deactivateUserModal" tabindex="-1" aria-labelledby="deactivateUserModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deactivateUserModalLabel">Deactivate User</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to deactivate this user?</p>
-                        <p>User: <span id="deactivateUserName"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" id="confirmDeactivateButton">Deactivate</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 
@@ -180,7 +199,9 @@
         crossorigin="anonymous"></script>
 
     <script src="../diff-sidebar.js" type="module"></script>
-    <script src=""></script>
+    <script src="">
+
+    </script>
 </body>
 
 </html>

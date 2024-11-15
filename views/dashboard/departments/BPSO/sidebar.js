@@ -5,38 +5,30 @@ const header = document.querySelector(".header");
 
 if (header) {
     header.innerHTML = `
-        <nav class="sidebar">
+        <nav class="sidebar" style="z-index: 1000;">
             <div class="sidebar-content">
                 <div class="sidebar-header">Brgy. Sta. Lucia</div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <span><i class="fas fa-tachometer-alt category-icon"></i>Head Admin</span>
+                    <div class="sidebar-category-header" onclick="toggleSubMenu()">
+                        <span><i class="fas fa-shield-alt category-icon"></i>Brgy. Public Safety Officer</span>
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="sidebar-submenu show">
-                        <div class="sidebar-submenu-item main">Overview</div>
-                        <div class="sidebar-submenu-item view-authorize">Authorization</div>
-                        <div class="sidebar-submenu-item transactions">Transactions</div>
+                        <div class="sidebar-submenu-item main">Home</div>
+                        <div class="sidebar-submenu-item complaint-section">Complaints</div>
+                        <div class="sidebar-submenu-item new-complaint">New Complaint</div>
+                        <div class="sidebar-submenu-item create-report">Create Report</div>
+                        <div class="sidebar-submenu-item team-schedule">Team Schedule</div>
+                        <div class="sidebar-submenu-item vehicle-dispatch">Vehicle Dispatchment</div>
                     </div>
                 </div>
-                <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <span><i class="fas fa-users category-icon"></i>Secretary Portal</span>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
-                    </div>
-                    <div class="sidebar-submenu">
-                        <div class="sidebar-submenu-item main-admin2">Overview</div>
-                        <div class="sidebar-submenu-item admin2-view-pending">View Pending Request</div>
-                        <div class="sidebar-submenu-item admin2-view-approval">View Approval Process</div>
-                        <div class="sidebar-submenu-item admin2-view-disregard">View Disregarded Process</div>
-                        <div class="sidebar-submenu-item admin2-city-ordinance">City Ordinance</div>
-                        <div class="sidebar-submenu-item">E-Forms (Secretary)</div>
-                        <div class="sidebar-submenu-item admin2-notify">Notifications</div>
-                    </div>
-                </div>
-
-
+                
+                <!-- <div class="sidebar-category">
+            <div class="sidebar-category-header">
+                <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
+            </div>
+            </div> -->
                 <div class="sidebar-category">
                     <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
                         <span><i class="fa-solid fa-door-open category-icon"></i>Sign Out</span>

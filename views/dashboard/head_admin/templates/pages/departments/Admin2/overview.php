@@ -66,26 +66,32 @@
                 <div class="row g-4">
                     <div class="col-md-6 col-lg-4">
                         <div class="record-item p-4 border rounded text-center" data-index="0">
-                            <i class="fas fa-file-alt record-icon"></i>
-                            <h4>Community Assistance and Welfare</h4>
+                            <i class="fas fa-heart record-icon"></i>
+                            <h4>Commitee of Health</h4>
                             <p class="description">Click to expand more</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
                         <div class="record-item p-4 border rounded text-center" data-index="1">
-                            <i class="fa-solid fa-person-shelter record-icon"></i>
-                            <h4>Emergency and Disaster Response</h4>
+                            <i class="fa-solid fa-file-alt record-icon"></i>
+                            <h4>Commitee of Document Records</h4>
                             <p class="description">Click to expand more</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="2">
-                            <i class="fas fa-clipboard-check record-icon"></i>
-                            <h4>Brgy. Peace and Order (Security)</h4>
+                        <div class="record-item p-4 border rounded text-center" data-index="1">
+                            <i class="fa-solid fa-people-roof record-icon"></i>
+                            <h4>Commitee of Public Relations</h4>
                             <p class="description">Click to expand more</p>
                         </div>
                     </div>
-                    
+                    <div class="col-md-6 col-lg-4">
+                        <div class="record-item p-4 border rounded text-center" data-index="1">
+                            <i class="fa-solid fa-coins record-icon"></i>
+                            <h4>Commitee of Budget and Finance</h4>
+                            <p class="description">Click to expand more</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

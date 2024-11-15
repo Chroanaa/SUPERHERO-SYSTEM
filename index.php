@@ -1,12 +1,19 @@
 <?php
 session_start();
-
-// error message for handling sign in session lmao
 if (isset($_SESSION['message'])) {
-    echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
-    unset($_SESSION['message']);
+    echo '<script type="text/javascript">
+        setTimeout(function() {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "' . $_SESSION['message'] . '",
+            }).then(function() {
+                window.location = "index.php"; // Or the page you want to redirect after alert
+            });
+        }, 500); // Delay the redirect slightly to show the alert
+    </script>';
+    unset($_SESSION['message']); // Clear the message after displaying
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +30,8 @@ if (isset($_SESSION['message'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <link rel="icon" href="./components/images/favicon.ico" type="image/x-icon">
+    <!-- SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Brgy. Sta Lucia's Portal">
     <meta property="og:description" content="Your description here for the portal.">
@@ -67,7 +76,7 @@ if (isset($_SESSION['message'])) {
                 Try this out.
             </button>
         </div> -->
-        
+
         <!-- Modal Structure -->
         <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -90,24 +99,16 @@ if (isset($_SESSION['message'])) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+        <!-- SweetAlert Script -->
         <script>
-            // This website is not yet mobile-friendly :)
-            // function toggleDisplay() {
-            //     const loginContainer = document.getElementById('login-container');
-            //     const desktopMessage = document.getElementById('desktop-message');
-
-            //     if (window.innerWidth < 920) {
-            //         loginContainer.classList.add('d-none');
-            //         desktopMessage.classList.remove('d-none');
-            //     } else {
-            //         loginContainer.classList.remove('d-none');
-            //         desktopMessage.classList.add('d-none');
-            //     }
-            // }
-
-
-            // toggleDisplay();
-            // window.addEventListener('resize', toggleDisplay);
+            <?php if ($message): ?>
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Notice',
+                    text: '<?php echo $message; ?>',
+                    confirmButtonText: 'Ok'
+                });
+            <?php endif; ?>
         </script>
 </body>
 

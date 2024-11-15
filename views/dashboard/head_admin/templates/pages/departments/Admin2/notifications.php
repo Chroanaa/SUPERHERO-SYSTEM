@@ -58,35 +58,11 @@
 
         <div class="main-content">
             <div class="welcome-message">
-                <h2 class="text-danger">LUPON (Clerical)</h2>
-                <p>Our barangay judiciary to leverage their prescence to public safety.</p>
+                <h2 class="text-danger">Notifications</h2>
+                <p>This contains the streamlined process based on activities.</p>
             </div>
 
-            <div class="container mt-5">
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="0">
-                            <i class="fas fa-file-alt record-icon"></i>
-                            <h4>Case Reports (BPSO)</h4>
-                            <p class="description">Click to expand more</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="1">
-                            <i class="fa-solid fa-person-shelter record-icon"></i>
-                            <h4>Blotter / Patawag</h4>
-                            <p class="description">Click to expand more</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="record-item p-4 border rounded text-center" data-index="1">
-                            <i class="fa-solid fa-person-shelter record-icon"></i>
-                            <h4>Inventory</h4>
-                            <p class="description">Click to expand more</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
 
         <!-- Sign Out Confirmation Modal -->
@@ -116,7 +92,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <script src="../../../user_data.js"></script>
+    <!-- <script src="../../../user_data.js"></script> -->
     <script src="../../../diff-sidebar.js" type="module"></script>
 </body>
 
