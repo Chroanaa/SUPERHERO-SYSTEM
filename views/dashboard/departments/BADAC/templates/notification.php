@@ -13,7 +13,7 @@
    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
    <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
-   <link rel="stylesheet" href="../../BADAC/templates/css/index.css">
+   <link rel="stylesheet" href="../../../../../custom/css/index.css">
    <!-- Open Graph Meta Tags -->
    <meta property="og:title" content="Onboarding as BADAC Officer for Brgy. Management">
    <meta property="og:description" content="Still in development phase.">
@@ -36,44 +36,7 @@
 <body>
    <div id="app">
       <div class="container-fluid d-flex">
-         <nav class="sidebar" id="sidebar-badac">
-            <div class="sidebar-content">
-               <div class="sidebar-header">Brgy. Sta. Lucia</div>
-               <div class="sidebar-category">
-                  <div class="sidebar-category-header">
-                     <span><i class="fas fa-user-friends category-icon"></i>Brgy. Anti Drug Abuse Council</span>
-                     <i class="fas fa-chevron-down toggle-icon"></i>
-                  </div>
-                  <div class="sidebar-submenu-show">
-                     <a href="../../BADAC/templates/home.html">
-                        <div class="sidebar-submenu-item">Home</div>
-                     </a>
-                     <a href="../../BADAC/templates/dashboard.html">
-                        <div class="sidebar-submenu-item">Dashboard</div>
-                     </a>
-                     <a href="../../BADAC/templates/form.html">
-                        <div class="sidebar-submenu-item">Form</div>
-                     </a>
-                     <a href="../../BADAC/templates/notification.html">
-                        <div class="sidebar-submenu-item">Notification</div>
-                     </a>
-                     <a href="../../BADAC/templates/contact.html">
-                        <div class="sidebar-submenu-item">Contact</div>
-                     </a>
-                  </div>
-               </div>
-               <!-- <div class="sidebar-category">
-                     <div class="sidebar-category-header">
-                        <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
-                     </div>
-                  </div> -->
-               <div class="sidebar-category">
-                  <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
-                     <span><i class="fa-solid fa-door-open category-icon"></i>Sign Out</span>
-                  </div>
-               </div>
-            </div>
-         </nav>
+         <header class="header"></header>
 
          <!-- Sign Out Confirmation Modal -->
          <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -97,7 +60,7 @@
             </div>
          </div>
 
-         <div class="main-container container-fluid">
+         <div class="main-content main-container container-fluid">
             <div class="container-fluid d-flex justify-content-end">
                <div class="breadcrumb">
                   <span class="breadcrumb-item active">BADAC</span>
@@ -123,67 +86,16 @@
                </table>
             </div>
          </div>
+
+
+
       </div>
    </div>
    <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
-   <script>
-      const sidebar = document.querySelector('.sidebar-content');
-      const ps = new PerfectScrollbar(sidebar);
-
-      function toggleSubmenu(element) {
-         const submenu = element.nextElementSibling;
-         const allSubmenus = document.querySelectorAll('.sidebar-submenu');
-         const allHeaders = document.querySelectorAll('.sidebar-category-header');
-
-         allSubmenus.forEach(menu => {
-            if (menu !== submenu) {
-               menu.classList.remove('show');
-            }
-         });
-
-         allHeaders.forEach(header => {
-            if (header !== element) {
-               header.classList.remove('active');
-            }
-         });
-
-         submenu.classList.toggle('show');
-         element.classList.toggle('active');
-         ps.update();
-      }
-
-      function createRipple(event) {
-         const button = event.currentTarget;
-         const ripple = document.createElement('span');
-         const rect = button.getBoundingClientRect();
-         const size = Math.max(rect.width, rect.height);
-         const x = event.clientX - rect.left - size / 2;
-         const y = event.clientY - rect.top - size / 2;
-
-         ripple.style.width = ripple.style.height = `${size}px`;
-         ripple.style.left = `${x}px`;
-         ripple.style.top = `${y}px`;
-         ripple.classList.add('ripple');
-
-         button.appendChild(ripple);
-
-         ripple.addEventListener('animationend', () => {
-            ripple.remove();
-         });
-      }
-
-      document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
-         item.addEventListener('mouseenter', createRipple);
-      });
-
-      document.getElementById('confirmSignOutBtn').addEventListener('click', function () {
-         // Redirect to signout.php to handle session destruction and redirection
-         window.location.href = '../../../../../signout.php';
-      });
-   </script>
+   <script src="./javascript/sidebar.js" type="module"></script>
 </body>
 
 </html>
