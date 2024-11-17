@@ -1,72 +1,96 @@
 <?php
 session_start();
+require_once '../../../vendor/autoload.php'; // Include Composer autoloader
+
+use Aws\DynamoDb\DynamoDbClient;
+use Dotenv\Dotenv;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include 'C:/xampp/htdocs/SUPERHERO-SYSTEM/controllers/db_connection.php';
-if (!$pdo) {
-    die("Connection failed: hindi pa nakakonek");
-} if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $complainantName = $_POST['complainant_name'] ?? '';
-    $complainantAddress = $_POST['complainant_address'] ?? '';
-    $respondentName = $_POST['respondent_name'] ?? '';
-    $respondentAddress = $_POST['respondent_address'] ?? '';
-    $complaintCategory = $_POST['complaint_category'] ?? '';
-    $complaintDescription = $_POST['complaint_description'] ?? '';
-    $placeOfIncident = $_POST['place_of_incident'] ?? '';
-    $dateOfIncident = $_POST['incidence_date'] ?? ''; 
-    $timeOfIncident = $_POST['incidence_time'] ?? ''; 
-    $caseNumber = $_POST['case_number'] ?? ''; 
-    $specialCase = $_POST['special_case'] ?? '';
-    // nakamodal kasi yung case_number ko kaya nag direct nalang ako sa mismong page nalang ng newcomplaint.php
-    if (strlen($caseNumber) > 10) {
-        echo "<script>
-        alert('The case number can only be 10 characters long.');
-        window.location.href = 'http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/BPSO/Complaint%20main/newcomplaint.php';
-      </script>";
-        exit(); 
-    }
-    $checkQuery = "SELECT COUNT(*) FROM complaint WHERE case_number = :case_number";
-    $checkStmt = $pdo->prepare($checkQuery);
-    $checkStmt->bindParam(':case_number', $caseNumber);
-    $checkStmt->execute();
-    $existingCaseCount = $checkStmt->fetchColumn();
 
-    if ($existingCaseCount > 0) {
-        echo "<script>
-        alert('The case number you entered already exists. Please enter another case number.');
-        window.location.href = 'http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/BPSO/Complaint%20main/newcomplaint.php';
-      </script>";
-    } else {
-        
-        $query = "INSERT INTO complaint (complainant_name, complainant_address, respondent_name, respondent_address, complaint_category, complaint_description, place_of_incident, date_of_incident, time_of_incident, case_number, special_case) VALUES (:complainant_name, :complainant_address, :respondent_name, :respondent_address, :complaint_category, :complaint_description, :place_of_incident, :date_of_incident, :time_of_incident, :case_number, :special_case)";
-        $stmt = $pdo->prepare($query);
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../../');
+$dotenv->load();
 
-        $params = [
-            ':complainant_name' => $complainantName,
-            ':complainant_address' => $complainantAddress,
-            ':respondent_name' => $respondentName,
-            ':respondent_address' => $respondentAddress,
-            ':complaint_category' => $complaintCategory,
-            ':complaint_description' => $complaintDescription,
-            ':place_of_incident' => $placeOfIncident,
-            ':date_of_incident' => $dateOfIncident,
-            ':time_of_incident' => $timeOfIncident,
-            ':case_number' => $caseNumber,
-            ':special_case' => $specialCase,
-        ];
+// Configure DynamoDB client
+$dynamoDb = new DynamoDbClient([
+    'region' => $_ENV['AWS_REGION'],
+    'version' => 'latest',
+    'credentials' => [
+        'key' => $_ENV['AWS_ACCESS_KEY_ID'],
+        'secret' => $_ENV['AWS_SECRET_ACCESS_KEY'],
+    ],
+]);
 
-        foreach ($params as $param => $value) {
-            $stmt->bindParam($param, $params[$param]);
-        }
+// Get the table name
+$tableName = 'bms_bpso_portal_complaint_records';
 
-        if ($stmt->execute()) {
-            $_SESSION['success'] = 'Submit successfully';
-            header("Location: http://localhost:3000/views/dashboard/departments/BPSO/Complaint%20main/complaints.php");
-            exit();
-        } else {
-            echo "Error: " . implode(", ", $stmt->errorInfo());
+// Process the form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $caseNumber = (int)(microtime(true) * 1000);
+    $incidentCaseTime = (new DateTime())->format('c');
+
+    // Collect all complainants
+    $complainants = [];
+    if (isset($_POST['complainant_name']) && isset($_POST['complainant_address'])) {
+        foreach ($_POST['complainant_name'] as $key => $name) {
+            $complainants[] = [
+                'name' => $name,
+                'address' => $_POST['complainant_address'][$key] ?? ''
+            ];
         }
     }
-} 
-$pdo = null; 
+
+    // Collect all respondents
+    $respondents = [];
+    if (isset($_POST['respondent_name']) && isset($_POST['respondent_address'])) {
+        foreach ($_POST['respondent_name'] as $key => $name) {
+            $respondents[] = [
+                'name' => $name,
+                'address' => $_POST['respondent_address'][$key] ?? ''
+            ];
+        }
+    }
+
+    $data = [
+        'incident_case_time' => $incidentCaseTime, // ISO 8601 date-time
+        'case_type' => $_POST['complaint_category'] ?? '',
+        'place_of_incident' => $_POST['place_of_incident'] ?? '',
+        'case_number' => $caseNumber,  // Auto-generated case number
+        'case_description' => $_POST['complaint_description'] ?? '',
+        'incident_case_issued' => $incidentCaseTime, // Use the same ISO 8601 format
+        'complaint_status' => 'Pending',
+        'affiliated_dept_case' => 'bpso',
+        'case_complainants' => $complainants,
+        'case_respondents' => $respondents,
+        'incident_case_created' => $incidentCaseTime, // Use the same ISO 8601 format
+        'special_case' => $_POST['special_case'] ?? '',
+    ];
+
+    // Add data to DynamoDB
+    try {
+        $dynamoDb->putItem([
+            'TableName' => $tableName,
+            'Item' => array_map(
+                fn($value) => is_array($value)
+                    ? ['L' => array_map(
+                        fn($v) => ['M' => array_map(
+                            fn($vv) => ['S' => $vv],
+                            $v
+                        )],
+                        $value
+                    )]
+                    : (is_numeric($value) ? ['N' => (string)$value] : ['S' => $value]), // Ensure numeric values are passed as 'N'
+                $data
+            ),
+        ]);
+
+        $_SESSION['success'] = 'Complaint submitted successfully!';
+        header("Location: http://localhost:3000/views/dashboard/departments/BPSO/Complaint%20main/complaints.php");
+        exit();
+    } catch (Aws\Exception\AwsException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 ?>

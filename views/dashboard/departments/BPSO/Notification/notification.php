@@ -28,11 +28,23 @@
     <div id="app">
         <header class="header"></header>
 
-        <!-- notifications bitch -->
+        <!-- notifications for bpso -->
 
         <div class="main-content">
             <div class="welcome-message">
-                <h2>NOTIFICATIONS</h2>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div id="welcome-header">
+                        <h2>NOTIFICATIONS</h2>
+                    </div>
+                    <div id="notify-btns">
+                        <button type="button" class="btn btn-secondary">
+                            Clear
+                        </button>
+                        <button type="button" class="btn btn-danger me-2">
+                            <i class="fa-solid fa-rotate-right"></i> Reload
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="auth-tab-container">

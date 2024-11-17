@@ -67,8 +67,7 @@ $sql = "SELECT * FROM complaint WHERE id";
               <thead>
                   <tr>
                       <th scope="col">Case Number</th>
-                      <th scope="col">Complainant Name</th>
-                      <th scope="col">Respondent Name</th>
+
                       <th scope="col">Complaint Category</th>
                       <th scope="col">Date of Incident</th>
                       <th scope="col">Special Case</th>
@@ -81,14 +80,14 @@ $sql = "SELECT * FROM complaint WHERE id";
                   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                      echo "<tr>
               <th scope='row'>" . htmlspecialchars($row["case_number"]) . "</th>
-              <td>" . htmlspecialchars($row["complainant_name"]) . "</td>
-              <td>" . htmlspecialchars($row["respondent_name"]) . "</td>
+
               <td>" . htmlspecialchars($row["complaint_category"]) . "</td>
               <td>" . htmlspecialchars($row["date_of_incident"]) . "</td>
               <td>" . htmlspecialchars($row["special_case"]) . "</td>
               <td>
-                    <button class='btn btn-success see-details'>See details</button>
-                  <button type='submit' class='btn btn-danger btn-hover' style='font-weight: 500;'>Forward</button>
+                  <button class='btn btn-primary'>See details</button>
+                  <button type='submit' class='btn btn-secondary btn-hover' style='font-weight: 500;'>Forward</button>
+                  <button class='btn btn-danger see-details'>Delete</button>
               </td>
               </tr>";
                   }

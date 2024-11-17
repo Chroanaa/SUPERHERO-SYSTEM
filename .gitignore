@@ -31,7 +31,6 @@ tmp/
 
 # for composer
 composer.lock
-composer.json
 
 # nodeJS
 node_modules/

@@ -20,6 +20,10 @@ composer require twig/twig
 composer require vlucas/phpdotenv
 ```
 
+```powershell
+composer require aws/aws-sdk-php
+```
+
 ### 2.1 New Libraries
 
 ```powershell
