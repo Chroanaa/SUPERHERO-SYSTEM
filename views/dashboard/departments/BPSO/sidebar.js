@@ -16,7 +16,7 @@ if (header) {
                     </div>
                     <div class="sidebar-submenu show">
                         <div class="sidebar-submenu-item main">Home</div>
-                        <div class="sidebar-submenu-item complaint-section">Complaint Management</div>
+                        <div class="sidebar-submenu-item complaint-section">Complaint Records</div>
                         <div class="sidebar-submenu-item new-complaint">File New Complaint</div>
                         <div class="sidebar-submenu-item create-report">Create Report</div>
                         <div class="sidebar-submenu-item team-schedule">Team Schedule</div>

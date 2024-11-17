@@ -36,12 +36,10 @@ $sql = "SELECT * FROM complaint WHERE id";
 
 <body>
    <div id="app">
-      <header class="header">
-
-      </header>
+      <header class="header"></header>
       <div class="main-content">
          <div class="welcome-message">
-            <h2>COMPLAINT</h2>
+            <h2>COMPLAINT (BPSO)</h2>
          </div>
          <div id="complaintsection" style="display: block;">
             <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; align-items: flex-start;">
