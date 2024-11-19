@@ -5,31 +5,25 @@ const header = document.querySelector(".header");
 
 if (header) {
     header.innerHTML = `
-        <nav class="sidebar" style="z-index: 1000;">
+        <nav class="sidebar">
             <div class="sidebar-content">
                 <div class="sidebar-header">Brgy. Sta. Lucia</div>
-
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header" onclick="toggleSubMenu()">
-                        <span><i class="fas fa-shield-alt category-icon"></i>Brgy. Public Safety Officer</span>
+                    <div class="sidebar-category-header">
+                        <span><i class="fas fa-child category-icon"></i>Brgy. Council for the Protection of Children</span>
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
-                    <div class="sidebar-submenu show">
+                    <div class="sidebar-submenu-show">
                         <div class="sidebar-submenu-item main">Home</div>
-                        <div class="sidebar-submenu-item complaint-section">Complaint Records</div>
-                        <div class="sidebar-submenu-item new-complaint">File New Complaint</div>
-                        <div class="sidebar-submenu-item create-report">Create Report</div>
-                        <div class="sidebar-submenu-item team-schedule">Team Schedule</div>
-                        <div class="sidebar-submenu-item vehicle-dispatch">Vehicle Dispatchment</div>
-                        <div class="sidebar-submenu-item bpso-notify">Notifications</div>
+                        <div class="sidebar-submenu-item dashboard">Dashboard</div>
+                        <div class="sidebar-submenu-item file-a-case">File a case</div>
+                        <div class="sidebar-submenu-item forms">Forms</div>
+                        <div class="sidebar-submenu-item notify">Notifications</div>
+                        <div class="sidebar-submenu-item contacts">Contacts</div>
+                        <div class="sidebar-submenu-item gov-contact">Programs and Services</div>
                     </div>
+
                 </div>
-                
-                <!-- <div class="sidebar-category">
-            <div class="sidebar-category-header">
-                <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
-            </div>
-            </div> -->
                 <div class="sidebar-category">
                     <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
                         <span><i class="fa-solid fa-door-open category-icon"></i>Sign Out</span>

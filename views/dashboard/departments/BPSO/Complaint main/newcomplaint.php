@@ -42,8 +42,8 @@
                      <div style="width: 400px;">
                         <label style="font-size: 20px; font-weight: 600;">Complainant 1</label>
                         <div id="complainant-container" style="display: flex; flex-direction: column; gap: 10px;">
-                           <input type="text" name="complainant_name" placeholder="Name" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-                           <input type="text" name="complainant_address" placeholder="Address" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                           <input type="text" name="complainant_name[]" placeholder="Name" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                           <input type="text" name="complainant_address[]" placeholder="Address" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                         </div>
                         <button type="button" onclick="addComplainant()" style="margin-top: 10px; font-size: 20px; background-color: #009717; color: #ffffff; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; justify-content: center; align-items: center;">+</button>
                      </div>
@@ -51,8 +51,8 @@
                      <div style="width: 400px;">
                         <label style="font-size: 20px; font-weight: 600;">Respondent 1</label>
                         <div id="respondent-container" style="display: flex; flex-direction: column; gap: 10px;">
-                           <input type="text" name="respondent_name" placeholder="Name" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-                           <input type="text" name="respondent_address" placeholder="Address" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                           <input type="text" name="respondent_name[]" placeholder="Name" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                           <input type="text" name="respondent_address[]" placeholder="Address" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                         </div>
                         <button type="button" onclick="addRespondent()" style="margin-top: 10px; font-size: 20px; background-color: #009717; color: #ffffff; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; justify-content: center; align-items: center;">+</button>
                      </div>
@@ -92,7 +92,7 @@
                   </div>
                   <!-- Confirm Button -->
                   <div style="margin-top: 600px; margin-left: 80%;">
-                     <button type="button" id="openModalButton" class="btn btn-primary" style="width: 100%; max-width: 300px; height: 60px; font-size: 1rem; font-weight: 600; margin: 0 auto; display: block;">Confirm</button>
+                     <button type="submit" id="openModalButton" class="btn btn-primary" style="width: 100%; max-width: 300px; height: 60px; font-size: 1rem; font-weight: 600; margin: 0 auto; display: block;">Confirm</button>
                   </div>
                   <!-- Special Case Dropdown -->
                   <div style="margin-top: -55px; display: flex; justify-content: flex-start;">
@@ -106,13 +106,13 @@
                         <li type="button" onclick="updateButtonText('None', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">None</li>
                      </ul>
                   </div>
-                  <div id="report-create" class="create">
+                  <!-- <div id="report-create" class="create">
                      <div class="create-content">
                         <span class="close-btn">&times;</span>
                         <input type="text" name="case_number" placeholder="Case Number..." style="position: absolute; width: 600px; height: 55px; top: 45%;  left: 21%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff; padding: 10px;">
                         <button type="submit" id="submitbutton" class="btn btn-primary btn-hover" style="width: 300px; height: 60px; font-weight: 600; font-size: 20px;">Submit</button>
                      </div>
-                  </div>
+                  </div> -->
                </form>
             </div>
          </div>

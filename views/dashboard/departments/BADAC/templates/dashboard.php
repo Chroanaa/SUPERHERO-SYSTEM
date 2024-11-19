@@ -13,7 +13,7 @@
    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
    <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
-   <link rel="stylesheet" href="../../BADAC/templates/css/index.css">
+   <link rel="stylesheet" href="../../../../../custom/css/index.css">
    <!-- Open Graph Meta Tags -->
    <meta property="og:title" content="Onboarding as BADAC Officer for Brgy. Management">
    <meta property="og:description" content="Still in development phase.">
@@ -34,76 +34,27 @@
 
    .pagination .page-item .page-link {
       color: #1E477D;
-      /* Text color for pagination links */
       background-color: #f8f9fa;
-      /* Background color for pagination links */
       border: 1px solid #dee2e6;
-      /* Border color for pagination links */
    }
 
    .pagination .page-item.active .page-link {
       color: #fff;
-      /* Text color for active page */
       background-color: #1E477D;
-      /* Background color for active page */
       border-color: #1E477D;
-      /* Border color for active page */
    }
 
    .pagination .page-item:hover .page-link {
       color: #1E477D;
-      /* Text color on hover */
       background-color: #e9ecef;
-      /* Background color on hover */
       border-color: #dee2e6;
-      /* Border color on hover */
    }
 </style>
 
 <body>
    <div id="app">
       <div class="container-fluid d-flex">
-         <nav class="sidebar" id="sidebar-badac">
-            <div class="sidebar-content">
-               <div class="sidebar-header">Brgy. Sta. Lucia</div>
-               <div class="sidebar-category">
-                  <div class="sidebar-category-header">
-                     <span><i class="fas fa-user-friends category-icon"></i>Brgy.
-                        Anti Drug Abuse Council</span>
-                     <i class="fas fa-chevron-down toggle-icon"></i>
-                  </div>
-                  <div class="sidebar-submenu-show">
-                     <a href="../../BADAC/templates/home.html">
-                        <div class="sidebar-submenu-item">Home</div>
-                     </a>
-                     <a href="../../BADAC/templates/dashboard.html">
-                        <div class="sidebar-submenu-item">Dashboard</div>
-                     </a>
-                     <a href="../../BADAC/templates/form.html">
-                        <div class="sidebar-submenu-item">Form</div>
-                     </a>
-                     <a href="../../BADAC/templates/notification.html">
-                        <div class="sidebar-submenu-item">Notification</div>
-                     </a>
-                     <a href="../../BADAC/templates/contact.html">
-                        <div class="sidebar-submenu-item">Contact</div>
-                     </a>
-                  </div>
-               </div>
-               <!-- <div class="sidebar-category">
-                  <div class="sidebar-category-header">
-                     <span><i class="fa-solid fa-id-card category-icon"></i>User
-                        Profile</span>
-                  </div>
-               </div> -->
-               <div class="sidebar-category">
-                  <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
-                     <span><i class="fa-solid fa-door-open category-icon"></i>Sign
-                        Out</span>
-                  </div>
-               </div>
-            </div>
-         </nav>
+        <header class="header"></header>
 
          <!-- Sign Out Confirmation Modal -->
          <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -126,6 +77,7 @@
             </div>
          </div>
 
+         <div class="main-content">
          <div class="main-container container-fluid">
             <div class="container-fluid d-flex justify-content-end">
                <div class="breadcrumb">
@@ -286,6 +238,9 @@
                   </div>
                </div>
             </div>
+         </div>
+
+         
             <!--End Edit Modal-->
             <!--Add Cases-->
             <!--
@@ -394,158 +349,8 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
-   <script>
-      const sidebar = document.querySelector('.sidebar-content');
-      const ps = new PerfectScrollbar(sidebar);
-
-      function toggleSubmenu(element) {
-         const submenu = element.nextElementSibling;
-         const allSubmenus = document.querySelectorAll('.sidebar-submenu');
-         const allHeaders = document.querySelectorAll('.sidebar-category-header');
-
-         allSubmenus.forEach(menu => {
-            if (menu !== submenu) {
-               menu.classList.remove('show');
-            }
-         });
-
-         allHeaders.forEach(header => {
-            if (header !== element) {
-               header.classList.remove('active');
-            }
-         });
-
-         submenu.classList.toggle('show');
-         element.classList.toggle('active');
-         ps.update();
-      }
-
-      function createRipple(event) {
-         const button = event.currentTarget;
-         const ripple = document.createElement('span');
-         const rect = button.getBoundingClientRect();
-         const size = Math.max(rect.width, rect.height);
-         const x = event.clientX - rect.left - size / 2;
-         const y = event.clientY - rect.top - size / 2;
-
-         ripple.style.width = ripple.style.height = `${size}px`;
-         ripple.style.left = `${x}px`;
-         ripple.style.top = `${y}px`;
-         ripple.classList.add('ripple');
-
-         button.appendChild(ripple);
-
-         ripple.addEventListener('animationend', () => {
-            ripple.remove();
-         });
-      }
-
-      document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
-         item.addEventListener('mouseenter', createRipple);
-      });
-
-      document.getElementById('confirmSignOutBtn').addEventListener('click', function () {
-         // Redirect to signout.php to handle session destruction and redirection
-         window.location.href = '../../../../../signout.php';
-      });
-   </script>
-   <script>
-      document.getElementById('addCaseForm').addEventListener('submit', function (event) {
-         event.preventDefault();
-
-         const caseNumber = document.getElementById('caseNumber').value;
-         const pwud = document.getElementById('pwud').value;
-         const complainants = document.getElementById('complainants').value;
-         const caseType = document.getElementById('caseType').value;
-         const respondent = document.getElementById('respondent').value;
-         const caseStatus = document.getElementById('caseStatus').value;
-         const description = document.getElementById('description').value;
-         const dateTime = document.getElementById('dateTime').value;
-         const place = document.getElementById('place').value;
-
-         const newRow = `
-         <tr>
-         <td>${caseNumber}</td>
-         <td>${complainants}</td>
-         <td>${respondent}</td>
-         <td>${pwud}</td>
-         <td>${description}</td>
-         <td>${place}</td>
-         <td>${new Date(dateTime).toLocaleString()}</td>
-         <td>${caseType}</td>
-         <td>${caseStatus}</td>
-         <td>
-             <button type="button" style="background-color:#1E477D; color:white" class="btn edit-btn" data-bs-toggle="modal" data-bs-target="#editSection">EDIT</button>
-         </td>
-         </tr>
-         `;
-
-         document.querySelector('.dashboard-table tbody').insertAdjacentHTML('beforeend', newRow);
-         document.getElementById('addCaseForm').reset();
-         document.querySelector('#addSection .btn-close').click();
-         addEditEventListeners();
-      });
-
-      function addEditEventListeners() {
-         document.querySelectorAll('.edit-btn').forEach(button => {
-            button.removeEventListener('click', handleEditClick); // Remove existing listener
-            button.addEventListener('click', handleEditClick); // Add new listener
-         });
-      }
-
-      function handleEditClick() {
-         const row = this.closest('tr');
-         const caseNumber = row.children[0].textContent;
-         const complainants = row.children[1].textContent;
-         const respondent = row.children[2].textContent;
-         const pwud = row.children[3].textContent;
-         const description = row.children[4].textContent;
-         const place = row.children[5].textContent;
-         const dateTime = row.children[6].textContent;
-         const caseType = row.children[7].textContent;
-         const caseStatus = row.children[8].textContent;
-
-         document.querySelector('#editSection input[name="caseNumber"]').value = caseNumber;
-         document.querySelector('#editSection input[name="complainants"]').value = complainants;
-         document.querySelector('#editSection input[name="respondent"]').value = respondent;
-         document.querySelector('#editSection input[name="pwud"]').value = pwud;
-         document.querySelector('#editSection textarea[name="description"]').value = description;
-         document.querySelector('#editSection input[name="place"]').value = place;
-         document.querySelector('#editSection input[name="dateTime"]').value = new Date(dateTime).toISOString().slice(0, 16);
-         document.querySelector('#editSection select[name="caseType"]').value = caseType;
-         document.querySelector('#editSection select[name="caseStatus"]').value = caseStatus;
-
-         document.querySelector('#editSection .btn-success').onclick = function () {
-            row.children[0].textContent = document.querySelector('#editSection input[name="caseNumber"]').value;
-            row.children[1].textContent = document.querySelector('#editSection input[name="complainants"]').value;
-            row.children[2].textContent = document.querySelector('#editSection input[name="respondent"]').value;
-            row.children[3].textContent = document.querySelector('#editSection input[name="pwud"]').value;
-            row.children[4].textContent = document.querySelector('#editSection textarea[name="description"]').value;
-            row.children[5].textContent = document.querySelector('#editSection input[name="place"]').value;
-            row.children[6].textContent = new Date(document.querySelector('#editSection input[name="dateTime"]').value).toLocaleString();
-            row.children[7].textContent = document.querySelector('#editSection select[name="caseType"]').value;
-            row.children[8].textContent = document.querySelector('#editSection select[name="caseStatus"]').value;
-
-            // Close the modal
-            const modalElement = document.getElementById('editSection');
-            const modal = bootstrap.Modal.getInstance(modalElement);
-            modal.hide();
-         };
-      }
-
-      document.getElementById('searchInput').addEventListener('input', function () {
-         const searchTerm = this.value.toLowerCase();
-         const rows = document.querySelectorAll('.dashboard-table tbody tr');
-
-         rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
-            row.style.display = rowText.includes(searchTerm) ? '' : 'none';
-         });
-      });
-
-      addEditEventListeners();
-   </script>
+   <script src="./javascript/sidebar.js" type="module"></script>
+   <script src="./javascript/addCaseForm.js"></script>
 </body>
 
 </html>

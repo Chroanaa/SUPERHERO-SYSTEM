@@ -16,6 +16,7 @@
     <link href="sidebar.css" rel="stylesheet">
     <link href="dashboard.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../../../../custom/css/index.css">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Onboarding as BCPC Officer for Brgy. Management">
     <meta property="og:description" content="Still in development phase.">
@@ -38,37 +39,9 @@
 
 <body>
     <div id="app">
-        <nav class="sidebar">
-            <div class="sidebar-content">
-                <div class="sidebar-header">Brgy. Sta. Lucia</div>
+        <header class="header"></header>
 
-                <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <span><i class="fas fa-child category-icon"></i>Brgy. Council for the Protection of Children</span>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
-                    </div>
-                    <div class="sidebar-submenu-show">
-                        <div class="sidebar-submenu-item link"><a href="dashboard.html">Home</a></div>
-                        <div class="sidebar-submenu-item link"><a href="file_a_case.html">File a case</a></div>
-                        <div class="sidebar-submenu-item link"><a href="notifications.html">Notifications</a></div>
-                        <div class="sidebar-submenu-item active">Contacts</div>
-                </div>
-
-                <!-- <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
-                    </div>
-                </div> -->
-
-                <div class="sidebar-category">
-                    <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
-                        <span><i class="fa-solid fa-door-open category-icon"></i>Sign Out</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <div class="content-area active">
+        <div class="main-content content-area active">
             <div id="content">
                 <div class="grid-container">
                     <article>
@@ -90,6 +63,7 @@
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.709289650059!2d120.97992197583868!3d14.615629485872564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b5f957156c4f%3A0x6dac4018b910b527!2sDepartment%20of%20Health!5e0!3m2!1sen!2sph!4v1730728530036!5m2!1sen!2sph" 
                     width="500" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
+                </div>
             </div>
 
         </div>
@@ -116,7 +90,6 @@
         </div>
     </div>
 
-<script src="function.js"></script>
+<script src="./javascript/sidebar.js" type="module"></script>
 </body>
-
 </html>

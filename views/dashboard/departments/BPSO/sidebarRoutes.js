@@ -9,6 +9,7 @@ export const sidebarRoutes = [
     { className: "create-report", path: "/views/dashboard/departments/BPSO/Complaint%20main/report.php" },
     { className: "team-schedule", path: "/views/dashboard/departments/BPSO/Team%20Schedule/teamschedule.php" },
     { className: "vehicle-dispatch", path: "/views/dashboard/departments/BPSO/Vehicle%20Dispatchment/vehicle.php"},
+    { className: "bpso-notify", path:"/views/dashboard/departments/BPSO/Notification/notification.php"}
 
     // LUPON Things
 
