@@ -1,5 +1,3 @@
-<!-- CUSTOM PROGRAM (FEEL FREE TO CHANGE IT) -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +14,7 @@
     <link href="sidebar.css" rel="stylesheet">
     <link href="dashboard.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
+    <link href="../../../../../custom/css/index.css" rel="stylesheet">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Onboarding as BCPC Officer for Brgy. Management">
     <meta property="og:description" content="Still in development phase.">
@@ -32,42 +31,73 @@
 
     <!-- External libraries -->
     <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
     <div id="app">
-        <nav class="sidebar">
-            <div class="sidebar-content">
-                <div class="sidebar-header">Brgy. Sta. Lucia</div>
-                <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <span><i class="fas fa-child category-icon"></i>Brgy. Council for the Protection of Children</span>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
+        <header class="header"></header>
+
+        <div class="main-content">
+            <div class="welcome-message">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div id="welcome-header">
+                        <h2>NOTIFICATIONS (0 unread)</h2>
                     </div>
-                    <div class="sidebar-submenu-show">
-                        <div class="sidebar-submenu-item active">Home</div>
-                        <div class="sidebar-submenu-item link"><a href="file_a_case.html">File a case</a></div>
-                        <div class="sidebar-submenu-item link"><a href="notifications.html">Notifications</a></div>
-                        <div class="sidebar-submenu-item link"><a href="contacts.html">Contacts</a></div>
-                    </div>
-                <!-- <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
-                    </div>
-                </div> -->
-                <div class="sidebar-category">
-                    <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
-                        <span><i class="fa-solid fa-door-open category-icon"></i>Sign Out</span>
+                    <div id="notify-btns">
+                        <form method="POST" style="display: inline;">
+                            <button type="submit" name="clear_all" class="btn btn-secondary me-2">
+                                Clear All
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-danger me-2" onclick="location.reload();">
+                            <i class="fa-solid fa-rotate-right"></i> Reload
+                        </button>
                     </div>
                 </div>
             </div>
-        </nav>
+
+            <div class="auth-tab-container">
+                <div class="auth-divide">
+                    <aside class="notifications-container" style="height: 400px; overflow-y: auto;">
+                        <div class="alert alert-secondary" role="alert">
+                            <i class="fa-solid fa-circle-info me-2"></i>
+                            No new notifications.
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 
         <div class="content-area active">
             <div id="content">
+                <div class="container">
+                    <div class="container-item cHead-1">Forwarded From:</div>
+                    <div class="container-item cHead-2">Case</div>
+                    <div class="container-item cHead-3">Location:</div>
+                    <div class="container-item cHead-4">Action:</div>
+                    <div class="container-item cHead-21">ID:</div>
+                    <div class="container-item cHead-22">Type:</div>
+                    <div class="container-item cHead-23">Status:</div>
+                    <div class="container-item cHead-24">Filed Date:</div>
+                        <div class="container-item cBody-1">BPSO</div>
+                        <div class="container-item cBody-2">9128391</div>
+                        <div class="container-item cBody-3">Physical Abuse</div>
+                        <div class="container-item cBody-4">Ongoing</div>
+                        <div class="container-item cBody-5">12/12/2024</div>
+                        <div class="container-item cBody-6">Malayo Street</div>
+                        <div class="container-item cBody-7">VIEW</div>
+
+                </div>
+
             </div>
-        </div>
+
+        </div> 
+    -->
+
 
         <!-- Sign Out Confirmation Modal -->
         <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -90,8 +120,9 @@
             </div>
         </div>
     </div>
-    
 
-<script src="function.js"></script>
+
+    <script src="./javascript/sidebar.js" type="module"></script>
 </body>
+
 </html>
