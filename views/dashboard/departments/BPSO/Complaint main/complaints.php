@@ -54,8 +54,7 @@ function formatCaseNumber($caseNumber)
 }
 
 // Format incident date and time
-function formatIncidentDateTime($incidentCaseTime, $incidentCaseIssued)
-{
+function formatIncidentDateTime($incidentCaseTime, $incidentCaseIssued) {
    $dateTime = new DateTime($incidentCaseTime, new DateTimeZone('GMT'));
    $dateTime->setTimezone(new DateTimeZone('Asia/Taipei'));
 
@@ -200,7 +199,6 @@ usort($complaints, function ($a, $b) {
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-danger">Forward Case</button>
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
          </div>
       </div>

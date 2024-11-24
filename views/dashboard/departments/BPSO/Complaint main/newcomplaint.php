@@ -241,7 +241,7 @@
                         <textarea id="complaint-description" name="case_description" placeholder="Complaint description..." style="width: 100%; height: 300px; max-width: 1200px; border: 1px solid #b1b1b1; border-radius: 3px; padding: 15px; font-size: 1rem;"></textarea>
                      </div>
                   </div>
-                  `
+                  
                   <!-- This will shown if special case specified to BCPC from minor involved -->
                   <div id="bcpc-form-container">
                      <div id="header-label-bcpc">
@@ -278,7 +278,7 @@
                         <div id="nested-container" class="mt-3 mb-3">
                            <div id="nested-incident">
                               <label for="child-age" class="mb-2">Current Address</label>
-                              <input type="text" id="child-age" name="child_age" placeholder="Current address of children" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                              <input type="text" id="child-address" name="child_address" placeholder="Current address of children" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                            </div>
                         </div>
                      </div>
