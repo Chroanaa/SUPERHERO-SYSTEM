@@ -1,44 +1,97 @@
 <?php
 session_start();
+require_once '../../../../../vendor/autoload.php'; // Include Composer autoloader
+
+use Aws\DynamoDb\DynamoDbClient;
+use Dotenv\Dotenv;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$apiUrl = "https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/bpso/complaint_records";
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../../../../');
+$dotenv->load();
 
-// Initialize cURL session
-$ch = curl_init();
+// Get the AWS credentials from the environment
+$awsAccessKeyId = $_ENV['AWS_ACCESS_KEY_ID'];
+$awsSecretAccessKey = $_ENV['AWS_SECRET_ACCESS_KEY'];
+$awsRegion = $_ENV['AWS_REGION'];
 
-// Set the cURL options
-curl_setopt($ch, CURLOPT_URL, $apiUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // We want the response as a string
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-   'Content-Type: application/json',
+// Create the DynamoDB client
+$dynamoDbClient = new DynamoDbClient([
+   'region' => $awsRegion,
+   'version' => 'latest',
+   'credentials' => [
+      'key'    => $awsAccessKeyId,
+      'secret' => $awsSecretAccessKey,
+   ],
 ]);
 
-// Execute the cURL request
-$response = curl_exec($ch);
+// Query to get complaint data
+$complaintsTable = 'bms_bpso_portal_complaint_records'; // Your table name in DynamoDB
+$response = $dynamoDbClient->scan([
+   'TableName' => $complaintsTable,
+]);
 
-// Check if there was an error
-if (curl_errno($ch)) {
-   echo 'Error:' . curl_error($ch);
-   exit;
+// Retrieve items from DynamoDB
+$complaints = $response['Items'];
+
+// Convert and format case created date (assuming it's stored in ISO8601 format in DynamoDB)
+function formatCaseCreatedDate($caseCreated)
+{
+   // If case_created is stored as a string in ISO8601 format (e.g., '2024-11-23T13:45:00Z')
+   $dateTime = new DateTime($caseCreated, new DateTimeZone('GMT'));
+   $dateTime->setTimezone(new DateTimeZone('Asia/Taipei'));
+
+   // Format the date in 'Nov, 24, 2024 as of 03:33 PM'
+   return $dateTime->format('M, d, Y \a\s \o\f h:i A'); // Using 'M' for short month and adding "as of"
 }
 
-// Close the cURL session
-curl_close($ch);
-
-// Decode the JSON response
-$data = json_decode($response, true);
-
-// Check if the response contains the expected data
-if (isset($data['bpso_all_complaints'])) {
-   $complaints = $data['bpso_all_complaints'];
-} else {
-   $complaints = [];
+// Convert case_number if it's stored as a number
+function formatCaseNumber($caseNumber)
+{
+   return (string)$caseNumber; // Converts number to string
 }
+
+// Format incident date and time
+function formatIncidentDateTime($incidentCaseTime, $incidentCaseIssued) {
+   $dateTime = new DateTime($incidentCaseTime, new DateTimeZone('GMT'));
+   $dateTime->setTimezone(new DateTimeZone('Asia/Taipei'));
+
+   // Combine incidentCaseTime and incidentCaseIssued and format
+   return $dateTime->format('M, d, Y \a\s \o\f h:i A');
+}
+
+function formatNames($namesArray) {
+    // Debug the incoming data structure
+    error_log('Names Array: ' . print_r($namesArray, true));
+    
+    // Check if $namesArray is a DynamoDB 'L' (List) type
+    if (isset($namesArray['L']) && is_array($namesArray['L'])) {
+        $names = array_map(function ($item) {
+            // Each item in the list should be an 'M' (Map) type
+            if (isset($item['M']['name']['S'])) {
+                return htmlspecialchars($item['M']['name']['S']);
+            }
+            return '';
+        }, $namesArray['L']);
+
+        // Filter out empty values and join
+        $names = array_filter($names);
+        return implode(', ', $names);
+    }
+    
+    return '';
+}
+
+// Sort complaints by 'case_created' in descending order (latest first)
+usort($complaints, function ($a, $b) {
+   $dateA = strtotime($a['case_created']['S']);
+   $dateB = strtotime($b['case_created']['S']);
+   return $dateB <=> $dateA; // Descending order
+});
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -92,37 +145,60 @@ if (isset($data['bpso_all_complaints'])) {
                      <tr>
                         <th scope="col">Case Number</th>
                         <th scope="col">Case Created</th>
-                        <th scope="col">Complaint Category</th>
-                        <th scope="col">Case Category</th>
+                        <th scope="col">Case Type</th>
+                        <th scope="col">Case Status</th>
                         <th scope="col">Actions</th>
                      </tr>
                   </thead>
                   <tbody>
-                     <h2>tinangal ko muna</h2>
-                     <?php
-                     // if (count($complaints) > 0) {
-                     //    foreach ($complaints as $complaint) {
-                     //       // Format the incident_case_issued date inside the loop
-                     //       $issuedDate = new DateTime($complaint['incident_case_issued']);
-                     //       $formattedIssuedDate = $issuedDate->format('m/d/Y h:i A'); // 12-hour format with AM/PM
-
-                     //       echo "<tr>
-                     //          <th scope='row'>" . htmlspecialchars($complaint['case_number']) . "</th>
-                     //          <td>" . htmlspecialchars($complaint['case_type']) . "</td>
-                     //          <td>" . htmlspecialchars($formattedIssuedDate) . "</td>
-                     //          <td>" . htmlspecialchars($complaint['special_case']) . "</td>
-                     //          <td>
-                     //             <button class='btn btn-primary'>See details</button>
-                     //             <button class='btn btn-danger'>Forward</button>
-                     //          </td>
-                     //       </tr>";
-                     //    }
-                     // } else {
-                     //    echo "<tr><td colspan='5'>No records found</td></tr>";
-                     // }
-                     ?>
+                  <?php foreach ($complaints as $complaint): ?>
+                        <tr>
+                           <td><?= formatCaseNumber($complaint['case_number']['N']) ?></td> 
+                           <td><?= formatCaseCreatedDate($complaint['case_created']['S']) ?></td>
+                           <td><?= $complaint['case_type']['S'] ?></td>
+                           <td><?= $complaint['case_status']['S'] ?></td>
+                           <td>
+                              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewDetailsModal" onclick="
+                                 populateModal(
+                                    '<?= isset($complaint['case_number']['N']) ? formatCaseNumber($complaint['case_number']['N']) : '' ?>',
+                                    '<?= isset($complaint['incident_case_time']['S']) && isset($complaint['incident_case_issued']['S']) ? formatIncidentDateTime($complaint['incident_case_time']['S'], $complaint['incident_case_issued']['S']) : '' ?>',
+                                    '<?= isset($complaint['case_type']['S']) ? $complaint['case_type']['S'] : '' ?>',
+                                    '<?= isset($complaint['case_status']['S']) ? $complaint['case_status']['S'] : '' ?>',
+                                    '<?= isset($complaint['case_complainants']) ? formatNames($complaint['case_complainants']) : '' ?>',
+                                    '<?= isset($complaint['case_respondents']) ? formatNames($complaint['case_respondents']) : '' ?>',
+                                    '<?= isset($complaint['case_description']['S']) ? htmlspecialchars($complaint['case_description']['S']) : '' ?>'
+                                 )">
+                                 View Details
+                              </button>
+                           </td>
+                        </tr>
+                     <?php endforeach; ?>
                   </tbody>
                </table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- View Details Modal -->
+   <div class="modal fade" id="viewDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+               <p><strong>Case Number:</strong> <span id="modal-case-number"></span></p>
+               <p><strong>Incident Date:</strong> <span id="modal-incident-date"></span></p>
+               <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p>
+               <p><strong>Case Status:</strong> <span id="modal-case-status"></span></p>
+               <p><strong>Complainants:</strong> <span id="modal-complainants"></span></p>
+               <p><strong>Respondents:</strong> <span id="modal-respondents"></span></p>
+               <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger">Forward Case</button>
             </div>
          </div>
       </div>
@@ -156,8 +232,38 @@ if (isset($data['bpso_all_complaints'])) {
       crossorigin="anonymous"></script>
    <script src="../sidebar.js" type="module"></script>
    <script src="dashboard.js"></script>
-   <?php
-   ?>
+   <script>
+      // Function to filter the table based on search input
+      function filterTable() {
+         let input = document.getElementById('search-input').value.toUpperCase();
+         let table = document.getElementById('tablecase');
+         let rows = table.getElementsByTagName('tr');
+
+         for (let i = 1; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            for (let j = 0; j < cells.length; j++) {
+               if (cells[j].textContent.toUpperCase().includes(input)) {
+                  match = true;
+                  break;
+               }
+            }
+
+            rows[i].style.display = match ? '' : 'none';
+         }
+      }
+
+      function populateModal(caseNumber, incidentDate, caseType, caseStatus, complainants, respondents, description) {
+         document.getElementById('modal-case-number').textContent = caseNumber;
+         document.getElementById('modal-incident-date').textContent = incidentDate;
+         document.getElementById('modal-case-type').textContent = caseType;
+         document.getElementById('modal-case-status').textContent = caseStatus;
+         document.getElementById('modal-complainants').textContent = complainants;
+         document.getElementById('modal-respondents').textContent = respondents;
+         document.getElementById('modal-case-description').textContent = description;
+      }
+   </script>
 </body>
 
 </html>

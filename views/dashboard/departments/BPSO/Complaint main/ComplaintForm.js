@@ -55,12 +55,12 @@ function handleMinorInvolved(checkbox) {
 
         // Update dropdown options for "Minor Involved" cases
         dropdownMenu.innerHTML = `
-            <li type="button" onclick="updateButtonText('Physical Abuse', 'second_dropdown_category', event)" class="dropdown-item" style="cursor: pointer;">Physical Abuse</li>
-            <li type="button" onclick="updateButtonText('Sexual Abuse', 'second_dropdown_category', event)" class="dropdown-item" style="cursor: pointer;">Sexual Abuse</li>
-            <li type="button" onclick="updateButtonText('Emotional Abuse', 'second_dropdown_category', event)" class="dropdown-item" style="cursor: pointer;">Emotional Abuse</li>
-            <li type="button" onclick="updateButtonText('Substance Abuse', 'second_dropdown_category', event)" class="dropdown-item" style="cursor: pointer;">Substance Abuse</li>
-            <li type="button" onclick="updateButtonText('Neglection', 'second_dropdown_category', event)" class="dropdown-item" style="cursor: pointer;">Neglection</li>
-            <li type="button" onclick="updateButtonText('Exploitation', 'second_dropdown_category', event)" class="dropdown-item" style="cursor: pointer;">Exploitation</li>
+            <li type="button" onclick="updateButtonText('Physical Abuse', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Physical Abuse</li>
+            <li type="button" onclick="updateButtonText('Sexual Abuse', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Sexual Abuse</li>
+            <li type="button" onclick="updateButtonText('Emotional Abuse', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Emotional Abuse</li>
+            <li type="button" onclick="updateButtonText('Substance Abuse', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Substance Abuse</li>
+            <li type="button" onclick="updateButtonText('Neglection', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Neglection</li>
+            <li type="button" onclick="updateButtonText('Exploitation', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Exploitation</li>
         `;
 
         // Show the "Adult" question

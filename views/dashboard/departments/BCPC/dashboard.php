@@ -1,3 +1,36 @@
+<?php
+// Start the session to manage user login or any other session-based data
+session_start();
+
+// Declare API endpoint URL for fetching BCPC complaints
+$api_url = 'https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/bcpc/complaint_records/';
+
+// Fetch the data from the API using cURL
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $api_url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+// Decode the JSON response from the API
+$complaints = json_decode($response, true);
+
+// Check if the API request was successful
+if (!$complaints || !isset($complaints['bcpc_all_complaints'])) {
+   $error_message = "Error fetching complaints data.";
+}
+
+// Sort complaints array by 'case_created' field
+if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_complaints']) > 0) {
+   usort($complaints['bcpc_all_complaints'], function ($a, $b) {
+      $dateA = new DateTime($a['case_created']);
+      $dateB = new DateTime($b['case_created']);
+      return $dateB <=> $dateA; // Sort in descending order (newest first)
+   });
+}
+?>
+
+
 <!-- CUSTOM PROGRAM (FEEL FREE TO CHANGE IT) -->
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +87,7 @@
 <body>
    <div id="app">
       <div class="container-fluid">
-        <header class="header"></header>
+         <header class="header"></header>
 
          <!-- Sign Out Confirmation Modal -->
          <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -78,52 +111,97 @@
          </div>
 
          <div class="main-content">
-         <div class="main-container container-fluid">
-            <div class="container-fluid d-flex justify-content-end">
-               <div class="breadcrumb">
-                  <span class="breadcrumb-item active">BCPC</span>
-                  <div class="breadcrumb-item">
-                     <a href="Home" class="text-danger">Dashboard</a>
+            <div class="main-container container-fluid">
+               <div class="container-fluid d-flex justify-content-end">
+                  <div class="breadcrumb">
+                     <span class="breadcrumb-item active">BCPC</span>
+                     <div class="breadcrumb-item">
+                        <a href="Home" class="text-danger">Dashboard</a>
+                     </div>
                   </div>
                </div>
-            </div>
-            <section class="dashboard container-fluid">
-               <div class="dashboard-search">
-                  <input type="search" id="searchInput" placeholder="Search..." style="width: 30%; border-radius: 20px;"
-                     class="p-2">
-               </div>
-               <div class="dashboard-table mt-3">
-                  <table class="table table-bordered">
-                     <thead>
-                        <tr>
-                           <th>Case Number</th>
-                           <th>Case Created</th>
-                           <th>Case Type</th>
-                           <th>Case Status</th>
-                           <th>Action</th>
-                           
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
-               <div class="pagination-container container-fluid d-flex justify-content-between">
-                  <label for="">Showing 1 to 5 of 5 entries </label>
-                  <ul class="pagination">
-                     <li class="page-item"><a class="page-link" href="#">Previous</a>
-                     </li>
-                     <li class="page-item active"><a class="page-link" href="#">1</a>
-                     </li>
-                     <li class="page-item"><a class="page-link" href="#">2</a></li>
-                     <li class="page-item"><a class="page-link" href="#">3</a></li>
-                     <li class="page-item"><a class="page-link" href="#">Next</a>
-                     </li>
-                  </ul>
-               </div>
-               <!--
+               <section class="dashboard container-fluid">
+                  <div class="dashboard-search">
+                     <input type="search" id="searchInput" placeholder="Search..." style="width: 30%; border-radius: 20px;"
+                        class="p-2">
+                  </div>
+                  <div class="dashboard-table mt-3">
+                     <table class="table table-bordered">
+                        <thead>
+                           <tr>
+                              <th>Case Number</th>
+                              <th>Case Created</th>
+                              <th>Case Type</th>
+                              <th>Case Status</th>
+                              <th>Action</th>
+
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <?php
+                           if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_complaints']) > 0) {
+                              foreach ($complaints['bcpc_all_complaints'] as $complaint) {
+                                 $case_number = $complaint['case_number'] ?? 'N/A';
+                                 $case_created = $complaint['case_created'] ?? 'N/A';
+                                 $case_type = $complaint['case_type'] ?? 'N/A';
+                                 $case_status = $complaint['case_status'] ?? 'N/A';
+
+                                 // Format the case_created date
+                                 $formatted_date = 'N/A';
+                                 if ($case_created != 'N/A') {
+                                    try {
+                                       // Create DateTime object with case_created
+                                       $date = new DateTime($case_created, new DateTimeZone('UTC'));
+                                       // Convert timezone to Asia/Taipei
+                                       $date->setTimezone(new DateTimeZone('Asia/Taipei'));
+                                       // Format the date in the desired format
+                                       $formatted_date = $date->format('M j, Y \a\s \o\f g:i A');
+                                    } catch (Exception $e) {
+                                       // Handle potential errors with an error message or log
+                                       $formatted_date = 'Invalid Date';
+                                    }
+                                 }
+
+                                 // Encode complaint data as JSON
+                                 $complaint_json = htmlspecialchars(json_encode($complaint));
+                           ?>
+                                 <tr>
+                                    <td><?php echo htmlspecialchars($case_number); ?></td>
+                                    <td><?php echo htmlspecialchars($formatted_date); ?></td>
+                                    <td><?php echo htmlspecialchars($case_type); ?></td>
+                                    <td><?php echo htmlspecialchars($case_status); ?></td>
+                                    <td>
+                                       <button class="btn btn-danger"
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#viewDetailsModal"
+                                          onclick="viewDetails('<?php echo $complaint_json; ?>')">
+                                          View Details
+                                       </button>
+                                    </td>
+                                 </tr>
+                           <?php
+                              }
+                           } else {
+                              echo "<tr><td colspan='5'>No complaints available</td></tr>";
+                           }
+                           ?>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="pagination-container container-fluid d-flex justify-content-between">
+                     <label for="">Showing 1 to 5 of 5 entries </label>
+                     <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a>
+                        </li>
+                     </ul>
+                  </div>
+                  <!--
                      <div class="add-container d-flex justify-content-end mt-4">
                              <button type="button" 
                              class="btn addCases" 
@@ -133,220 +211,64 @@
                      </div>
                      
                      -->
-            </section>
-            <!--Edit Cases-->
-            <!-- <div class="modal" id="editSection">
-               <div class="modal-dialog modal-fullscreen">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                        <div class="h4">
-                           Edit Cases
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                     </div>
-                     <div class="modal-body">
-                        <table class="table table-borderless">
-                           <tr>
-                              <td>
-                                 <label for="">Case #</label>
-                                 <input type="text" class="form-control" name="caseNumber">
-                              </td>
-                              <td>
-                                 <label>People Who Used Drug
-                                    (PWUD) </label>
-                                 <input type="text" class="form-control" name="pwud">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label>Complainants</label>
-                                 <input type="text" class="form-control" name="complainants">
-                              </td>
-                              <td>
-                                 <label>Case Type</label> <br>
-                                 <select name="caseType" id="editCaseType" style="width: 100%;" class="p-2">
-                                    <option value="" disabled selected>Pick
-                                       Case Type
-                                    </option>
-                                    <option value="Severe">
-                                       Severe
-                                    </option>
-                                    <option value="Mild">
-                                       Mild
-                                    </option>
-                                    <option value="Moderate">
-                                       Moderate
-                                    </option>
-                                 </select>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label>Respondent</label>
-                                 <input type="text" class="form-control" name="respondent">
-                              </td>
-                              <td>
-                                 <label>Case Status</label>
-                                 <select name="caseStatus" id="editCaseStatus" style="width: 100%;" class="p-2">
-                                    <option value="" disabled selected>Pick
-                                       Case Status
-                                    </option>
-                                    <option value="Ongoing">
-                                       Ongoing
-                                    </option>
-                                    <option value="Pending">
-                                       Pending
-                                    </option>
-                                    <option value="Resolved">
-                                       Resolved
-                                    </option>
-                                 </select>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label>Description</label> <br>
-                                 <textarea name="description" id="" style="width: 100%;" class="p-2"></textarea>
-                              </td>
-                              <td>
-                                 <label for="">Date &
-                                    Time</label>
-                                 <input type="datetime-local" name="dateTime" id="" class="form-control">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label for="">Place</label>
-                                 <input type="text" class="form-control" name="place">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <button type="button" class="btn btn-success"
-                                    style="background-color: #2D9276; color: white;">Save
-                                    Changes</button>
-                                 <button type="button" class="btn btn-danger"
-                                    style="background-color: #A9262E; color: white;">Cancel</button>
-                              </td>
-                           </tr>
-                        </table>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div> -->
+               </section>
 
-         
-            <!--End Edit Modal-->
-            <!--Add Cases-->
-            <!--
-               <div class="modal" id="addSection">
-                  <div class="modal-dialog modal-fullscreen">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <div class="h4">
-                              Add Cases
-                           </div>
-                           <button type="button" 
-                              class="btn-close" 
-                              data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                           <form id="addCaseForm">
-                              <table class="table table-borderless">
-                                 <tr>
-                                    <td>
-                                       <label for="caseNumber">Case #</label>
-                                       <input type="text" 
-                                          id="caseNumber" 
-                                          class="form-control" 
-                                          required>
-                                    </td>
-                                    <td>
-                                       <label>People Who Used Drug (PWUD) </label>
-                                       <input type="text" 
-                                          id="pwud" 
-                                          class="form-control" 
-                                          required>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label>Complainants</label>
-                                       <input type="text" id="complainants" class="form-control" required>
-                                    </td>
-                                    <td>
-                                       <label>Case Type</label> <br>
-                                       <select id="caseType" 
-                                          style="width: 100%;"  
-                                          class="p-2" 
-                                          required>
-                                          <option value="" disabled selected>Pick Case Type</option>
-                                          <option value="Severe">Severe</option>
-                                          <option value="Mild">Mild</option>
-                                          <option value="Moderate">Moderate</option>
-                                       </select>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label>Respondent</label>
-                                       <input type="text" id="respondent" class="form-control" required>
-                                    </td>
-                                    <td>
-                                       <label>Case Status</label>
-                                       <select id="caseStatus" style="width: 100%;" class="p-2" required>
-                                          <option value="" disabled selected>Pick Case Status</option>
-                                          <option value="Ongoing">Ongoing</option>
-                                          <option value="Pending">Pending</option>
-                                          <option value="Resolved">Resolved</option>
-                                       </select>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label>Description</label> <br>
-                                       <textarea id="description" style="width: 100%;" class="p-2" required></textarea>
-                                    </td>
-                                    <td>
-                                       <label for="dateTime">Date & Time</label>
-                                       <input type="datetime-local" id="dateTime" class="form-control" required>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label for="place">Place</label>
-                                       <input type="text" id="place" class="form-control" required>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <button type="submit" 
-                                          class="btn" 
-                                          style="background-color: #2D9276; color: white;">Add to table</button>
-                                       <button type="button" 
-                                          class="btn" 
-                                          style="background-color: #A9262E; color: white;" 
-                                          data-bs-dismiss="modal">Cancel</button>
-                                    </td>
-                                 </tr>
-                              </table>
-                           </form>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-                -->
-            <!--End Add Cases-->
+            </div>
          </div>
       </div>
-   </div>
-   <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"></script>
-   <script src="./javascript/sidebar.js" type="module"></script>
-   <script src="./javascript/addCaseForm.js"></script>
+
+
+      <!-- View Details Modal -->
+      <div class="modal fade" id="viewDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                  <p><strong>Case Number:</strong> <span id="modal-case-number"></span></p>
+                  <p><strong>Incident Date:</strong> <span id="modal-incident-date"></span></p>
+                  <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p>
+                  <p><strong>Case Status:</strong> <span id="modal-case-status"></span></p>
+                  <p><strong>Complainants:</strong> <span id="modal-complainants"></span></p>
+                  <p><strong>Respondents:</strong> <span id="modal-respondents"></span></p>
+                  <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-primary">Update</button>
+                  <button type="button" class="btn btn-danger">Forward Case</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+         crossorigin="anonymous"></script>
+      <script src="./javascript/sidebar.js" type="module"></script>
+      <script src="./javascript/addCaseForm.js"></script>
+      <script>
+         function viewDetails(caseData) {
+            // Parse the case data passed to the function
+            const caseDetails = JSON.parse(caseData);
+
+            // Populate modal fields
+            document.getElementById("modal-case-number").textContent = caseDetails.case_number || "N/A";
+            document.getElementById("modal-incident-date").textContent = caseDetails.case_created || "N/A";
+            document.getElementById("modal-case-type").textContent = caseDetails.case_type || "N/A";
+            document.getElementById("modal-case-status").textContent = caseDetails.case_status || "N/A";
+
+            // Format complainants and respondents
+            const complainants = caseDetails.case_complainants.map(complainant => complainant.name).join(", ") || "N/A";
+            const respondents = caseDetails.case_respondents.map(respondent => respondent.name).join(", ") || "N/A";
+
+            document.getElementById("modal-complainants").textContent = complainants;
+            document.getElementById("modal-respondents").textContent = respondents;
+            document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
+         }
+      </script>
 </body>
 
 </html>
