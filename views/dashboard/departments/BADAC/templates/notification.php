@@ -72,20 +72,23 @@
                </div>
             </div>
             <div class="container">
-               <table class="table table-bordered">
-                  <thead>
-                     <tr>
-                        <th>From</th>
-                        <th>Description</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td>BPSO</td>
-                        <td>New Cases Added</td>
-                     </tr>
-                  </tbody>
-               </table>
+               <div class="welcome-message">
+                  <div class="d-flex align-items-center justify-content-between">
+                     <div id="welcome-header">
+                        <h3>Notifications (0 unread)</h3>
+                     </div>
+                     <div id="notify-btns">
+                        <form method="POST" style="display: inline;">
+                           <button type="submit" name="clear_all" class="btn btn-secondary me-2">
+                              Clear All
+                           </button>
+                        </form>
+                        <button type="button" class="btn btn-danger me-2" onclick="location.reload();">
+                           <i class="fa-solid fa-rotate-right"></i> Reload
+                        </button>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
 

@@ -6,5 +6,6 @@ export const sidebarRoutes = [
     { className: "badac-form", path: "/views/dashboard/departments/BADAC/templates/form.php" },
     { className: "badac-notify", path: "/views/dashboard/departments/BADAC/templates/notification.php" },
     { className: "gov-contact", path: "/views/dashboard/departments/BADAC/templates/contact.php" },
+    { className: "forwarded-complaints", path: "/views/dashboard/departments/BADAC/templates/forward-complaints.php"}
 
 ];
