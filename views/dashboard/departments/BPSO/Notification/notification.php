@@ -1,3 +1,77 @@
+<?php
+session_start();
+require_once '../../../../../vendor/autoload.php'; // Include Composer autoloader
+
+use Aws\DynamoDb\DynamoDbClient;
+use Dotenv\Dotenv;
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../../../../');
+$dotenv->load();
+
+// Configure DynamoDB client
+$dynamoDb = new DynamoDbClient([
+    'region' => $_ENV['AWS_REGION'],
+    'version' => 'latest',
+    'credentials' => [
+        'key' => $_ENV['AWS_ACCESS_KEY_ID'],
+        'secret' => $_ENV['AWS_SECRET_ACCESS_KEY'],
+    ],
+]);
+
+// Define table name
+$tableName = 'bms_bpso_portal_complaint_notification_logs';
+
+// Handle "Clear All" request
+if (isset($_POST['clear_all'])) {
+    try {
+        // Scan the table to get all keys
+        $items = [];
+        $response = $dynamoDb->scan([
+            'TableName' => $tableName,
+            'AttributesToGet' => ['notify_message', 'notify_bpso_case_number'],
+        ]);
+        if (isset($response['Items'])) {
+            foreach ($response['Items'] as $item) {
+                $items[] = [
+                    'DeleteRequest' => [
+                        'Key' => [
+                            'notify_message' => $item['notify_message'],
+                            'notify_bpso_case_number' => $item['notify_bpso_case_number'],
+                        ],
+                    ],
+                ];
+            }
+        }
+
+        // Batch delete items in chunks (25 at a time)
+        $chunks = array_chunk($items, 25);
+        foreach ($chunks as $chunk) {
+            $dynamoDb->batchWriteItem([
+                'RequestItems' => [
+                    $tableName => $chunk,
+                ],
+            ]);
+        }
+
+        $_SESSION['success'] = 'All notifications cleared successfully!';
+    } catch (Aws\Exception\AwsException $e) {
+        $_SESSION['error'] = 'Error clearing notifications: ' . $e->getMessage();
+    }
+
+    header("Location: notification.php");
+    exit();
+}
+
+// Fetch notifications
+$response = $dynamoDb->scan(['TableName' => $tableName]);
+$notifications = $response['Items'] ?? [];
+$notificationCount = count($notifications);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,13 +108,15 @@
             <div class="welcome-message">
                 <div class="d-flex align-items-center justify-content-between">
                     <div id="welcome-header">
-                        <h2>NOTIFICATIONS</h2>
+                        <h2>NOTIFICATIONS (<?php echo $notificationCount; ?> unread)</h2>
                     </div>
                     <div id="notify-btns">
-                        <button type="button" class="btn btn-secondary">
-                            Clear
-                        </button>
-                        <button type="button" class="btn btn-danger me-2">
+                        <form method="POST" style="display: inline;">
+                            <button type="submit" name="clear_all" class="btn btn-secondary me-2">
+                                Clear All
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-danger me-2" onclick="location.reload();">
                             <i class="fa-solid fa-rotate-right"></i> Reload
                         </button>
                     </div>
@@ -49,19 +125,33 @@
 
             <div class="auth-tab-container">
                 <div class="auth-divide">
-                    <aside class="notifications-container">
-                        <div class="alert alert-danger" role="alert">
-                            This is a info alert—check it out!
-                        </div>
-                        <div class="alert alert-warning" role="alert">
-                            This is a info alert—check it out!
-                        </div>
-                        <div class="alert alert-primary" role="alert">
-                            This is a info alert—check it out!
-                        </div>
+                    <aside class="notifications-container" style="height: 400px; overflow-y: auto;">
+                        <?php
+                        if ($notificationCount > 0):
+                            // Sort notifications by timestamp (assuming `complaint_case_added` is a valid timestamp)
+                            usort($notifications, function ($a, $b) {
+                                $timeA = strtotime($a['complaint_case_added']['S'] ?? ''); // Assuming the timestamp is in `complaint_case_added`
+                                $timeB = strtotime($b['complaint_case_added']['S'] ?? '');
+                                return $timeB - $timeA; // Sort in descending order (newest first)
+                            });
+
+                            foreach ($notifications as $notification):
+                        ?>
+                                <div class="alert alert-primary" role="alert">
+                                    <i class="fa-solid fa-circle-info me-2"></i>
+                                    <?php echo htmlspecialchars($notification['notify_message']['S'] ?? ''); ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="alert alert-secondary" role="alert">
+                                <i class="fa-solid fa-circle-info me-2"></i>
+                                No new notifications.
+                            </div>
+                        <?php endif; ?>
                     </aside>
                 </div>
             </div>
+
         </div>
 
         <!-- Sign Out Confirmation Modal -->
