@@ -53,7 +53,7 @@
 
 <body>
    <div id="app">
-      <div class="container-fluid d-flex">
+      <div class="container-fluid">
         <header class="header"></header>
 
          <!-- Sign Out Confirmation Modal -->
@@ -83,7 +83,7 @@
                <div class="breadcrumb">
                   <span class="breadcrumb-item active">BCPC</span>
                   <div class="breadcrumb-item">
-                     <a href="Home">Dashboard</a>
+                     <a href="Home" class="text-danger">Dashboard</a>
                   </div>
                </div>
             </div>
@@ -96,15 +96,12 @@
                   <table class="table table-bordered">
                      <thead>
                         <tr>
-                           <th>Case #</th>
-                           <th>Complainants</th>
-                           <th>Respondents</th>
-                           <th>Description</th>
-                           <th>Place</th>
-                           <th>Date & Time</th>
+                           <th>Case Number</th>
+                           <th>Case Created</th>
                            <th>Case Type</th>
                            <th>Case Status</th>
                            <th>Action</th>
+                           
                         </tr>
                      </thead>
                      <tbody>
@@ -138,7 +135,7 @@
                      -->
             </section>
             <!--Edit Cases-->
-            <div class="modal" id="editSection">
+            <!-- <div class="modal" id="editSection">
                <div class="modal-dialog modal-fullscreen">
                   <div class="modal-content">
                      <div class="modal-header">
@@ -237,7 +234,7 @@
                   </div>
                </div>
             </div>
-         </div>
+         </div> -->
 
          
             <!--End Edit Modal-->

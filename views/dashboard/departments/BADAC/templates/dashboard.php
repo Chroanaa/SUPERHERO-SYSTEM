@@ -1,3 +1,27 @@
+<?php
+$apiUrl = "https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/badac/complaint_records/";
+
+// Initialize cURL to fetch data from the API
+$ch = curl_init($apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// Execute cURL and fetch the response
+$response = curl_exec($ch);
+
+// Check if the request was successful
+if ($response === false) {
+   echo "Error fetching data from API.";
+   exit;
+}
+
+// Decode the JSON response into an array
+$data = json_decode($response, true);
+
+// Close cURL session
+curl_close($ch);
+?>
+
+
 <!-- CUSTOM PROGRAM (FEEL FREE TO CHANGE IT) -->
 <!DOCTYPE html>
 <html lang="en">
@@ -53,197 +77,271 @@
 
 <body>
    <div id="app">
-      <div class="container-fluid d-flex">
-        <header class="header"></header>
-
-         <!-- Sign Out Confirmation Modal -->
-         <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
-            data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <h5 class="modal-title" id="signOutModalLabel">Confirm Sign Out</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                     Are you sure you want to sign out?
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                     <button type="button" class="btn btn-danger" id="confirmSignOutBtn" data-bs-dismiss="modal">Sign
-                        Out</button>
-                  </div>
-               </div>
-            </div>
-         </div>
+      <div class="container-fluid">
+         <header class="header"></header>
 
          <div class="main-content">
-         <div class="main-container container-fluid">
-            <div class="container-fluid d-flex justify-content-end">
-               <div class="breadcrumb">
-                  <span class="breadcrumb-item active">BADAC</span>
-                  <div class="breadcrumb-item">
-                     <a href="Home">Home</a>
-                  </div>
-               </div>
-            </div>
-            <section class="dashboard container-fluid">
-               <div class="dashboard-search">
-                  <input type="search" id="searchInput" placeholder="Search..." style="width: 30%; border-radius: 20px;"
-                     class="p-2">
-               </div>
-               <div class="dashboard-table mt-3">
-                  <table class="table table-bordered">
-                     <thead>
-                        <tr>
-                           <th>Case#</th>
-                           <th>Complainants</th>
-                           <th>Respondents</th>
-                           <th>PWUD</th>
-                           <th>Description</th>
-                           <th>Place</th>
-                           <th>Date & Time</th>
-                           <th>Case Type</th>
-                           <th>Case Status</th>
-                           <th>Action</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
-               <div class="pagination-container container-fluid d-flex justify-content-between">
-                  <label for="">Showing 1 to 5 of 5 entries </label>
-                  <ul class="pagination">
-                     <li class="page-item"><a class="page-link" href="#">Previous</a>
-                     </li>
-                     <li class="page-item active"><a class="page-link" href="#">1</a>
-                     </li>
-                     <li class="page-item"><a class="page-link" href="#">2</a></li>
-                     <li class="page-item"><a class="page-link" href="#">3</a></li>
-                     <li class="page-item"><a class="page-link" href="#">Next</a>
-                     </li>
-                  </ul>
-               </div>
-               <!--
-                     <div class="add-container d-flex justify-content-end mt-4">
-                             <button type="button" 
-                             class="btn addCases" 
-                             data-bs-toggle="modal" 
-                             data-bs-target="#addSection"
-                             style="background-color: #2D9276; color: white;">Add New Cases</button>
-                     </div>
-                     
-                     -->
-            </section>
-            <!--Edit Cases-->
-            <div class="modal" id="editSection">
-               <div class="modal-dialog modal-fullscreen">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                        <div class="h4">
-                           Edit Cases
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                     </div>
-                     <div class="modal-body">
-                        <table class="table table-borderless">
-                           <tr>
-                              <td>
-                                 <label for="">Case #</label>
-                                 <input type="text" class="form-control" name="caseNumber">
-                              </td>
-                              <td>
-                                 <label>People Who Used Drug
-                                    (PWUD) </label>
-                                 <input type="text" class="form-control" name="pwud">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label>Complainants</label>
-                                 <input type="text" class="form-control" name="complainants">
-                              </td>
-                              <td>
-                                 <label>Case Type</label> <br>
-                                 <select name="caseType" id="editCaseType" style="width: 100%;" class="p-2">
-                                    <option value="" disabled selected>Pick
-                                       Case Type
-                                    </option>
-                                    <option value="Severe">
-                                       Severe
-                                    </option>
-                                    <option value="Mild">
-                                       Mild
-                                    </option>
-                                    <option value="Moderate">
-                                       Moderate
-                                    </option>
-                                 </select>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label>Respondent</label>
-                                 <input type="text" class="form-control" name="respondent">
-                              </td>
-                              <td>
-                                 <label>Case Status</label>
-                                 <select name="caseStatus" id="editCaseStatus" style="width: 100%;" class="p-2">
-                                    <option value="" disabled selected>Pick
-                                       Case Status
-                                    </option>
-                                    <option value="Ongoing">
-                                       Ongoing
-                                    </option>
-                                    <option value="Pending">
-                                       Pending
-                                    </option>
-                                    <option value="Resolved">
-                                       Resolved
-                                    </option>
-                                 </select>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label>Description</label> <br>
-                                 <textarea name="description" id="" style="width: 100%;" class="p-2"></textarea>
-                              </td>
-                              <td>
-                                 <label for="">Date &
-                                    Time</label>
-                                 <input type="datetime-local" name="dateTime" id="" class="form-control">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <label for="">Place</label>
-                                 <input type="text" class="form-control" name="place">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>
-                                 <button type="button" class="btn btn-success"
-                                    style="background-color: #2D9276; color: white;">Save
-                                    Changes</button>
-                                 <button type="button" class="btn btn-danger"
-                                    style="background-color: #A9262E; color: white;">Cancel</button>
-                              </td>
-                           </tr>
-                        </table>
+            <div class="main-container container-fluid">
+               <div class="container-fluid d-flex justify-content-end">
+                  <div class="breadcrumb">
+                     <span class="breadcrumb-item active">BADAC</span>
+                     <div class="breadcrumb-item">
+                        <a href="Home" class="text-danger">Dashboard</a>
                      </div>
                   </div>
                </div>
+               <section class="dashboard container-fluid">
+                  <div class="dashboard-search">
+                     <input type="search" id="searchInput" placeholder="Search..." style="width: 30%; border-radius: 20px;" class="p-2">
+                  </div>
+                  <div class="dashboard-table mt-3">
+                     <table class="table table-bordered">
+                        <thead>
+                           <tr>
+                              <th>Case Number</th>
+                              <th>Case Created</th>
+                              <th>Case Type</th>
+                              <th>Case Status</th>
+                              <th>Action</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+
+                           <!-- <tr>
+                              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">sdfg</td>
+                              <td>dfg</td>
+                              <td style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">dsfg</td>
+                              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">fdg</td>
+                              <td>
+                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#caseModal">
+                                    View Details
+                                 </button>
+                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#caseModal">
+                                    Forward
+                                 </button>
+                              </td>
+                           </tr> -->
+
+
+                        </tbody>
+
+                     </table>
+
+                  </div>
+                  <div class="pagination-container container-fluid d-flex justify-content-between">
+                     <label for="">Showing 1 to 5 of 5 entries </label>
+                     <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                     </ul>
+                  </div>
+               </section>
             </div>
          </div>
+      </div>
+   </div>
 
-         
-            <!--End Edit Modal-->
-            <!--Add Cases-->
-            <!--
+   <!-- Modal Structure -->
+   <div class="modal fade" id="caseModal" tabindex="-1" role="dialog" aria-labelledby="caseModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="caseModalLabel">Case Details</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+               <!-- Case Number -->
+               <div class="mb-3">
+                  <h6 for="caseNumber" class="form-label">Case Number</h6>
+                  <span id="caseNumber"></span>
+               </div>
+
+               <!-- Case Complainants -->
+               <div class="mb-3">
+                  <h6 for="complainants" class="form-label">Case Complainants</h6>
+                  <span id="complainants"></span>
+               </div>
+
+               <!-- Case Respondents -->
+               <div class="mb-3">
+                  <h6 for="respondents" class="form-label">Case Respondents</h6>
+                  <span id="respondents"></span>
+               </div>
+
+               <!-- PWUD Status -->
+               <div class="mb-3">
+                  <h6 for="pwud" class="form-label">Does the case fall under PWUD?</h6>
+                  <span id="pwud"></span>
+               </div>
+
+               <!-- Case Description -->
+               <div class="mb-3">
+                  <h6 for="description" class="form-label">Case Description</h6>
+                  <span id="description"></span>
+               </div>
+
+               <!-- Case Place of Incident -->
+               <div class="mb-3">
+                  <h6 for="place" class="form-label">Case of Incident</h6>
+                  <span id="place"></span>
+               </div>
+
+               <!-- Incident Date & Time -->
+               <div class="mb-3">
+                  <h6 for="incidentDateTime" class="form-label">Incident Date & Time</h6>
+                  <span id="incidentDateTime"></span>
+               </div>
+
+               <!-- Case Type -->
+               <div class="mb-3">
+                  <h6 for="caseType" class="form-label">Case Type</h6>
+                  <span id="caseType"></span>
+               </div>
+
+               <!-- Case Status -->
+               <div class="mb-3">
+                  <h6 for="caseStatus" class="form-label">Case Status</h6>
+                  <span id="caseStatus"></span>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-primary">Edit Status</button>
+               <button type="button" class="btn btn-primary">Edit Case Type</button>
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Sign Out Confirmation Modal -->
+   <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
+      data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="signOutModalLabel">Confirm Sign Out</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               Are you sure you want to sign out?
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+               <button type="button" class="btn btn-danger" id="confirmSignOutBtn" data-bs-dismiss="modal">Sign
+                  Out</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!--Edit Cases-->
+   <!-- <div class="modal" id="editSection">
+                  <div class="modal-dialog modal-fullscreen">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <div class="h4">
+                              Edit Cases
+                           </div>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                           <table class="table table-borderless">
+                              <tr>
+                                 <td>
+                                    <label for="">Case #</label>
+                                    <input type="text" class="form-control" name="caseNumber">
+                                 </td>
+                                 <td>
+                                    <label>People Who Used Drug
+                                       (PWUD) </label>
+                                    <input type="text" class="form-control" name="pwud">
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <label>Complainants</label>
+                                    <input type="text" class="form-control" name="complainants">
+                                 </td>
+                                 <td>
+                                    <label>Case Type</label> <br>
+                                    <select name="caseType" id="editCaseType" style="width: 100%;" class="p-2">
+                                       <option value="" disabled selected>Pick
+                                          Case Type
+                                       </option>
+                                       <option value="Severe">
+                                          Severe
+                                       </option>
+                                       <option value="Mild">
+                                          Mild
+                                       </option>
+                                       <option value="Moderate">
+                                          Moderate
+                                       </option>
+                                    </select>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <label>Respondent</label>
+                                    <input type="text" class="form-control" name="respondent">
+                                 </td>
+                                 <td>
+                                    <label>Case Status</label>
+                                    <select name="caseStatus" id="editCaseStatus" style="width: 100%;" class="p-2">
+                                       <option value="" disabled selected>Pick
+                                          Case Status
+                                       </option>
+                                       <option value="Ongoing">
+                                          Ongoing
+                                       </option>
+                                       <option value="Pending">
+                                          Pending
+                                       </option>
+                                       <option value="Resolved">
+                                          Resolved
+                                       </option>
+                                    </select>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <label>Description</label> <br>
+                                    <textarea name="description" id="" style="width: 100%;" class="p-2"></textarea>
+                                 </td>
+                                 <td>
+                                    <label for="">Date &
+                                       Time</label>
+                                    <input type="datetime-local" name="dateTime" id="" class="form-control">
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <label for="">Place</label>
+                                    <input type="text" class="form-control" name="place">
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td>
+                                    <button type="button" class="btn btn-success"
+                                       style="background-color: #2D9276; color: white;">Save
+                                       Changes</button>
+                                    <button type="button" class="btn btn-danger"
+                                       style="background-color: #A9262E; color: white;">Cancel</button>
+                                 </td>
+                              </tr>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div> -->
+
+
+   <!--End Edit Modal-->
+   <!--Add Cases-->
+   <!--
                <div class="modal" id="addSection">
                   <div class="modal-dialog modal-fullscreen">
                      <div class="modal-content">
@@ -341,16 +439,42 @@
                   </div>
                </div>
                 -->
-            <!--End Add Cases-->
-         </div>
-      </div>
-   </div>
    <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
    <script src="./javascript/sidebar.js" type="module"></script>
-   <script src="./javascript/addCaseForm.js"></script>
+   <!-- <script src="./javascript/addCaseForm.js"></script> -->
+   <script>
+      // Get all buttons with data-bs-toggle="modal"
+      const viewDetailButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+
+      // For each button, add event listener to populate the modal
+      viewDetailButtons.forEach(button => {
+         button.addEventListener('click', function() {
+            const caseNumber = this.getAttribute('data-case-number');
+            const complainants = this.getAttribute('data-complainants');
+            const respondents = this.getAttribute('data-respondents');
+            // const pwud = this.getAttribute('data-pwud');
+            const description = this.getAttribute('data-description');
+            const place = this.getAttribute('data-place');
+            const incidentTime = this.getAttribute('data-incident-time');
+            const caseType = this.getAttribute('data-case-type');
+            const caseStatus = this.getAttribute('data-case-status');
+
+            // Populate modal fields
+            document.getElementById('caseNumber').textContent = caseNumber;
+            document.getElementById('complainants').textContent = complainants;
+            document.getElementById('respondents').textContent = respondents;
+            // document.getElementById('pwud').textContent = pwud;
+            document.getElementById('description').textContent = description;
+            document.getElementById('place').textContent = place;
+            document.getElementById('incidentDateTime').textContent = incidentTime;
+            document.getElementById('caseType').textContent = caseType;
+            document.getElementById('caseStatus').textContent = caseStatus;
+         });
+      });
+   </script>
 </body>
 
 </html>
