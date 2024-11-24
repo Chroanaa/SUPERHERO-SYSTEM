@@ -102,6 +102,9 @@
 
             <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff;">
                <form action="../../../../../controllers/departments/BPSO/complaint.php" method="POST" style="max-width: 1200px; margin: 0 auto;">
+                  
+                  <input type="hidden" name="case_status" id="hiddenCaseStatus" value="Ongoing">
+
                   <!-- Complainant Section -->
                   <div style="display: flex; justify-content: flex-end; gap: 250px; margin-bottom: 30px;">
                      <div style="width: 400px;">
@@ -191,7 +194,7 @@
 
                   <!-- Complaint Category Dropdown -->
                   <div style="display: flex; justify-content: flex-start; margin-top: 24px;">
-                     <input type="hidden" name="complaint_category" id="hiddenCategory" value="">
+                     <input type="hidden" name="case_type" id="hiddenCategory" value="">
                      <button id="dropdowncategory" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;">
                         Case Type
                      </button>
@@ -229,16 +232,16 @@
                      </div>
                      <div id="nested-children" class="mb-3">
                         <label for="incidence-time">Incident Time:</label>
-                        <input type="time" id="incidence-time" name="incidence_time" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                        <input type="time" id="incidence-time" name="incident_case_time" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                      </div>
 
                      <!-- Complaint Description -->
                      <div id="complaint-description">
                         <label for="complaint-description">Ilagay ang iyong reklamo:</label>
-                        <textarea id="complaint-description" name="complaint_description" placeholder="Complaint description..." style="width: 100%; height: 300px; max-width: 1200px; border: 1px solid #b1b1b1; border-radius: 3px; padding: 15px; font-size: 1rem;"></textarea>
+                        <textarea id="complaint-description" name="case_description" placeholder="Complaint description..." style="width: 100%; height: 300px; max-width: 1200px; border: 1px solid #b1b1b1; border-radius: 3px; padding: 15px; font-size: 1rem;"></textarea>
                      </div>
                   </div>
-
+                  `
                   <!-- This will shown if special case specified to BCPC from minor involved -->
                   <div id="bcpc-form-container">
                      <div id="header-label-bcpc">
@@ -297,6 +300,7 @@
                   <div class="d-flex justify-content-between mt-3">
                      <!-- Special Case Dropdown -->
                      <div id="special-case-things">
+                        <input type="hidden" name="affiliated_dept_case" id="hiddenAffiliatedDeptCase" value="BPSO">
                         <input type="hidden" name="special_case" id="hiddenSpecialCase" value="">
                         <button id="specialcasedrop" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 400px; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;">
                            Special Case Involved
