@@ -35,3 +35,6 @@ composer.lock
 # nodeJS
 node_modules/
 package-lock.json
+
+# for face capturing
+uploads/
