@@ -51,22 +51,13 @@ if (isset($_SESSION['message'])) {
     <div id="app">
         <section id="login-container" class="d-none d-md-flex align-items-center justify-content-center vh-100">
             <div class="login-wrapper">
-                <div class="login-header">
-                    <h1 class="text-dark">Login</h1>
-                    <p class="text-muted">Enter your credentials.</p>
-                </div>
-                <form method="post" action="verification.php">
-                    <div class="mb-2">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" name="email" class="form-control" id="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-danger w-100 mb-3">Login</button>
-                    <a href="./register-option.php" class="btn btn-light w-100">Sign Up</a>
-                </form>
+                <!-- ./views/registration/signup.php -->
+                <a href="./views/dashboard/departments/Admin1/Registration/register.php" class="btn btn-danger w-100 btn-lg mb-3" style="font-size: 20px;">
+                    Registration for Residents
+                </a>
+                <a href="./views/registration/signup.php" class="btn btn-danger w-100 btn-lg" style="font-size: 20px;">
+                    Registration for Brgy. Staffs
+                </a>
             </div>
         </section>
 
@@ -99,17 +90,6 @@ if (isset($_SESSION['message'])) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-        <!-- SweetAlert Script -->
-        <script>
-            <?php if ($message): ?>
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Notice',
-                    text: '<?php echo $message; ?>',
-                    confirmButtonText: 'Ok'
-                });
-            <?php endif; ?>
-        </script>
 </body>
 
 </html>
