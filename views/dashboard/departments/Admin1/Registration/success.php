@@ -34,7 +34,7 @@
         <section id="login-container" class="d-none d-md-flex align-items-center justify-content-center vh-100">
             <div class="login-wrapper">
                 <h1>Success Page</h1>
-                <a href="../../../../../" target="_blank" rel="noopener noreferrer">
+                <a href="../../../../../">
                     <p>Go back to Login</p>
                 </a>
             </div>
