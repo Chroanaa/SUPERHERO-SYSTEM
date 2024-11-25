@@ -60,11 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $incidentCaseTime = '';
     if (isset($_POST['incident_case_time'])) {
         try {
-            // Create a DateTime object from the provided time
             $timeObject = DateTime::createFromFormat('H:i', $_POST['incident_case_time']);
             if ($timeObject) {
-                // Convert to ISO 8601 format
-                $incidentCaseTime = $timeObject->format('H:i:sP'); // Example: 14:30:00+00:00
+                $incidentCaseTime = $timeObject->format('H:i:sP');
             } else {
                 throw new Exception("Invalid time format.");
             }
@@ -74,15 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Convert incident_case_issued to ISO 8601 format (YYYY-MM-DD)
+    // Convert incident_case_issued to ISO 8601 format
     $incidentCaseIssued = '';
     if (isset($_POST['incident_date'])) {
         try {
-            // Create a DateTime object from the provided date
             $dateObject = DateTime::createFromFormat('Y-m-d', $_POST['incident_date']);
             if ($dateObject) {
-                // Convert to ISO 8601 format
-                $incidentCaseIssued = $dateObject->format('Y-m-d'); // Example: 2024-10-31
+                $incidentCaseIssued = $dateObject->format('Y-m-d');
             } else {
                 throw new Exception("Invalid date format.");
             }
@@ -93,21 +89,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Get the current timestamp for case creation
-    $caseCreated = (new DateTime())->format(DateTime::ATOM); // Current date and time in ISO 8601 format
+    $caseCreated = (new DateTime())->format(DateTime::ATOM);
 
-    // Prepare the data to be sent in the POST request
+    // Prepare the data to be sent
     $postData = [
         'case_complainants' => $case_complainants,
         'case_respondents' => $case_respondents,
         'case_type' => $_POST['case_type'] ?? '',
-        'case_number' => time(), // auto-generated case number based on current time
+        'case_number' => time(),
         'place_of_incident' => $_POST['place_of_incident'] ?? '',
-        'incident_case_issued' => $incidentCaseIssued, // Store in ISO 8601 format
+        'incident_case_issued' => $incidentCaseIssued,
         'incident_case_time' => $incidentCaseTime,
         'case_description' => $_POST['case_description'] ?? '',
-        'affiliated_dept_case' => $_POST['special_case'] ?? 'None', // Special case involved from the dropdown
-        'case_status' => 'Ongoing', // Default case status
-        'case_created' => $caseCreated, // Add the case creation timestamp
+        'affiliated_dept_case' => $_POST['special_case'] ?? 'None',
+        'case_status' => 'Ongoing',
+        'case_created' => $caseCreated,
         'bcpc_children_infos' => ['L' => array_map(fn($c) => [
             'M' => [
                 'child_name' => ['S' => $c['child_name']],
@@ -118,11 +114,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ], $bcpc_children_infos)],
     ];
 
-    // Determine the DynamoDB table based on the special case
-    $tableName = 'bms_bpso_portal_complaint_records'; // Default table for BPSO
+    // Determine the DynamoDB table
+    $tableName = 'bms_bpso_portal_complaint_records'; // Default table
 
     if ($postData['affiliated_dept_case'] === 'BCPC') {
-        $tableName = 'bms_bcpc_portal_complaint_records'; // Use this table for BCPC
+        $tableName = 'bms_bcpc_portal_complaint_records';
+    } elseif ($postData['affiliated_dept_case'] === 'BADAC') {
+        $tableName = 'bms_badac_portal_complaint_records'; // Add support for BADAC
     }
 
     // Initialize the DynamoDbClient
@@ -135,20 +133,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]
     ]);
 
-    // Prepare the data to insert into DynamoDB
+    // Prepare the item for DynamoDB
     $item = [
         'case_number' => ['N' => (string) $postData['case_number']],
-        'case_complainants' => ['L' => array_map(fn($c) => ['M' => ['name' => ['S' => $c['name']], 'address' => ['S' => $c['address']]]], $case_complainants)],
-        'case_respondents' => ['L' => array_map(fn($r) => ['M' => ['name' => ['S' => $r['name']], 'address' => ['S' => $r['address']]]], $case_respondents)],
+        'case_complainants' => ['L' => array_map(fn($c) => ['M' => [
+            'name' => ['S' => $c['name']],
+            'address' => ['S' => $c['address']],
+        ]], $case_complainants)],
+        'case_respondents' => ['L' => array_map(fn($r) => ['M' => [
+            'name' => ['S' => $r['name']],
+            'address' => ['S' => $r['address']],
+        ]], $case_respondents)],
         'case_type' => ['S' => $postData['case_type']],
         'place_of_incident' => ['S' => $postData['place_of_incident']],
-        'incident_case_issued' => ['S' => $postData['incident_case_issued']], // Use ISO 8601 format
+        'incident_case_issued' => ['S' => $postData['incident_case_issued']],
         'incident_case_time' => ['S' => $postData['incident_case_time']],
         'case_description' => ['S' => $postData['case_description']],
         'affiliated_dept_case' => ['S' => $postData['affiliated_dept_case']],
         'case_status' => ['S' => $postData['case_status']],
-        'case_created' => ['S' => $postData['case_created']],  // Add case_created here
-        'bcpc_children_infos' => $postData['bcpc_children_infos'],  // Add BCPC children info here
+        'case_created' => ['S' => $postData['case_created']],
+        'bcpc_children_infos' => $postData['bcpc_children_infos'],
     ];
 
     // Put the item into DynamoDB

@@ -1,24 +1,33 @@
 <?php
-$apiUrl = "https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/badac/complaint_records/";
+// Start the session to manage user login or any other session-based data
+session_start();
 
-// Initialize cURL to fetch data from the API
-$ch = curl_init($apiUrl);
+// Declare API endpoint URL for fetching BCPC complaints
+$api_url = 'https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/badac/complaint_records/';
+
+// Fetch the data from the API using cURL
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $api_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-// Execute cURL and fetch the response
 $response = curl_exec($ch);
+curl_close($ch);
 
-// Check if the request was successful
-if ($response === false) {
-   echo "Error fetching data from API.";
-   exit;
+// Decode the JSON response from the API
+$complaints = json_decode($response, true);
+
+// Check if the API request was successful
+if (!$complaints || !isset($complaints['badac_all_complaints'])) {
+   $error_message = "Error fetching complaints data.";
 }
 
-// Decode the JSON response into an array
-$data = json_decode($response, true);
-
-// Close cURL session
-curl_close($ch);
+// Sort complaints array by 'case_created' field
+if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_complaints']) > 0) {
+   usort($complaints['badac_all_complaints'], function ($a, $b) {
+      $dateA = new DateTime($a['case_created']);
+      $dateB = new DateTime($b['case_created']);
+      return $dateB <=> $dateA; // Sort in descending order (newest first)
+   });
+}
 ?>
 
 
@@ -105,26 +114,54 @@ curl_close($ch);
                               <th>Action</th>
                            </tr>
                         </thead>
-                        <tbody>
+                        <?php
+                        if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_complaints']) > 0) {
+                           foreach ($complaints['badac_all_complaints'] as $complaint) {
+                              $case_number = $complaint['case_number'] ?? 'N/A';
+                              $case_created = $complaint['case_created'] ?? 'N/A';
+                              $case_type = $complaint['case_type'] ?? 'N/A';
+                              $case_status = $complaint['case_status'] ?? 'N/A';
 
-                           <!-- <tr>
-                              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">sdfg</td>
-                              <td>dfg</td>
-                              <td style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">dsfg</td>
-                              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">fdg</td>
-                              <td>
-                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#caseModal">
-                                    View Details
-                                 </button>
-                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#caseModal">
-                                    Forward
-                                 </button>
-                              </td>
-                           </tr> -->
+                              // Format the case_created date
+                              $formatted_date = 'N/A';
+                              if ($case_created != 'N/A') {
+                                 try {
+                                    // Create DateTime object with case_created
+                                    $date = new DateTime($case_created, new DateTimeZone('UTC'));
+                                    // Convert timezone to Asia/Taipei
+                                    $date->setTimezone(new DateTimeZone('Asia/Taipei'));
+                                    // Format the date in the desired format
+                                    $formatted_date = $date->format('M j, Y \a\s \o\f g:i A');
+                                 } catch (Exception $e) {
+                                    // Handle potential errors with an error message or log
+                                    $formatted_date = 'Invalid Date';
+                                 }
+                              }
 
-
+                              // Encode complaint data as JSON
+                              $complaint_json = htmlspecialchars(json_encode($complaint));
+                        ?>
+                              <tr>
+                                 <td><?php echo htmlspecialchars($case_number); ?></td>
+                                 <td><?php echo htmlspecialchars($formatted_date); ?></td>
+                                 <td><?php echo htmlspecialchars($case_type); ?></td>
+                                 <td><?php echo htmlspecialchars($case_status); ?></td>
+                                 <td>
+                                    <button class="btn btn-danger"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#viewDetailsModal"
+                                       onclick="viewDetails('<?php echo $complaint_json; ?>')">
+                                       View Details
+                                    </button>
+                                 </td>
+                              </tr>
+                        <?php
+                           }
+                        } else {
+                           echo "<tr><td colspan='5'>No complaints available</td></tr>";
+                        }
+                        ?>
                         </tbody>
-
                      </table>
 
                   </div>
@@ -144,73 +181,26 @@ curl_close($ch);
       </div>
    </div>
 
-   <!-- Modal Structure -->
-   <div class="modal fade" id="caseModal" tabindex="-1" role="dialog" aria-labelledby="caseModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog" role="document">
+   <!-- View Details Modal -->
+   <div class="modal fade" id="viewDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
          <div class="modal-content">
             <div class="modal-header">
-               <h5 class="modal-title" id="caseModalLabel">Case Details</h5>
+               <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-               <!-- Case Number -->
-               <div class="mb-3">
-                  <h6 for="caseNumber" class="form-label">Case Number</h6>
-                  <span id="caseNumber"></span>
-               </div>
-
-               <!-- Case Complainants -->
-               <div class="mb-3">
-                  <h6 for="complainants" class="form-label">Case Complainants</h6>
-                  <span id="complainants"></span>
-               </div>
-
-               <!-- Case Respondents -->
-               <div class="mb-3">
-                  <h6 for="respondents" class="form-label">Case Respondents</h6>
-                  <span id="respondents"></span>
-               </div>
-
-               <!-- PWUD Status -->
-               <div class="mb-3">
-                  <h6 for="pwud" class="form-label">Does the case fall under PWUD?</h6>
-                  <span id="pwud"></span>
-               </div>
-
-               <!-- Case Description -->
-               <div class="mb-3">
-                  <h6 for="description" class="form-label">Case Description</h6>
-                  <span id="description"></span>
-               </div>
-
-               <!-- Case Place of Incident -->
-               <div class="mb-3">
-                  <h6 for="place" class="form-label">Case of Incident</h6>
-                  <span id="place"></span>
-               </div>
-
-               <!-- Incident Date & Time -->
-               <div class="mb-3">
-                  <h6 for="incidentDateTime" class="form-label">Incident Date & Time</h6>
-                  <span id="incidentDateTime"></span>
-               </div>
-
-               <!-- Case Type -->
-               <div class="mb-3">
-                  <h6 for="caseType" class="form-label">Case Type</h6>
-                  <span id="caseType"></span>
-               </div>
-
-               <!-- Case Status -->
-               <div class="mb-3">
-                  <h6 for="caseStatus" class="form-label">Case Status</h6>
-                  <span id="caseStatus"></span>
-               </div>
+               <p><strong>Case Number:</strong> <span id="modal-case-number"></span></p>
+               <p><strong>Incident Date:</strong> <span id="modal-incident-date"></span></p>
+               <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p>
+               <p><strong>Case Status:</strong> <span id="modal-case-status"></span></p>
+               <p><strong>Complainants:</strong> <span id="modal-complainants"></span></p>
+               <p><strong>Respondents:</strong> <span id="modal-respondents"></span></p>
+               <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-primary">Edit Status</button>
-               <button type="button" class="btn btn-primary">Edit Case Type</button>
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+               <button type="button" class="btn btn-primary">Update</button>
+               <button type="button" class="btn btn-danger">Forward Case</button>
             </div>
          </div>
       </div>
@@ -237,208 +227,6 @@ curl_close($ch);
       </div>
    </div>
 
-   <!--Edit Cases-->
-   <!-- <div class="modal" id="editSection">
-                  <div class="modal-dialog modal-fullscreen">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <div class="h4">
-                              Edit Cases
-                           </div>
-                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                           <table class="table table-borderless">
-                              <tr>
-                                 <td>
-                                    <label for="">Case #</label>
-                                    <input type="text" class="form-control" name="caseNumber">
-                                 </td>
-                                 <td>
-                                    <label>People Who Used Drug
-                                       (PWUD) </label>
-                                    <input type="text" class="form-control" name="pwud">
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td>
-                                    <label>Complainants</label>
-                                    <input type="text" class="form-control" name="complainants">
-                                 </td>
-                                 <td>
-                                    <label>Case Type</label> <br>
-                                    <select name="caseType" id="editCaseType" style="width: 100%;" class="p-2">
-                                       <option value="" disabled selected>Pick
-                                          Case Type
-                                       </option>
-                                       <option value="Severe">
-                                          Severe
-                                       </option>
-                                       <option value="Mild">
-                                          Mild
-                                       </option>
-                                       <option value="Moderate">
-                                          Moderate
-                                       </option>
-                                    </select>
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td>
-                                    <label>Respondent</label>
-                                    <input type="text" class="form-control" name="respondent">
-                                 </td>
-                                 <td>
-                                    <label>Case Status</label>
-                                    <select name="caseStatus" id="editCaseStatus" style="width: 100%;" class="p-2">
-                                       <option value="" disabled selected>Pick
-                                          Case Status
-                                       </option>
-                                       <option value="Ongoing">
-                                          Ongoing
-                                       </option>
-                                       <option value="Pending">
-                                          Pending
-                                       </option>
-                                       <option value="Resolved">
-                                          Resolved
-                                       </option>
-                                    </select>
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td>
-                                    <label>Description</label> <br>
-                                    <textarea name="description" id="" style="width: 100%;" class="p-2"></textarea>
-                                 </td>
-                                 <td>
-                                    <label for="">Date &
-                                       Time</label>
-                                    <input type="datetime-local" name="dateTime" id="" class="form-control">
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td>
-                                    <label for="">Place</label>
-                                    <input type="text" class="form-control" name="place">
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td>
-                                    <button type="button" class="btn btn-success"
-                                       style="background-color: #2D9276; color: white;">Save
-                                       Changes</button>
-                                    <button type="button" class="btn btn-danger"
-                                       style="background-color: #A9262E; color: white;">Cancel</button>
-                                 </td>
-                              </tr>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
-               </div> -->
-
-
-   <!--End Edit Modal-->
-   <!--Add Cases-->
-   <!--
-               <div class="modal" id="addSection">
-                  <div class="modal-dialog modal-fullscreen">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <div class="h4">
-                              Add Cases
-                           </div>
-                           <button type="button" 
-                              class="btn-close" 
-                              data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                           <form id="addCaseForm">
-                              <table class="table table-borderless">
-                                 <tr>
-                                    <td>
-                                       <label for="caseNumber">Case #</label>
-                                       <input type="text" 
-                                          id="caseNumber" 
-                                          class="form-control" 
-                                          required>
-                                    </td>
-                                    <td>
-                                       <label>People Who Used Drug (PWUD) </label>
-                                       <input type="text" 
-                                          id="pwud" 
-                                          class="form-control" 
-                                          required>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label>Complainants</label>
-                                       <input type="text" id="complainants" class="form-control" required>
-                                    </td>
-                                    <td>
-                                       <label>Case Type</label> <br>
-                                       <select id="caseType" 
-                                          style="width: 100%;"  
-                                          class="p-2" 
-                                          required>
-                                          <option value="" disabled selected>Pick Case Type</option>
-                                          <option value="Severe">Severe</option>
-                                          <option value="Mild">Mild</option>
-                                          <option value="Moderate">Moderate</option>
-                                       </select>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label>Respondent</label>
-                                       <input type="text" id="respondent" class="form-control" required>
-                                    </td>
-                                    <td>
-                                       <label>Case Status</label>
-                                       <select id="caseStatus" style="width: 100%;" class="p-2" required>
-                                          <option value="" disabled selected>Pick Case Status</option>
-                                          <option value="Ongoing">Ongoing</option>
-                                          <option value="Pending">Pending</option>
-                                          <option value="Resolved">Resolved</option>
-                                       </select>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label>Description</label> <br>
-                                       <textarea id="description" style="width: 100%;" class="p-2" required></textarea>
-                                    </td>
-                                    <td>
-                                       <label for="dateTime">Date & Time</label>
-                                       <input type="datetime-local" id="dateTime" class="form-control" required>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <label for="place">Place</label>
-                                       <input type="text" id="place" class="form-control" required>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <button type="submit" 
-                                          class="btn" 
-                                          style="background-color: #2D9276; color: white;">Add to table</button>
-                                       <button type="button" 
-                                          class="btn" 
-                                          style="background-color: #A9262E; color: white;" 
-                                          data-bs-dismiss="modal">Cancel</button>
-                                    </td>
-                                 </tr>
-                              </table>
-                           </form>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-                -->
    <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -446,34 +234,24 @@ curl_close($ch);
    <script src="./javascript/sidebar.js" type="module"></script>
    <!-- <script src="./javascript/addCaseForm.js"></script> -->
    <script>
-      // Get all buttons with data-bs-toggle="modal"
-      const viewDetailButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+      function viewDetails(caseData) {
+         // Parse the case data passed to the function
+         const caseDetails = JSON.parse(caseData);
 
-      // For each button, add event listener to populate the modal
-      viewDetailButtons.forEach(button => {
-         button.addEventListener('click', function() {
-            const caseNumber = this.getAttribute('data-case-number');
-            const complainants = this.getAttribute('data-complainants');
-            const respondents = this.getAttribute('data-respondents');
-            // const pwud = this.getAttribute('data-pwud');
-            const description = this.getAttribute('data-description');
-            const place = this.getAttribute('data-place');
-            const incidentTime = this.getAttribute('data-incident-time');
-            const caseType = this.getAttribute('data-case-type');
-            const caseStatus = this.getAttribute('data-case-status');
+         // Populate modal fields
+         document.getElementById("modal-case-number").textContent = caseDetails.case_number || "N/A";
+         document.getElementById("modal-incident-date").textContent = caseDetails.case_created || "N/A";
+         document.getElementById("modal-case-type").textContent = caseDetails.case_type || "N/A";
+         document.getElementById("modal-case-status").textContent = caseDetails.case_status || "N/A";
 
-            // Populate modal fields
-            document.getElementById('caseNumber').textContent = caseNumber;
-            document.getElementById('complainants').textContent = complainants;
-            document.getElementById('respondents').textContent = respondents;
-            // document.getElementById('pwud').textContent = pwud;
-            document.getElementById('description').textContent = description;
-            document.getElementById('place').textContent = place;
-            document.getElementById('incidentDateTime').textContent = incidentTime;
-            document.getElementById('caseType').textContent = caseType;
-            document.getElementById('caseStatus').textContent = caseStatus;
-         });
-      });
+         // Format complainants and respondents
+         const complainants = caseDetails.case_complainants.map(complainant => complainant.name).join(", ") || "N/A";
+         const respondents = caseDetails.case_respondents.map(respondent => respondent.name).join(", ") || "N/A";
+
+         document.getElementById("modal-complainants").textContent = complainants;
+         document.getElementById("modal-respondents").textContent = respondents;
+         document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
+      }
    </script>
 </body>
 
