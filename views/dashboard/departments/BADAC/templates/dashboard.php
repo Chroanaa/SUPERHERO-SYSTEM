@@ -199,8 +199,28 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
                <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-primary">Update</button>
-               <button type="button" class="btn btn-danger">Forward Case</button>
+               <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                  data-bs-target="#ConfirmModal">Forward to DOH</button>
+               <button type="button" class="btn btn-primary">Message</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Forward to DOH -->
+   <div class="modal fade" id="ConfirmModal" tabindex="-1" aria-labelledby="ConfirmModalLabel" aria-hidden="true"
+      data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="signOutModalLabel">Forward Case to DOH</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger" id="confirmBtn" data-bs-dismiss="modal">Proceed</button>
             </div>
          </div>
       </div>
@@ -252,6 +272,54 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
          document.getElementById("modal-respondents").textContent = respondents;
          document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
       }
+
+      let selectedComplaint = null;
+
+      function viewDetails(caseData) {
+         // Parse the case data passed to the function
+         const caseDetails = JSON.parse(caseData);
+
+         // Populate modal fields
+         document.getElementById("modal-case-number").textContent = caseDetails.case_number || "N/A";
+         document.getElementById("modal-incident-date").textContent = caseDetails.case_created || "N/A";
+         document.getElementById("modal-case-type").textContent = caseDetails.case_type || "N/A";
+         document.getElementById("modal-case-status").textContent = caseDetails.case_status || "N/A";
+
+         const complainants = caseDetails.case_complainants.map(complainant => complainant.name).join(", ") || "N/A";
+         const respondents = caseDetails.case_respondents.map(respondent => respondent.name).join(", ") || "N/A";
+
+         document.getElementById("modal-complainants").textContent = complainants;
+         document.getElementById("modal-respondents").textContent = respondents;
+         document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
+
+         // Store the currently selected complaint
+         selectedComplaint = caseDetails;
+      }
+
+      function forwardToDOH() {
+         if (!selectedComplaint) {
+            alert("No case selected!");
+            return;
+         }
+
+         // Retrieve existing forwarded cases from localStorage
+         const forwardedCases = JSON.parse(localStorage.getItem("forwardedCases")) || [];
+
+         // Add the selected complaint to the list
+         forwardedCases.push({
+            from: "BADAC Brgy. Sta Lucia", // Or dynamically fetch the current dashboard's source
+            description: selectedComplaint.case_description || "No description",
+            content: `data:text/plain;base64,${btoa(JSON.stringify(selectedComplaint))}`, // Optional: Encode as base64 for download
+         });
+
+         // Save back to localStorage
+         localStorage.setItem("forwardedCases", JSON.stringify(forwardedCases));
+
+         alert("Case forwarded to DOH!");
+      }
+
+      // Attach forwardToDOH to the confirmation button
+      document.getElementById("confirmBtn").addEventListener("click", forwardToDOH);
    </script>
 </body>
 
