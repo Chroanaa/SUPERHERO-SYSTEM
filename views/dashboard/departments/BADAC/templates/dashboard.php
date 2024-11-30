@@ -201,7 +201,8 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
             <div class="modal-footer">
                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                   data-bs-target="#ConfirmModal">Forward to DOH</button>
-               <button type="button" class="btn btn-primary">Message</button>
+               <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                  data-bs-target="#MessageModal">Message</button>
             </div>
          </div>
       </div>
@@ -221,6 +222,36 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-danger" id="confirmBtn" data-bs-dismiss="modal">Proceed</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Modal for sending message -->
+   <div class="modal fade" id="MessageModal" tabindex="-1" aria-labelledby="MessageModalLabel" aria-hidden="true"
+      data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="signOutModalLabel">Send this case to Agencies</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="mb-3">
+                  <h6>Philippine Drug Enforcement Agency (PDEA)</h6>
+                  <button type="button" class="btn btn-danger w-100" id="sendToPDEA" data-bs-dismiss="modal">Proceed</button>
+               </div>
+               <div class="mb-3">
+                  <h6>Philippine National Police (PNP)</h6>
+                  <button type="button" class="btn btn-danger w-100" id="sendToPNP" data-bs-dismiss="modal">Proceed</button>
+               </div>
+               <div class="mb-3">
+                  <h6>Department of the Interior and Local Government (DILG)</h6>
+                  <button type="button" class="btn btn-danger w-100" id="sendToDILG" data-bs-dismiss="modal">Proceed</button>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
          </div>
       </div>
@@ -252,6 +283,7 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
    <script src="./javascript/sidebar.js" type="module"></script>
+   <script src="./javascript/sendMessage.js"></script>
    <!-- <script src="./javascript/addCaseForm.js"></script> -->
    <script>
       function viewDetails(caseData) {

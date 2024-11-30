@@ -44,11 +44,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['Email'] ?? '';
     $contactNum = $_POST['Contact_number'] ?? '';
     $birthDate = $_POST['birth_date'] ?? '';
+    $civilStatus = $_POST['civil_status'] ?? ''; // Civil status field
+    $residentType = $_POST['resident_type'] ?? ''; // Resident type (Resident / Non-Resident)
+    $sitio = $_POST['sitio'] ?? null; // Optional Sitio
+    $street = $_POST['street'] ?? null; // Optional Street address for Resident
+    $birthPlace = $_POST['birth_place'] ?? ''; // Optional Birthplace
+    $sex = $_POST['sex'] ?? ''; // Optional Sex
+    $bloodType = $_POST['blood_type'] ?? ''; // Optional Blood Type
+    $yearOfStay = $_POST['year_of_stay'] ?? null; // Optional Year of Stay
 
-    // Validate required fields
-    if (!$lastName || !$firstName || !$homeAddress || !$email || !$contactNum || !$birthDate) {
-        die('All fields are required!');
+    // Ensure year_of_stay is a valid numeric value if provided
+    if ($yearOfStay !== null && $yearOfStay !== '' && !is_numeric($yearOfStay)) {
+        die("Year of Stay must be a numeric value.");
     }
+    
+    // $yearOfStay = $yearOfStay !== null ? (int)$yearOfStay : null; // Convert to integer if valid
+    $yearOfStay = $yearOfStay !== null && $yearOfStay !== '' ? (int)$yearOfStay : null; // Convert to integer if valid
+
+    // Validate required fields (but leave Sitio and Street as optional)
+    if (!$lastName || !$firstName || !$email || !$contactNum || !$birthDate || !$residentType) {
+        die('All required fields must be filled!');
+    }
+
+    // Convert the birthDate to ISO-8601 format (if it's not already in that format)
+    $birthDate = (new DateTime($birthDate))->format(DateTime::ATOM); // ISO 8601 format (e.g., 2024-12-01T15:30:00+00:00)
 
     // Generate a numeric resident ID
     $residentId = generateResidentId();
@@ -62,18 +81,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $item = [
         'TableName' => 'bms_residents_portal_resident_records',
         'Item' => [
-            'resident_id' => ['N' => (string)$residentId], // Numeric resident_id
-            'resident_first_name' => ['S' => $firstName],
-            'resident_middle_name' => ['S' => $middleName],
-            'resident_last_name' => ['S' => $lastName],
-            'resident_home_address' => ['S' => $homeAddress],
-            'resident_email' => ['S' => $email],
-            'resident_contact_number' => ['S' => $contactNum],
-            'resident_birthdate' => ['S' => $birthDate], // Assumes input is valid (format validation optional)
-            'resident_registered_date' => ['S' => $residentRegisteredDate], // Auto-generated
-            'resident_account_created' => ['S' => $residentAccountCreated], // Auto-generated
+            'resident_id' => ['N' => (string)$residentId],
+            'first_name' => ['S' => $firstName],
+            'middle_name' => ['S' => $middleName],
+            'last_name' => ['S' => $lastName],
+            'address' => ['S' => $homeAddress],
+            'email' => ['S' => $email],
+            'contact_number' => ['S' => $contactNum],
+            'birthdate' => ['S' => $birthDate], // Now in ISO-8601 format
+            'resident_registered_date' => ['S' => $residentRegisteredDate],
+            'resident_account_created' => ['S' => $residentAccountCreated],
+            'resident_type' => ['S' => $residentType],
+            'civil_status' => ['S' => $civilStatus],
+            'birth_place' => $birthPlace ? ['S' => $birthPlace] : ['NULL' => true],
+            'sex' => $sex ? ['S' => $sex] : ['NULL' => true],
+            'blood_type' => $bloodType ? ['S' => $bloodType] : ['NULL' => true],
         ],
     ];
+
+    // Add Year of Stay only if provided (optional)
+    if ($yearOfStay !== null) {
+        $item['Item']['year_of_stay'] = ['N' => (string)$yearOfStay];
+    }
+
+    // Add Sitio and Street if available
+    if ($sitio) {
+        $item['Item']['sitio'] = ['S' => $sitio];
+    }
+
+    if ($street) {
+        $item['Item']['street'] = ['S' => $street];
+    }
 
     try {
         // Insert item into DynamoDB
@@ -84,3 +122,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Unable to register. Error: " . $e->getMessage();
     }
 }
+?>
