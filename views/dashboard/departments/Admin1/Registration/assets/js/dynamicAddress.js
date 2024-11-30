@@ -91,6 +91,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Populate Sitio Address dropdown based on Sitio Number selection
     function updateSitioAddressDropdown(selectedSitio) {
         sitioAddressDropdown.innerHTML = ""; // Clear existing options
+
+        // Add "Unknown" option first
+        const unknownOption = document.createElement("option");
+        unknownOption.value = "Unknown";
+        unknownOption.textContent = "Unknown";
+        unknownOption.selected = true; // Set "Unknown" as the selected option
+        sitioAddressDropdown.appendChild(unknownOption);
+
+        // Populate the dropdown with the available addresses
         if (sitioData[selectedSitio]) {
             sitioData[selectedSitio].forEach((address) => {
                 const option = document.createElement("option");
