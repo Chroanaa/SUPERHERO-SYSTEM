@@ -60,6 +60,7 @@
                                     <div class="mb-3">
                                         <small style="color: rgb(0,0,0);font-weight: bold;">Specify your Sitio Number:</small>
                                         <select class="border-dark-subtle focus-ring focus-ring-dark form-control form-control-user" name="sitio" style="width: 636px;color: rgb(0,0,0);border-radius: 12px;">
+                                            <option value="" selected>Unknown</option>
                                             <option value="Sitio 1">Sitio 1</option>
                                             <option value="Sitio 2">Sitio 2</option>
                                             <option value="Sitio 3">Sitio 3</option>
@@ -100,6 +101,7 @@
                                     <small style="color: rgb(0,0,0);font-weight: bold;">Civil Status:</small>
                                     <select id="civil_status" name="civil_status"
                                         class="border-dark-subtle focus-ring focus-ring-dark form-control form-control-user" required>
+                                        <option value="" selected>Please specify:</option>
                                         <option value="Single">Single</option>
                                         <option value="Married">Married</option>
                                         <option value="Widowed">Widowed</option>
