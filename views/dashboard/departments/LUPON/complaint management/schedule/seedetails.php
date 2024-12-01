@@ -23,6 +23,7 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
     <link href="../../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 
     <!-- Open Graph Meta Tags -->
@@ -77,12 +78,22 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link"  style="text-decoration: none; color: inherit;">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -215,12 +226,11 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
 
 
        </div>
-
-
+      
        <!-- Back and Create schedule Button -->
        <a href="summonletter.php?case_number=<?php echo urlencode($case_details['case_number']); ?>" class="btn-container" style="text-decoration: none; width: 100%;">
        <button type="button" id="settleButton" class="btn btn-info open-summon" data-case-number="<?php echo htmlspecialchars($case_details['case_number']); ?>" style="width: 23%; height: 60px; font-size: 1rem; font-weight: 500; margin-left: 14%; margin-top: 15%;">
-        Sumon letter
+        Summon letter
        </button>
 </a>
        <!-- Back and Create schedule Button -->
@@ -238,70 +248,70 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
 </nav>
 </div>
 
+<!-- Modal Structure -->
+
 
 
 
 
 
   <!-- RESCHEDULE MODAL POPUP -->
- <div id="complaint-create" class="create" style="display: none;">
-    <div class="create-content" style="width: 70%; min-height: 90vh; top: 40px; left: 15%; overflow-y: auto; max-height: 80vh;">
+  <div id="complaint-create" class="create" style="display: none;">
+    <div class="create-content animate-modal" style="width: 70%; min-height: 90vh; top: 40px; left: 15%; overflow-y: auto; max-height: 80vh;">
         <!-- Close Button -->
         <span id="closeModalBtn" class="close-btn">&times;</span> 
         <h1 style="text-align: center;">Reschedule</h1>
         <div id="complaint-details">
-           
-        <!-- FORM -->
-        <form action="../../../../../../controllers/departments/LUPON/reschedule.php" method="POST">
-    <input type="hidden" name="case_number" value="<?php echo htmlspecialchars($case_details['case_number']); ?>">
+            <!-- FORM -->
+            <form action="../../../../../../controllers/departments/LUPON/reschedule.php" method="POST">
+                <input type="hidden" name="case_number" value="<?php echo htmlspecialchars($case_details['case_number']); ?>">
 
-    <div style="display: flex; justify-content: center; gap: 250px; margin-bottom: 30px;">
-        <div style="width: 400px;">
-            <label style="font-size: 20px; font-weight: 600;">Complainant 1</label>
-            <div id="complainant-container" style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="text" name="complainant_name" value="<?php echo htmlspecialchars($case_details['complainant_name']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
-                <input type="text" name="complainant_address" value="<?php echo htmlspecialchars($case_details['complainant_address']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
-            </div>
-        </div>
+                <div style="display: flex; justify-content: center; gap: 250px; margin-bottom: 30px;">
+                    <div style="width: 400px;">
+                        <label style="font-size: 20px; font-weight: 600;">Complainant 1</label>
+                        <div id="complainant-container" style="display: flex; flex-direction: column; gap: 10px;">
+                            <input type="text" name="complainant_name" value="<?php echo htmlspecialchars($case_details['complainant_name']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
+                            <input type="text" name="complainant_address" value="<?php echo htmlspecialchars($case_details['complainant_address']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
+                        </div>
+                    </div>
 
-        <div style="width: 400px;">
-            <label style="font-size: 20px; font-weight: 600;">Respondent 1</label>
-            <div id="respondent-container" style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="text" name="respondent_name" value="<?php echo htmlspecialchars($case_details['respondent_name']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
-                <input type="text" name="respondent_address" value="<?php echo htmlspecialchars($case_details['respondent_address']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
-            </div>
-        </div>
-    </div>
+                    <div style="width: 400px;">
+                        <label style="font-size: 20px; font-weight: 600;">Respondent 1</label>
+                        <div id="respondent-container" style="display: flex; flex-direction: column; gap: 10px;">
+                            <input type="text" name="respondent_name" value="<?php echo htmlspecialchars($case_details['respondent_name']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
+                            <input type="text" name="respondent_address" value="<?php echo htmlspecialchars($case_details['respondent_address']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
+                        </div>
+                    </div>
+                </div>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 22%; margin-top: 100px; justify-content: center;">
-        <div style="flex: 1; min-width: 280px; max-width: 400px;">
-            <label for="case_officer">Case Officer</label>
-            <input type="text" id="case_officer" name="case_officer" value="<?php echo htmlspecialchars($case_details['case_officer']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-        </div>
-        <div style="flex: 1; min-width: 280px; max-width: 400px;">
-            <label for="hearing_date">Hearing Date</label>
-            <input type="date" id="hearing_date" name="hearing_date" value="<?php echo htmlspecialchars($case_details['hearing_date']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-        </div>
-    </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 22%; margin-top: 100px; justify-content: center;">
+                    <div style="flex: 1; min-width: 280px; max-width: 400px;">
+                        <label for="case_officer">Case Officer</label>
+                        <input type="text" id="case_officer" name="case_officer" value="<?php echo htmlspecialchars($case_details['case_officer']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                    </div>
+                    <div style="flex: 1; min-width: 280px; max-width: 400px;">
+                        <label for="hearing_date">Hearing Date</label>
+                        <input type="date" id="hearing_date" name="hearing_date" value="<?php echo htmlspecialchars($case_details['hearing_date']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                    </div>
+                </div>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 22%; margin-top: 50px; justify-content: center;">
-        <div style="flex: 1; min-width: 280px; max-width: 400px;">
-            <label for="venue">Venue</label>
-            <input type="text" id="venue" name="venue" value="<?php echo htmlspecialchars($case_details['venue']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-        </div>
-        <div style="flex: 1; min-width: 280px; max-width: 400px;">
-            <label for="hearing_time">Hearing Time</label>
-            <input type="time" id="hearing_time" name="hearing_time" value="<?php echo htmlspecialchars($case_details['hearing_time']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-        </div>
-    </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 22%; margin-top: 50px; justify-content: center;">
+                    <div style="flex: 1; min-width: 280px; max-width: 400px;">
+                        <label for="venue">Venue</label>
+                        <input type="text" id="venue" name="venue" value="<?php echo htmlspecialchars($case_details['venue']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                    </div>
+                    <div style="flex: 1; min-width: 280px; max-width: 400px;">
+                        <label for="hearing_time">Hearing Time</label>
+                        <input type="time" id="hearing_time" name="hearing_time" value="<?php echo htmlspecialchars($case_details['hearing_time']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                    </div>
+                </div>
 
-    <button type="submit" class="btn btn-primary" style="width: 200px; height: 60px; font-size: 1rem; font-weight: 500; margin-top: 10%; margin-left: 78%;">Submit</button>
-</form>
-
-
+                <button type="submit" class="btn btn-primary" style="width: 200px; height: 60px; font-size: 1rem; font-weight: 500; margin-top: 10%; margin-left: 78%;">Submit</button>
+            </form>
         </div>
     </div>
 </div>
+
 
 </nav>
 
@@ -365,15 +375,24 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
     width: 100%;
     height: 100%;
     background-color: #191212bb;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transition: ease 0.5s;
-    display: none; 
+    display: none;
     z-index: 8000;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
     }
-
-    .create-content {
+    to {
+        opacity: 1;
+    }
+}
+.create-content {
     position: absolute;
     background-color: white;
     padding: 20px;
@@ -382,10 +401,21 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
     width: 1000px;
     height: 50%;
     left: 23%;
-  }
-  .close-btn {
-    cursor: pointer; 
-    float: right; 
+    transform: translateY(-20px);
+    animation: slideIn 0.5s ease-out forwards;
+}
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+    }
+    to {
+        transform: translateY(0); 
+    }
+}
+
+.close-btn {
+    cursor: pointer;
+    float: right;
     font-size: 30px;
     width: 40px;
     height: 40px;
@@ -393,18 +423,76 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
     background: linear-gradient(45deg, #fcde7b, #fc7b7b);
     color: rgb(83, 83, 83);
     text-align: center;
-    display: flex; 
+    display: flex;
     align-items: center;
-    justify-content: center; 
-    transition: transform 0.3s ease; 
-    animation: spin 3s infinite linear; 
+    justify-content: center;
+    transition: transform 0.3s ease;
+    animation: spin 3s infinite linear;
 }
+
 @keyframes spin {
     100% {
-        transform: rotate(360deg);}}
+        transform: rotate(360deg);
+    }
+}
+
 .close-btn:hover {
-    background: linear-gradient(45deg, #7bfc7b, #ec7777); 
+    background: linear-gradient(45deg, #7bfc7b, #ec7777);
     color: rgb(83, 83, 83);
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+  padding-top: 60px;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
 }
 
  </style>
@@ -509,13 +597,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+span.onclick = function () {
+  modal.style.display = "none";
+};
 
-
-
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
 
 
     </script>
-<!-- Include jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
