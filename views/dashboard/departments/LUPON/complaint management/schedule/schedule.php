@@ -78,12 +78,22 @@ unset($_SESSION['error_message']);unset($_SESSION['success_message']);?>
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -101,9 +111,9 @@ unset($_SESSION['error_message']);unset($_SESSION['success_message']);?>
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
-        SCHEDULE
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
+        HEARING SCHEDULE
     </h1>  
 </nav>
 
@@ -272,6 +282,22 @@ unset($_SESSION['error_message']);unset($_SESSION['success_message']);?>
         align-items: center;
         width: 100%; 
     }
+
+    .badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
 
     </style>
     <script>

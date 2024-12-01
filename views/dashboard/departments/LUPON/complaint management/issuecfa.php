@@ -78,12 +78,22 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -101,8 +111,8 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
         ISSUE CFA
     </h1>  
 </nav>
@@ -116,7 +126,7 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
     
   <div style="position: relative; padding: 5px; margin-top: 10px; margin-left: 0%; min-height: 75vh; width: 100%; border-bottom: 2.5px solid #004080; border-top: 50px solid #004080; border-left: 2.5px solid #004080; border-right: 2.5px solid #004080; border-radius: 5px;">
   <span style="position: absolute; top: -38px; left: 40%; padding: 0 10px; font-weight: bold; font-size: 18px; color: white;">
-  Certificate of Filing of Action
+  Certificate to File Action
   </span>
 
  <div style="display: flex; align-items: center; justify-content: flex-start; margin-left: 30px; margin-top: 10px; gap: 30px;">
@@ -230,6 +240,22 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
         width: 100%; 
     }
 
+
+    .badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
     </style>
     <script>
         const sidebar = document.querySelector('.sidebar-content');

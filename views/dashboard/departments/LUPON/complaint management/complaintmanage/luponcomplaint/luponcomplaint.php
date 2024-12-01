@@ -5,12 +5,21 @@ if (!$pdo) {
     die("Database connection failed!");
 }
 
-// Fetch all settled cases (no changes here)
+// Fetch all settled cases
 $sql = "SELECT case_number, date_of_incident, hearing_date, hearing_time, case_officer, case_status FROM turnover WHERE case_status = 'settled'";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Format hearing time
+foreach ($turnovers as &$turnover) {
+    $turnover['formatted_hearing_time'] = date('g:iA', strtotime($turnover['hearing_time']));
+}
+unset($turnover); // Break reference to avoid potential bugs
 ?>
+
+
+
 
 
 
@@ -32,7 +41,7 @@ $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
-    <link href="../../../../../../custom/css/index.css" rel="stylesheet">
+    <link href="../../../../../../../custom/css/index.css" rel="stylesheet">
     <link href="../../LUPON/complaint management/style.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
     <!-- Open Graph Meta Tags -->
@@ -85,14 +94,23 @@ $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                    </a>
                     </div>
                 </div>
-
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -110,28 +128,30 @@ $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
         COMPLAINTS SETTLED
-    </h1>  
+    </h1>   
 
     <?php
-$current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang filename.
+$current_page = basename($_SERVER['PHP_SELF']); // Get the current filename.
 ?>
+
 <div style="position: absolute; right: 4%; top: 40px; display: flex; align-items: center; gap: 10px;">
     <!-- BPSO Link -->
-    <a href="complaint.php"
-       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'complaint.php') ? ' #004080;' : '#888;'; ?> font-weight: <?= ($current_page === 'complaint.php') ? 'bold;' : 'normal;'; ?>">
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php"
+       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'complaint.php') ? '#004080' : '#888'; ?>; font-weight: <?= ($current_page === 'complaint.php') ? 'bold' : 'normal'; ?>;">
         BPSO
     </a>
     <!-- Separator -->
     <span style="font-size: 17px; color: #888;">/</span>
     <!-- LUPON Link -->
-    <a href="luponcomplaint.php"
-       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'luponcomplaint.php') ? ' #004080;' : '#888;'; ?> font-weight: <?= ($current_page === 'luponcomplaint.php') ? 'bold;' : 'normal;'; ?>">
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/luponcomplaint/luponcomplaint.php"
+       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'luponcomplaint.php') ? '#004080' : '#888'; ?>; font-weight: <?= ($current_page === 'luponcomplaint.php') ? 'bold' : 'normal'; ?>;">
         LUPON
     </a>
 </div>
+
 
 
 
@@ -148,7 +168,7 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
     Settled Case
   </span>
 
- <div style="display: flex; align-items: center; margin-left: 30px; margin-top: 10px; gap: 30px;">
+  <div style="display: flex; align-items: center; margin-left: 30px; margin-top: 10px; gap: 30px;">
         <input type="date" id="date" name="date" placeholder="Date..." 
         style="padding: 10px; width: 400px; height: 50px; border-radius: 5px; border: 1px solid #b1b1b1; font-weight: 300; margin-right: 20px;">
 </div>
@@ -175,18 +195,18 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
                 echo "<th scope='row'>" . htmlspecialchars($turnover["case_number"]) . "</th>";
                 echo "<td>" . htmlspecialchars($turnover["date_of_incident"]) . "</td>";
                 echo "<td>" . htmlspecialchars($turnover["hearing_date"]) . "</td>";
-                echo "<td>" . htmlspecialchars($turnover["hearing_time"]) . "</td>";
+                echo "<td>" . htmlspecialchars($turnover["formatted_hearing_time"]) . "</td>"; // Formatted time
                 echo "<td>" . htmlspecialchars($turnover["case_officer"]) . "</td>";
                 echo "<td>" . htmlspecialchars($turnover["case_status"]) . "</td>";
                 echo "<td>
-                <button type='button' class='btn btn-primary open-modal' style='font-weight: 500;' 
-                    data-bs-toggle='modal' data-bs-target='#complaintCreateModal' 
-                    data-bs-case-number='" . htmlspecialchars($turnover['case_number']) . "'>
-                    See details
-                </button>
-            </td>";
-            echo "</tr>";
-
+                        <button type='button' class='btn btn-primary open-modal' 
+                                data-bs-toggle='modal' 
+                                data-bs-target='#complaintCreateModal' 
+                                data-bs-case-number='" . htmlspecialchars($turnover['case_number']) . "'>
+                                See details
+                        </button>
+                      </td>";
+                echo "</tr>";
             }
         } else {
             echo "<tr><td colspan='7'>No turnover record</td></tr>";
@@ -194,6 +214,7 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
         ?>
     </tbody>
 </table>
+
 </div>
 
         </div>
@@ -205,28 +226,39 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
 
 
 
-        <div class="modal fade" id="complaintCreateModal" tabindex="-1" aria-labelledby="complaintCreateModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="complaintCreateModalLabel">Settled Case Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body">
-            <p><strong>Case Number: </strong><span id="case_number">wala pato</span></p>
-            <p><strong>Complainant: </strong><span id="complainant_name">wala pato</span></p>
-            <p><strong>Respondent: </strong><span id="respondent_name">wala pato</span></p>
-            <p><strong>Date of Incident: </strong><span id="date_of_incident">wala pato</span></p>
-            <p><strong>Hearing Date: </strong><span id="hearing_date">wala pato</span></p>
-            <p><strong>Hearing Time: </strong><span id="hearing_time">wala pato</span></p>
-            <p><strong>Case Status: </strong><span id="case_status">wala pato</span></p>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-         </div>
-      </div>
-   </div>
+        <!-- Modal -->
+        <div id="complaintCreateModal" class="modal fade" tabindex="-1" aria-labelledby="complaintCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="complaintCreateModalLabel">Case Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p class="title">Case Number: <span id="modalCaseNumber">Loading...</span></p>
+<p class="title">Hearing Date: <span id="modalHearingDate">Loading...</span></p>
+<p class="title">Hearing Time: <span id="modalHearingTime">Loading...</span></p>
+<p class="title">Case Officer: <span id="modalCaseOfficer">Loading...</span></p>
+<p class="title">Case Resolution: <span id="modalCaseNotes">Loading...</span></p>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" style="background-color: rgb(23, 23, 23);" data-bs-dismiss="modal">Got it</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -352,6 +384,30 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
     color: rgb(83, 83, 83);
 }
 
+.title {
+    color: red;
+}
+
+.title span {
+    color: black; /* I-override ang kulay ng mga span */
+}
+
+.badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
+
     </style>
     <script>
         const sidebar = document.querySelector('.sidebar-content');
@@ -416,6 +472,74 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
     const submenu = document.querySelector(".sidebar-submenu-show");
     submenu.style.display = submenu.style.display === "none" || submenu.style.display === "" ? "block" : "none";
 }
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.open-modal');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const caseNumber = button.getAttribute('data-bs-case-number');
+            console.log('Clicked Case Number:', caseNumber);
+
+            // Fetch case details
+            fetch('fetch.php?case_number=' + caseNumber)
+                .then(response => {
+                    console.log('Fetch Response:', response); 
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched Data:', data);
+
+                    if (data.success) {
+                        document.getElementById('modalCaseNumber').innerText = data.case_number || 'N/A';
+                        document.getElementById('modalHearingDate').innerText = data.hearing_date || 'N/A';
+                        document.getElementById('modalHearingTime').innerText = data.hearing_time || 'N/A';
+                        document.getElementById('modalCaseOfficer').innerText = data.case_officer || 'N/A';
+                        document.getElementById('modalCaseNotes').innerText = data.case_notes || 'No notes available';
+                    } else {
+                        alert(data.message || 'Unable to fetch case details.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching case details.');
+                });
+        });
+    });
+});
+
+
+
+
+document.getElementById("date").addEventListener("change", filterTableByDate);
+
+function filterTableByDate() {
+    var filterDate = document.getElementById("date").value; 
+    var table = document.getElementById("tablecase");
+    var rows = table.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+        var caseDateCell = row.cells[2]; 
+        if (caseDateCell) {
+            var caseDate = caseDateCell.textContent.trim();
+           
+            row.style.display = (filterDate === "" || caseDate === filterDate) ? "" : "none";
+        }
+    });
+}
+
+
+
+
+
+
+
     </script>
 </body>
 

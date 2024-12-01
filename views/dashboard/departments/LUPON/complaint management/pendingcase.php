@@ -1,3 +1,15 @@
+<?php
+include 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php'; 
+
+if (!$pdo) {
+    die("Database connection failed!");}
+$sort_order = 'DESC'; if (isset($_GET['sort']) && $_GET['sort'] == 'oldest') { $sort_order = 'ASC';}
+$sql = "SELECT case_number, date_of_incident, respondent_name, case_status 
+FROM turnover WHERE case_status = 'unsettled' AND hearing_date IS NOT NULL AND hearing_time IS NOT NULL ORDER BY hearing_date $sort_order, hearing_time ASC"; 
+$stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,12 +77,22 @@
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -88,8 +110,8 @@
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
         PENDING CASE
     </h1>  
 </nav>
@@ -99,9 +121,60 @@
 <!-- Dashboard body -->
  <!-- Dashboard body -->
   <!-- Dashboard body -->
- <nav style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff;">
+  <nav style="margin-top: 30px; margin-left: 21%; padding: 20px; min-height: 80vh; width: 77%; box-sizing: border-box; background-color: #ffffff; border-radius: 10px;">
     
-    
+  <div style="position: relative; padding: 5px; margin-top: 10px; margin-left: 0%; min-height: 75vh; width: 100%; border-bottom: 2.5px solid #004080; border-top: 50px solid #004080; border-left: 2.5px solid #004080; border-right: 2.5px solid #004080; border-radius: 5px;">
+  <span style="position: absolute; top: -38px; left: 40%; padding: 0 10px; font-weight: bold; font-size: 18px; color: white;">
+  Residents Pending Case
+  </span>
+
+ <div style="display: flex; align-items: center; justify-content: flex-start; margin-left: 30px; margin-top: 10px; gap: 30px;">
+ <input type="text" id="searchname" placeholder="Search here..." onkeyup="filterTable()" style="padding: 10px; width: 400px; height: 50px; border-radius: 10px; border: 1px solid #b1b1b1; font-weight: 300;">
+    <input type="date" id="date" name="date" placeholder="Date..." 
+    style="padding: 10px; width: 400px; height: 50px; border-radius: 10px; border: 1px solid #b1b1b1; font-weight: 300;">
+    <select id="sort" name="sort" style="padding: 10px; width: 200px; height: 50px; border-radius: 10px; border: 1px solid #b1b1b1; font-weight: 300;">
+    <option value="latest" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'latest') echo 'selected'; ?>>Latest</option>
+    <option value="oldest" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'oldest') echo 'selected'; ?>>Oldest</option>
+</select>
+</div>
+
+
+<div style="overflow-y: auto; height: 420px; width: 95%; max-width: 1500px; margin-top: 40px; margin-left: 30px; border: 1px solid #d4d4d4;  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);">
+<table id="tablecase" class="table table-bordered" style="width: 100%; text-align: center;">
+        <thead>
+            <tr>
+                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Case Number</th>
+                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Case Date</th>
+                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Respondent Name</th>
+                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Case Status</th>
+                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($turnovers) {
+                foreach ($turnovers as $turnover) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars(string: $turnover["case_number"]) . "</td>";
+                    echo "<td>" . htmlspecialchars(string: $turnover["date_of_incident"]) . "</td>";
+                    echo "<td>" . htmlspecialchars(string: $turnover["respondent_name"]) . "</td>";
+                    echo "<td>" . htmlspecialchars(string: $turnover["case_status"]) . "</td>";
+                    echo "<td>
+                        <a href='.php?case_number=" . urlencode(string: $turnover["case_number"]) . "' class='btn-container'>
+                            <button type='button' class='btn btn-primary btn-hover'>See details</button>
+                        </a>
+                    </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='8'>No turnover record</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+
+</div>
+</div>
     
 
  </nav>
@@ -159,6 +232,22 @@
         align-items: center;
         width: 100%; 
     }
+
+    .badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
 
     </style>
     <script>
@@ -224,6 +313,53 @@
     const submenu = document.querySelector(".sidebar-submenu-show");
     submenu.style.display = submenu.style.display === "none" || submenu.style.display === "" ? "block" : "none";
 }
+
+
+
+
+document.getElementById('sort').addEventListener('change', function() {
+        let selectedOption = this.value;
+        window.location.href = "?sort=" + selectedOption;
+    });
+
+function filterTable() {
+            
+    const input = document.getElementById("searchname");
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById("tablecase");
+    const rows = table.getElementsByTagName("tr");
+    for (let i = 1; i < rows.length; i++) {
+    const complainantCell = rows[i].getElementsByTagName("td")[2];
+    if (complainantCell) {
+    const textValue = complainantCell.textContent || complainantCell.innerText;
+    if (textValue.toLowerCase().includes(filter)) {
+    rows[i].style.display = "";
+    } else {
+    rows[i].style.display = "none";
+    }
+    }
+    }
+    }
+
+
+    document.getElementById("date").addEventListener("change", filterTableByDate);
+
+function filterTableByDate() {
+    var filterDate = document.getElementById("date").value; 
+    var table = document.getElementById("tablecase");
+    var rows = table.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+        var caseDateCell = row.cells[1]; 
+        if (caseDateCell) {
+            var caseDate = caseDateCell.textContent.trim();
+           
+            row.style.display = (filterDate === "" || caseDate === filterDate) ? "" : "none";
+        }
+    });
+}
+
+
     </script>
 </body>
 

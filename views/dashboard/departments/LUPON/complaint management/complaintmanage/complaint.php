@@ -1,14 +1,16 @@
 <?php
+include 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
 
-include 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php'; 
 if (!$pdo) {
     die("Database connection failed!");
 }
-$sql = "SELECT case_number, date_of_incident, date_forward, origin_department,  status FROM turnover";
+$sql = "SELECT case_number, date_of_incident, date_forward, origin_department, status FROM turnover WHERE (hearing_date IS NULL OR hearing_date = '0000-00-00') AND (hearing_time IS NULL OR hearing_time = '00:00:00')";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -79,12 +81,22 @@ $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -102,28 +114,30 @@ $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
         COMPLAINTS REVIEW
     </h1>  
 
     <?php
-$current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang filename.
+$current_page = basename($_SERVER['PHP_SELF']); // Get the current filename.
 ?>
+
 <div style="position: absolute; right: 4%; top: 40px; display: flex; align-items: center; gap: 10px;">
     <!-- BPSO Link -->
-    <a href="complaint.php"
-       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'complaint.php') ? ' #004080;' : '#888;'; ?> font-weight: <?= ($current_page === 'complaint.php') ? 'bold;' : 'normal;'; ?>">
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php"
+       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'complaint.php') ? '#004080' : '#888'; ?>; font-weight: <?= ($current_page === 'complaint.php') ? 'bold' : 'normal'; ?>;">
         BPSO
     </a>
     <!-- Separator -->
     <span style="font-size: 17px; color: #888;">/</span>
     <!-- LUPON Link -->
-    <a href="luponcomplaint.php"
-       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'luponcomplaint.php') ? ' #004080;' : '#888;'; ?> font-weight: <?= ($current_page === 'luponcomplaint.php') ? 'bold;' : 'normal;'; ?>">
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/luponcomplaint/luponcomplaint.php"
+       style="font-size: 17px; text-decoration: none; color: <?= ($current_page === 'luponcomplaint.php') ? '#004080' : '#888'; ?>; font-weight: <?= ($current_page === 'luponcomplaint.php') ? 'bold' : 'normal'; ?>;">
         LUPON
     </a>
 </div>
+
 
 
 
@@ -147,46 +161,43 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
 
     
 <div style="overflow-y: auto; height: 420px; width: 95%; max-width: 1500px; margin-top: 40px; margin-left: 30px; border: 1px solid #d4d4d4;  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);">
-    <table id="tablecase" class="table table-bordered" style="width: 100%; text-align: center;">
-        <thead>
-            <tr>
-                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Case Number</th>
-                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Case Date</th>
-                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Turnover Date</th>
-                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Origin Department</th>
-                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Status</th>
-                <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($turnovers) {
-                foreach ($turnovers as $turnover) {
-                    echo "<tr>";
-                    echo "<th scope='row'>" . htmlspecialchars($turnover["case_number"]) . "</th>";
-                    echo "<td>" . htmlspecialchars($turnover["date_of_incident"]) . "</td>";
-                    echo "<td>" . htmlspecialchars($turnover["date_forward"]) . "</td>";
-                    echo "<td>" . htmlspecialchars($turnover["origin_department"]) . "</td>";
-
-                    $status = htmlspecialchars($turnover["status"]);
-                    if ($status == 'new') {
-                        $status = "<span style='color: red; font-weight: 400;'>New</span>";
-                    }
-                    echo "<td>" . $status . "</td>";
-
-                    echo "<td>
-                        <a href='seedetails.php?case_number=" . urlencode($turnover["case_number"]) . "' class='btn-container'>
-                            <button type='button' id='Updatebutton' class='btn btn-primary btn-hover' style='font-weight: 500;'>See details</button>
-                        </a>
-                    </td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='8'>No turnover record</td></tr>";
+<table id="tablecase" class="table table-bordered" style="width: 100%; text-align: center;">
+    <thead>
+        <tr>
+            <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Case Number</th>
+            <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Case Date</th>
+            <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Turnover Date</th>
+            <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Origin Department</th>
+            <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Status</th>
+            <th scope="col" style="background-color: #004080; color: white; position: sticky; top: 0; z-index: 1;">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($turnovers) {
+            foreach ($turnovers as $turnover) {
+    echo "<tr>";
+  echo "<th scope='row'>" . htmlspecialchars($turnover["case_number"]) . "</th>";
+     echo "<td>" . htmlspecialchars($turnover["date_of_incident"]) . "</td>";
+     echo "<td>" . htmlspecialchars($turnover["date_forward"]) . "</td>";
+     echo "<td>" . htmlspecialchars($turnover["origin_department"]) . "</td>";
+     $status = htmlspecialchars($turnover["status"]);
+     if ($status == 'new') {
+     $status = "<span style='color: red; font-weight: 400;'>New</span>"; }
+     echo "<td>" . $status . "</td>";
+    echo "<td>
+         <a href='seedetails.php?case_number=" . urlencode($turnover["case_number"]) . "' class='btn-container'>
+        <button type='button' id='Updatebutton' class='btn btn-primary btn-hover' style='font-weight: 500;'>See details</button>
+        </a>
+    </td>";
+        echo "</tr>";
             }
-            ?>
-        </tbody>
-    </table>
+        } else {
+            echo "<tr><td colspan='6'>No turnover record</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
 </div>
 
         </div>
@@ -246,6 +257,22 @@ $current_page = basename($_SERVER['PHP_SELF']); // Kukunin ang kasalukuyang file
         width: 100%; 
     }
 
+
+    .badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
     </style>
     <script>
         const sidebar = document.querySelector('.sidebar-content');

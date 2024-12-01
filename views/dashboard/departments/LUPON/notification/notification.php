@@ -1,3 +1,19 @@
+<?php
+include 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php'; 
+
+$updateStmt = $pdo->prepare("UPDATE lupon_notification SET is_read = 1 WHERE is_read = 0");
+$updateStmt->execute(); $stmt = $pdo->prepare("SELECT * FROM lupon_notification ORDER BY created_at DESC"); $stmt->execute(); $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0"); $unreadCountStmt->execute(); $unreadCount = $unreadCountStmt->fetchColumn();
+foreach ($notifications as &$notification) { $created_at = $notification['created_at'];  $dateTime = new DateTime($created_at);  $notification['formatted_time'] = $dateTime->format('g:iA'); 
+}
+?>
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,12 +81,23 @@
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
+
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -88,9 +115,9 @@
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
-        NOTIFICATION
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
+       NOTIFICATION
     </h1>  
 </nav>
 
@@ -99,9 +126,26 @@
 <!-- Dashboard body -->
  <!-- Dashboard body -->
   <!-- Dashboard body -->
- <nav style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff;">
+  <nav style="margin-top: 30px; margin-left: 21%; padding: 20px; min-height: 80vh; width: 77%; box-sizing: border-box; background-color: #ffffff; border-radius: 10px; overflow-y: auto;"">
     
-    
+  
+  
+ 
+  <ul>
+    <?php foreach ($notifications as $notification): ?>
+        <li class="notification-item">
+            <p><?php echo htmlspecialchars($notification['message']); ?></p>
+            <?php
+                $created_at = $notification['created_at'];
+                $dateTime = new DateTime($created_at);
+                $formattedDateTime = $dateTime->format('M d, Y g:iA');
+            ?>
+            <small><?php echo $formattedDateTime; ?></small>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
+
     
 
  </nav>
@@ -160,6 +204,79 @@
         width: 100%; 
     }
 
+
+    body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e9e9e9;
+}
+
+
+
+.badge {
+            background-color: #ff0000;
+            color: #fff;
+            border-radius: 50%;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .notification-item p {
+            margin: 0;
+        }
+
+        .notification-item small {
+            color: #999;
+        }
+
+        .badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
     </style>
     <script>
         const sidebar = document.querySelector('.sidebar-content');

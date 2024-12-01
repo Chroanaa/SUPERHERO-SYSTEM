@@ -1,15 +1,17 @@
 <?php
 
 include_once 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
-$sql = "SELECT COUNT(DISTINCT case_number) AS total_complaint FROM turnover";
-$stmt = $pdo->query($sql);
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
-$total_complaint = $row['total_complaint'];
-
 $sql_settled_cases = "SELECT COUNT(DISTINCT case_number) AS total_settled FROM turnover WHERE case_status = 'settled'";
 $stmt_settled_cases = $pdo->query($sql_settled_cases);
 $row_settled_cases = $stmt_settled_cases->fetch(PDO::FETCH_ASSOC);
 $total_settled = $row_settled_cases['total_settled'];
+
+$sql_unsettled_cases = "SELECT COUNT(DISTINCT case_number) AS total_unsettled FROM turnover WHERE case_status = 'unsettled'";
+$stmt_unsettled_cases = $pdo->query($sql_unsettled_cases);
+$row_unsettled_cases = $stmt_unsettled_cases->fetch(PDO::FETCH_ASSOC);
+$total_unsettled = $row_unsettled_cases['total_unsettled'];
+
+
 ?>
 
 
@@ -60,33 +62,45 @@ $total_settled = $row_settled_cases['total_settled'];
 
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header" onclick="toggleSubMenu()">
-                        <span><i class="fa-solid fa-folder category-icon"></i>Complaint Management</span>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
-                    </div>
-                    <div class="sidebar-submenu-show">
-                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" class="sidebar-link">
-                        <div class="sidebar-submenu-item">Complaints</div>
-                    </a> 
-                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" class="sidebar-link">
-                        <div class="sidebar-submenu-item">Issue CFA</div>
-                   </a>
-                   <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/schedule/schedule.php" class="sidebar-link">
-                        <div class="sidebar-submenu-item">Schedule Hearing</div>
-                   </a>
-                   <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/pendingcase.php" class="sidebar-link">
-                    <div class="sidebar-submenu-item">Pending Cases</div>
-               </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header" onclick="toggleSubMenu()">
+        <span><i class="fa-solid fa-folder category-icon"></i>Complaint Management</span>
+        <i class="fas fa-chevron-down toggle-icon"></i>
+    </div>
+    <div class="sidebar-submenu-show">
+        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" class="sidebar-link">
+            <div class="sidebar-submenu-item">Complaints</div>
+        </a> 
+        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" class="sidebar-link">
+            <div class="sidebar-submenu-item">Issue CFA</div>
+        </a>
+        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/schedule/schedule.php" class="sidebar-link">
+            <div class="sidebar-submenu-item">Schedule Hearing</div>
+        </a>
+        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/pendingcase.php" class="sidebar-link">
+            <div class="sidebar-submenu-item">Pending Cases</div>
+        </a>
+    </div>
+</div>
 
-                <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+<div class="sidebar-category">
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
+
+
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -104,8 +118,8 @@ $total_settled = $row_settled_cases['total_settled'];
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
         DASHBOARD
     </h1>  
 </nav>
@@ -117,46 +131,100 @@ $total_settled = $row_settled_cases['total_settled'];
   <!-- Dashboard body -->
  
     
- <div style="display: flex; justify-content: center; align-items: center; gap: 45px; margin-top: 3%; ">
+  <div style="display: flex; justify-content: center; align-items: center; gap: 45px; margin-top: 3%; flex-wrap: wrap;">
 
-    <!-- First div for total cases  -->
-    <div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; margin-left: 5%;">
-        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" style="text-decoration: none; color: inherit;">
-            <div id="total-case-1" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
-                <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Complaint</span>
-                <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"><?php echo number_format($total_complaint); ?></h1>
-            </div>
-        </a>
-    </div>
-
-    <!-- Second div for settled cases -->
-    <div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px;">
-        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaint.php" style="text-decoration: none; color: inherit;">
-            <div id="total-case-2" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
-                <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Unsettled</span>
-                <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"> 22 </h1>
-            </div>
-        </a>
-    </div>
-
-    <!-- Third div for unsettled cases -->
-    <div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px;">
-    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/luponcomplaint.php" style="text-decoration: none; color: inherit;">
-        <div id="total-case-3" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
-            <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Settled</span>
-            <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"> 
-                <?php echo $total_settled; ?>
+<!-- First div for total cases -->
+<div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; margin-left: 5%; max-width: 100%; box-sizing: border-box;">
+    <a href="#" style="text-decoration: none; color: inherit;">
+        <div id="total-case-1" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
+            <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Case</span>
+            <h1 style="color: #303030; font-weight: 500; margin-top: 10%;">
+                <?php 
+                    $sql = "SELECT COUNT(DISTINCT case_number) AS total_complaint FROM turnover";
+                    $stmt = $pdo->query($sql); 
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC); 
+                    $total_complaint = $row['total_complaint']; 
+                    echo number_format($total_complaint); 
+                ?>
             </h1>
         </div>
     </a>
+</div>
+
+
+
+<div style="display: flex; gap: 40px; max-width: 100%; box-sizing: border-box;">
+<a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" style="text-decoration: none; color: inherit;">
+    <div id="total-case-1" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
+        <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Turnover</span>
+        <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"> 
+            <?php 
+                $sql = "SELECT COUNT(DISTINCT case_number) AS total_complaint FROM turnover WHERE hearing_time IS NULL OR hearing_date IS NULL";
+                $stmt = $pdo->query($sql);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $total_complaint = $row['total_complaint']; 
+                echo number_format($total_complaint); 
+            ?>
+        </h1>
     </div>
+</a>
+</div>
+
+
+
+<div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; max-width: 100%; box-sizing: border-box;">
+
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/schedule/schedule.php" style="text-decoration: none; color: inherit;">
+     <div id="total-case-1" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
+    <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Ongoing</span>
+     <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"> 
+        <?php 
+           $sql = "SELECT COUNT(DISTINCT case_number) AS total_ongoing FROM turnover WHERE case_status = 'ongoing' OR case_status IS NULL";
+          $stmt = $pdo->query($sql);
+         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+         $total_ongoing = $row['total_ongoing']; 
+                    echo number_format($total_ongoing); 
+                ?>
+            </h1>
+        </div>
+    </a>
+</div>
+
+
+
 
 </div>
-    
-    
+
+
+<div style="display: flex; justify-content: center; align-items: center; gap: 45px; margin-top: 5%; flex-wrap: wrap;">
+
+<!-- Second div for unsettled and settled cases -->
+
+<div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; max-width: 100%; box-sizing: border-box;">
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/luponcomplaint/luponcomplaint.php" style="text-decoration: none; color: inherit;">
+     <div id="total-case-3" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
+    <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Settled</span>
+    <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"> 
+     <?php echo $total_settled; ?>
+     </h1>
+        </div>
+    </a>
+</div>
 
 
 
+<div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; max-width: 100%; box-sizing: border-box;">
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" style="text-decoration: none; color: inherit;">
+    <div id="total-case-2" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
+     <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Unsettled</span>
+     <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"> 
+         <?php echo $total_unsettled; ?> 
+     </h1>
+        </div>
+    </a>
+</div>
+
+</div>
 
 
 
@@ -195,20 +263,34 @@ $total_settled = $row_settled_cases['total_settled'];
     display: block;
     text-decoration: none;
     padding: 8px 130px; 
-    padding-left: 20px
+    padding-left: 20px;
 }
-
 .sidebar-submenu-show {
     display: none;
 }
-
 .sidebar-link {
-        text-decoration: none;
-        color: inherit; 
-        display: flex;
-        align-items: center;
-        width: 100%; 
-    }
+    text-decoration: none;
+    color: inherit; 
+    display: flex;
+    align-items: center;
+    width: 100%; 
+}
+.badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
+
 
     
     </style>
