@@ -62,7 +62,91 @@
                 <p>This contains the streamlined processing made by other departments.</p>
             </div>
 
+            <div class="view-approval-action d-flex justify-content-end align-items-center" style="gap: 5px">
+                <div class="sort>
+                    <label for="">Sort by:</label>
+                    <input type="text">
+                </div>
+                <div class="search">
+                    <label for="">Search:</label>
+                    <input type="text">
+                </div>
+            </div>
+            <div class="view-approval-page shadow  bg-light rounded-3 py-5 px-4 container-fluid mt-2">
+                <div class="view-approval-header d-flex justify-content-between align-items-center">
+                    <h5>Approved Request (0 Unread)</h5>
+                    <button class="btn text-light" style="background-color: #FF5D5D;">Reload</button>
+                </div>
+                <div class="view-approval-body border mt-3">
+                    <div class="view-approval-body-title">
+                        <div class="view-approval-body-header d-flex justify-content-between align-items-center px-3 pt-4">
+                                <h5>0001 - Drug Testing</h5>
+                                <p>11/27/20024  &nbsp; 7:40 PM</p>
+                        </div>
+                        <div class="view-approval-body-content px-3 pb-3">
+                            <p>Requested by BADAC staff John Santos.</p>
+                            <button type="button" 
+                                    class="btn text-light" 
+                                    style="background-color: #FF5D5D"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#viewDetails">See Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- View Details Modal -->
+
+        <div class="modal" id="viewDetails">
+            <div class="modal-dialog modal-dialog-centered" >
+                <div class="modal-content" style="border: 1px solid red;">
+                    <div class="modal-header" style="background-color:#FFE6E2;">
+                        <h5>View Details</h5>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-3">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="pendingRequest">Request ID:</label>
+                                <input type="text" name="pendingRequest" class="form-control" readonly>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="requester">Requester:</label>
+                                <input type="text" class="form-control" name="requester" readonly>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="department">Department:</label>
+                                <input type="text" class="form-control" name="department" readonly>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="submitted">Submitted</label>
+                                <input type="text" class="form-control" name="submitted" readonly>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="description">Description</label>
+                                <textarea name="description" class="form-control">
+
+                                </textarea>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="files">Files</label>
+                                <input type="files" class="form-control" name="files" readonly>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="files">Status</label>
+                                <select name="files" class="text-success form-control">
+                                    <option value="">Approved</option>
+                                </select>
+                            </div>
+                            <div class="form-group mt-2 d-flex justify-content-end align-items center wrap" style="gap:5px;">
+                                <button class="btn text-light" 
+                                        style="background-color:#FF5D5D;">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Sign Out Confirmation Modal -->
