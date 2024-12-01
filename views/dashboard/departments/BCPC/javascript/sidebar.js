@@ -16,7 +16,6 @@ if (header) {
                     <div class="sidebar-submenu-show">
                         <div class="sidebar-submenu-item main">Home</div>
                         <div class="sidebar-submenu-item dashboard">Dashboard</div>
-                        <div class="sidebar-submenu-item forms">Forms</div>
                         <div class="sidebar-submenu-item notify">Notifications</div>
                         <div class="sidebar-submenu-item contacts">Contacts</div>
                         <div class="sidebar-submenu-item gov-contact">Programs and Services</div>
