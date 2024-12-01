@@ -72,12 +72,22 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -95,9 +105,9 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
-       COMPLAINTS DETAILS
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
+    COMPLAINTS DETAILS
     </h1>  
 </nav>
 
@@ -106,12 +116,12 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
 <!-- Dashboard body -->
  <!-- Dashboard body -->
   <!-- Dashboard body -->
- <nav style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff;">
+  <nav style="margin-top: 30px; margin-left: 21%; padding: 20px; min-height: 10vh; width: 77%; box-sizing: border-box; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
     
  <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff;">
  <nav style="max-width: 1200px; margin: 0 auto;">
     <!-- Complainant Section -->
-    <div style="display: flex; justify-content: flex-end; gap: 250px; margin-bottom: 30px;">
+    <div style="display: flex; justify-content: center; gap: 320px; margin-bottom: 30px;">
         <div style="width: 400px;">
             <label style="font-size: 20px; font-weight: 600;">Complainant 1</label>
             <div id="complainant-container" style="display: flex; flex-direction: column; gap: 10px;">
@@ -131,41 +141,41 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
     </div>
     
     <!-- Complaint Category -->
-    <div style="margin-top: 30px; margin-left: 13%;">
+    <div style="margin-top: 30px; margin-left: 3%;">
         <label style="font-size: 20px; font-weight: 600;">Complaint Category</label>
-        <input type="text" name="complaint_category" value="<?php echo htmlspecialchars($case_details['complaint_category']); ?>" style="width: 100%; padding: 15px; font-size: 1rem; height: 50px; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;"disabled>
+        <input type="text" name="complaint_category" value="<?php echo htmlspecialchars($case_details['complaint_category']); ?>" style="width: 97%; padding: 15px; font-size: 1rem; height: 50px; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;"disabled>
     </div>
     
     <!-- Complaint Description -->
-    <div style="margin-top: 30px; margin-left: 13%;">
+    <div style="margin-top: 30px; margin-left: 3%;">
         <label style="font-size: 20px; font-weight: 600;">Complaint Description</label>
-        <textarea id="complaint-description" name="complaint_description" style="width: 100%; height: 300px; max-width: 1200px; border: 1px solid #b1b1b1; border-radius: 3px; padding: 15px; font-size: 1rem;" disabled><?php echo htmlspecialchars($case_details['complaint_description']); ?></textarea>
+        <textarea id="complaint-description" name="complaint_description" style="width: 97%; height: 300px; max-width: 1200px; border: 1px solid #b1b1b1; border-radius: 3px; padding: 15px; font-size: 1rem;" disabled><?php echo htmlspecialchars($case_details['complaint_description']); ?></textarea>
     </div>
 
     <!-- Place of Incident and Date at Time -->
-    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; margin-left: 13%;">
-        <div style="flex: 1; min-width: 280px; max-width: 400px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; margin-left: 3%;">
+        <div style="flex: 1; min-width: 280px; max-width: 361px;">
             <label for="place-of-incident">Place of Incident:</label>
             <input type="text" id="place-of-incident" name="place_of_incident" value="<?php echo htmlspecialchars($case_details['place_of_incident']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
         </div>
-        <div style="flex: 1; min-width: 280px; max-width: 400px;">
+        <div style="flex: 1; min-width: 280px; max-width: 361px;">
             <label for="incident-date">Incident Date:</label>
             <input type="date" id="incident-date" name="incident_date" value="<?php echo htmlspecialchars($case_details['date_of_incident']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
         </div>
-        <div style="flex: 1; min-width: 280px; max-width: 400px;">
+        <div style="flex: 1; min-width: 280px; max-width: 361px;">
             <label for="incident-time">Incident Time:</label>
             <input type="time" id="incident-time" name="incident_time" value="<?php echo htmlspecialchars($case_details['time_of_incident']); ?>" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
         </div>
     </div>
 
     <!-- Special Case Status -->
-    <div style="margin-top: 30px; margin-left: 13%;">
+    <div style="margin-top: 30px; margin-left: 3%;">
         <label style="font-size: 20px; font-weight: 600;">Special Case</label>
-        <input type="text" name="special_case" value="<?php echo htmlspecialchars($case_details['special_case']); ?>" style="width: 100%; padding: 15px; font-size: 1rem; height: 50px; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" readonly>
+        <input type="text" name="special_case" value="<?php echo htmlspecialchars($case_details['special_case']); ?>" style="width: 97%; padding: 15px; font-size: 1rem; height: 50px; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" readonly>
     </div>
 
     <!-- Back and Create schedule Button -->
-    <div style="margin-top: 60px; display: flex; justify-content: flex-end; gap: 20px; width: 100%; max-width: 600px; margin-left: 50%;">
+    <div style="margin-top: 60px; display: flex; justify-content: flex-end; gap: 20px; width: 100%; max-width: 600px; margin-left: 47%;">
     
      <!-- Mark as Settled Button -->
      <a href="createschedule.php?case_number=<?php echo urlencode($case_details['case_number']); ?>" class="btn-container" style="text-decoration: none; width: 100%;">
@@ -243,7 +253,21 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
         width: 100%; 
     }
 
-
+    .badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
     
     </style>
     <script>

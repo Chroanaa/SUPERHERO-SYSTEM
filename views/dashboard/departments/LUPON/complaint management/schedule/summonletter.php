@@ -1,9 +1,15 @@
 <?php
 include 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
-if (isset($_GET['case_number'])) { $case_number = $_GET['case_number']; $sql = "SELECT * FROM turnover WHERE case_number = :case_number"; 
-$stmt = $pdo->prepare($sql); $stmt->bindParam(':case_number', $case_number, PDO::PARAM_STR); $stmt->execute(); $case_details = $stmt->fetch(PDO::FETCH_ASSOC);
-if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit;}
+
+if (isset($_GET['case_number'])) {
+    $case_number = $_GET['case_number']; $sql = "SELECT * FROM turnover WHERE case_number = :case_number"; $stmt = $pdo->prepare($sql); $stmt->bindParam(':case_number', $case_number, PDO::PARAM_STR);
+    $stmt->execute(); $case_details = $stmt->fetch(PDO::FETCH_ASSOC);
+ if (!$case_details) { echo "No case."; exit; }
+ $date_of_incident = $case_details['date_of_incident']; $formatted_date = date('F j, Y', strtotime($date_of_incident));  
+ $hearing_time = $case_details['hearing_time'];  $formatted_time_12hr = date('g:i A', strtotime($hearing_time));  
+} else { echo "No casenumber."; exit;}
 ?>
+
 
 
 
@@ -75,12 +81,22 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
                 </div>
 
                 <div class="sidebar-category">
-                    <div class="sidebar-category-header">
-                        <a href="http://localhost:3000/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
-                        <span><i class="fa-solid fa-bell category-icon"></i>Notification</span>
-                    </a>
-                    </div>
-                </div>
+    <div class="sidebar-category-header">
+        <a href="http://localhost/SUPERHERO-SYSTEM/views/dashboard/departments/LUPON/notification/notification.php" class="sidebar-link">
+            <span>
+                <i class="fa-solid fa-bell category-icon"></i> Notification
+                <?php
+                $unreadCountStmt = $pdo->prepare("SELECT COUNT(*) FROM lupon_notification WHERE is_read = 0");
+                $unreadCountStmt->execute();
+                $unreadCount = $unreadCountStmt->fetchColumn();
+                if ($unreadCount > 0) {
+                    echo '<span class="badge">' . $unreadCount . '</span>';
+                }
+                ?>
+            </span>
+        </a>
+    </div>
+</div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header">
                         <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>
@@ -98,9 +114,9 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
 
 
  <!-- Dashboard Side -->
- <nav style="width: 100%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative;">
-    <h1 style="font-size: 2rem; position: absolute; left: 20%; top: 25px;">
-       SUMMON LETTER
+ <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
+        SUMMON LETTER
     </h1>  
 </nav>
 
@@ -109,14 +125,13 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
 <!-- Dashboard body -->
  <!-- Dashboard body -->
   <!-- Dashboard body -->
- <nav style="margin-top: 13px; padding: 20px; min-height: 140vh; width: 100%; box-sizing: border-box; background-color: #ffffff;">
-    
-    
- <div style=" display: flex; justify-content: center; align-items: center; margin-top: 20px; margin-bottom: 30px;">
-            <div style=" height: 1056px; width: 816px; margin-left: 430px;">
+  <nav style="margin-top: 30px; margin-left: 21%; padding: 20px; min-height: 10vh; width: 77%; box-sizing: border-box; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
+
+<div style="display: flex; justify-content: center; align-items: center;">
+  <div style="height: 906px; width: 816px; margin-left: 0; overflow-y: hidden;">
 
         
-        <div id="generatedescription" name="complaint_description" placeholder="Report description..." style="overflow-y: auto; ">
+        <div id="generatedescription" name="complaint_description" placeholder="Report description..." style="overflow-y: auto; height: 506px; border-radius: 5px; ">
         <div id="loading">Please wait... Generating PDF...</div>
         <!--Summon letter format -->
         <h5 style="text-align: center; margin-left: auto; margin-right: auto;">
@@ -151,6 +166,7 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
   para sa pag-aayos ng inyong hidwaan ng may sumbong Binabalaan ka na sa iyong pagtanggi o pagbabale-wala sa patawag na ito, ikaw ay mawawalan ng karapatang maghain ng kontra sumbong sa usapin na ito.
   Kailangang sundin mo ang patawag na ito, kung hindi, ikaw ay mapaparusahan sa kasalanang paglapastangan sa hukuman.
 </h6>
+
 
 
 
@@ -214,12 +230,12 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
   </div>
 
 
-  <div style=" margin-left: 1000px; margin-top: -350px; display: flex; gap: 30px;">
-  <button id="printButton" class="btn btn-primary btn-hover" style="font-weight: 500; width: 200px; height: 50px; border-radius: 3px; border: 1px solid #b1b1b1; display: flex; justify-content: center; align-items: center; text-decoration: none; 
+  <div style=" margin-left: 65%; margin-top: -350px; display: flex; gap: 20px; width: 400px;">
+  <button id="printButton" class="btn btn-primary btn-hover" style="font-weight: 500; width: 200px; height: 60px; border-radius: 6px; border: 1px solid #b1b1b1; display: flex; justify-content: center; align-items: center; text-decoration: none; 
 color: white; background-color: #007bff;">PRINT </button>
 
         <a href="seedetails.php?case_number=<?php echo urlencode($_GET['case_number']); ?>"  class="btn btn-primary btn-hover" 
-        style="font-weight: 500; width: 200px; height: 50px; border-radius: 3px; border: 1px solid #b1b1b1; 
+        style="font-weight: 500; width: 200px; height: 60px; border-radius: 6px; border: 1px solid #b1b1b1; 
         display: flex; justify-content: center; align-items: center; text-decoration: none; color: white;background-color: rgb(23, 23, 23);">
         BACK
     </a>
@@ -301,7 +317,7 @@ color: white; background-color: #007bff;">PRINT </button>
         #generatedescription {
         overflow-y: auto;
         width: 100%;
-        max-width: 100%; /* Ensure it does not overflow */
+        max-width: 100%;
         height: 80vh;
         border: 1px solid #b1b1b1;
         border-radius: 3px;
@@ -309,18 +325,31 @@ color: white; background-color: #007bff;">PRINT </button>
         font-size: 1rem;
         box-sizing: border-box;
     }
-
-    /* Print-specific styles */
     @media print {
         #generatedescription {
-            width: 100%; /* Use full width */
-            height: auto; /* Adjust height to content */
-            page-break-inside: avoid; /* Prevent page break inside the div */
-            font-size: 12px; /* Adjust font size for print */
-            padding: 10px; /* Adjust padding for print */
-            border: 1px solid #000; /* Ensure border is visible in print */
+            width: 100%;
+            height: auto;
+            page-break-inside: avoid;
+            font-size: 12px;
+            padding: 10px; 
+            border: 1px solid #000;
         }
     }
+    .badge {
+    background-color: #ff0000;
+    color: white; 
+    border-radius: 50%;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 5px; 
+    right: 10px;
+    transform: translateY(-50%); 
+    display: inline-block;
+}
+.sidebar-category-header {
+    position: relative; 
+}
         
     </style>
     <script>
@@ -412,7 +441,7 @@ document.getElementById('printButton').addEventListener('click', function() {
     doc.setTextColor(0, 0, 0);
     doc.text('Respondent/s', 10, 80);
 
-    var formattedDate = "<?php echo htmlspecialchars($formatted_date); ?>"; var formattedTime = "<?php echo htmlspecialchars($formatted_time_12hr); ?>";
+    var formattedDate = "<?php echo htmlspecialchars(string: $formatted_date); ?>"; var formattedTime = "<?php echo htmlspecialchars(string: $formatted_time_12hr); ?>";
 
     // Summons DEscription
    var summonsText = `Ikaw/kayo, ay tinatawagan upang humarap sa akin/amin nang personal kasama ang iyong mga saksi sa ika ${formattedDate}, sa ganap ika ${formattedTime} ng araw para sagutin ang sumbong laban sa iyo na inihain sa akin, kalakip nito ang kopya ng sumbong, para sa pag-aayos ng inyong hidwaan ng may sumbong. Binabalaan ka na sa iyong pagtanggi o pagbabale-wala sa patawag na ito, ikaw ay mawawalan ng karapatang maghain ng kontra sumbong sa usapin na ito. Kailangang sundin mo ang patawag na ito, kung hindi, ikaw ay mapaparusahan sa kasalanang paglapastangan sa hukuman.`;
