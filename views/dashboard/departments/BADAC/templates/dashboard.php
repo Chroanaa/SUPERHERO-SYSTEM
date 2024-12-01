@@ -286,25 +286,6 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
    <script src="./javascript/sendMessage.js"></script>
    <!-- <script src="./javascript/addCaseForm.js"></script> -->
    <script>
-      function viewDetails(caseData) {
-         // Parse the case data passed to the function
-         const caseDetails = JSON.parse(caseData);
-
-         // Populate modal fields
-         document.getElementById("modal-case-number").textContent = caseDetails.case_number || "N/A";
-         document.getElementById("modal-incident-date").textContent = caseDetails.case_created || "N/A";
-         document.getElementById("modal-case-type").textContent = caseDetails.case_type || "N/A";
-         document.getElementById("modal-case-status").textContent = caseDetails.case_status || "N/A";
-
-         // Format complainants and respondents
-         const complainants = caseDetails.case_complainants.map(complainant => complainant.name).join(", ") || "N/A";
-         const respondents = caseDetails.case_respondents.map(respondent => respondent.name).join(", ") || "N/A";
-
-         document.getElementById("modal-complainants").textContent = complainants;
-         document.getElementById("modal-respondents").textContent = respondents;
-         document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
-      }
-
       let selectedComplaint = null;
 
       function viewDetails(caseData) {
@@ -328,30 +309,43 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
          selectedComplaint = caseDetails;
       }
 
-      function forwardToDOH() {
-         if (!selectedComplaint) {
-            alert("No case selected!");
-            return;
-         }
+      document.getElementById("confirmBtn").addEventListener("click", function() {
+         // Collect data from the modal
+         const caseData = {
+            forwardFrom: "BADAC of Brgy. Sta Lucia",
+            caseNumber: document.getElementById("modal-case-number").textContent.trim() || "N/A",
+            incidentTime: document.getElementById("modal-incident-date").textContent.trim() || "N/A",
+            caseCreated: document.getElementById("modal-case-type").textContent.trim() || "N/A",
+            caseDescription: document.getElementById("modal-case-description").textContent.trim() || "N/A",
+            caseStatus: document.getElementById("modal-case-status").textContent.trim() || "N/A",
+            complainants: document.getElementById("modal-complainants").textContent.trim() || "N/A",
+            respondents: document.getElementById("modal-respondents").textContent.trim() || "N/A",
+         };
 
-         // Retrieve existing forwarded cases from localStorage
-         const forwardedCases = JSON.parse(localStorage.getItem("forwardedCases")) || [];
+         // Format the data into a string
+         const formattedCaseData = `
+            Forward Case From: ${caseData.forwardFrom}
 
-         // Add the selected complaint to the list
-         forwardedCases.push({
-            from: "BADAC Brgy. Sta Lucia", // Or dynamically fetch the current dashboard's source
-            description: selectedComplaint.case_description || "No description",
-            content: `data:text/plain;base64,${btoa(JSON.stringify(selectedComplaint))}`, // Optional: Encode as base64 for download
-         });
+            Case Number: ${caseData.caseNumber}
+            Incident Case Time: ${caseData.incidentTime}
+            Case Created: ${caseData.caseCreated}
+            Case Description: ${caseData.caseDescription}
 
-         // Save back to localStorage
-         localStorage.setItem("forwardedCases", JSON.stringify(forwardedCases));
+            Case Status: ${caseData.caseStatus}
 
-         alert("Case forwarded to DOH!");
-      }
+            Case Complainants:
+            - ${caseData.complainants.replace(/,/g, "\n- ")}
 
-      // Attach forwardToDOH to the confirmation button
-      document.getElementById("confirmBtn").addEventListener("click", forwardToDOH);
+            Case Respondents:
+            - ${caseData.respondents.replace(/,/g, "\n- ")}
+         `;
+
+         // Save the formatted data in localStorage for retrieval on the redirected page
+         localStorage.setItem("forwardedCaseData", formattedCaseData);
+
+         // Redirect to the specified page
+         window.open("http://localhost:3000/views/dashboard/departments/BADAC/templates/third-party/upload-file-doh.php", "_blank");
+      });
    </script>
 </body>
 
