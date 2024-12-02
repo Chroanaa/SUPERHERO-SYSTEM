@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
     <link href="../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../../dist/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Onboarding as Super Admin for Brgy. Management">
     <meta property="og:description" content="Still in development phase.">
@@ -40,6 +43,34 @@
             <div class="welcome-message">
                 <h2 class="text-danger">Transactions</h2>
                 <p>This contains real-time processes made by other departments to record their transactions.</p>
+            </div>
+
+            <div class="transaction-page shadow  bg-light rounded-3 py-5 px-4 container-fluid mt-2">
+                <table class="table table-striped table-bordered" id="tableData">
+                    <thead>
+                        <tr>
+                            <th>Transaction No.</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Drug Testing</td>
+                            <td>BADAC</td>
+                            <td>11/27/2024</td>
+                            <td class="text-success">Approved</td>
+                            <td>
+                                <button type="button" class="btn btn-sm text-light" style="background-color: #66B3FF;">See Details</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
             </div>
             
             
@@ -75,6 +106,18 @@
 
     <script src="../diff-sidebar.js" type="module"></script>
     <script src="../acc_manage.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.js"></script>
+
+    <script>
+        new DataTable('#tableData', {
+            responsive: true
+        });
+    </script>
 </body>
 
 </html>

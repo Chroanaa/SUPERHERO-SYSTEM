@@ -65,26 +65,168 @@
                 <p>This contains the streamlined processing made by other departments.</p>
             </div>
 
-            <div class="city-ordinances-container">
-                <div class="auth-divide">
-                    <aside class="notifications-container" style="max-height: 320px; overflow-y: auto;">
-                        <!-- Client Side operation starts here -->
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h2>Secretary Ordinances</h2>
-                            </div>
-                            <button type="button" class="btn btn-danger">
-                                <i class="fa-solid fa-plus category-icon"></i>Add New Ordinance
-                            </button>
-                        </div>
-                        <!-- no notif found -->
-                        <div class="mt-3 rounded d-flex text-center flex-column" style="color: #c1c1c1; padding: 12px;">
-                            <p class="m-0">Your city ordinances will appear here.</p>
-                        </div>
-                    </aside>
+            <div class="city-ordinance-action d-flex justify-content-end align-items-center" style="gap: 5px">
+                <div class="sort>
+                    <label for="">Sort by:</label>
+                    <input type="text">
+                </div>
+            2<div class="search">
+               p-2      <label for="">Search:</label>
+                    <input type="text">p            </div>
+            </div>
 
+            <div class="city-ordinance-page shadow bg-light rounded-3 py-5 px-4 container-fluid">
+                <div class="city-ordinance-header d-flex justify-content-end align-items-center">
+                    <button class="btn text-light" style="background-color: #FF5D5D;">Add ordinance</button>
+                </div>
+                <div class="city-ordinance-body row row-cols-sm-2">
+                    <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No:  SP-2501, S-2016 </h5>
+                                <p>1/13/2022</p>
+                            </div>
+                            <div class="city-ordinance-body pb-5">
+                                <p>Proposed No:  PO 19CC-594</p>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                                <p>Author: ALEXIS R. HERRERA</p>
+                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cityOrdinanceDetails">See Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No:  SP-2501, S-2016 </h5>
+                                <p>1/13/2022</p>
+                            </div>
+                            <div class="city-ordinance-body pb-5">
+                                <p>Proposed No:  PO 19CC-594</p>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                                <p>Author: ALEXIS R. HERRERA</p>
+                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cityOrdinanceDetails">See Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No:  SP-2501, S-2016 </h5>
+                                <p>1/13/2022</p>
+                            </div>
+                            <div class="city-ordinance-body pb-5">
+                                <p>Proposed No:  PO 19CC-594</p>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                                <p>Author: ALEXIS R. HERRERA</p>
+                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cityOrdinanceDetails">See Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No:  SP-2501, S-2016 </h5>
+                                <p>1/13/2022</p>
+                            </div>
+                            <div class="city-ordinance-body pb-5">
+                                <p>Proposed No:  PO 19CC-594</p>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                                <p>Author: ALEXIS R. HERRERA</p>
+                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cityOrdinanceDetails">See Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No:  SP-2501, S-2016 </h5>
+                                <p>1/13/2022</p>
+                            </div>
+                            <div class="city-ordinance-body pb-5">
+                                <p>Proposed No:  PO 19CC-594</p>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                                <p>Author: ALEXIS R. HERRERA</p>
+                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cityOrdinanceDetails">See Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No:  SP-2501, S-2016 </h5>
+                                <p>1/13/2022</p>
+                            </div>
+                            <div class="city-ordinance-body pb-5">
+                                <p>Proposed No:  PO 19CC-594</p>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                                <p>Author: ALEXIS R. HERRERA</p>
+                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cityOrdinanceDetails">See Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+    <!-- City Ordinance Details modal -->
+     <div class="modal" id="cityOrdinanceDetails">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border: 1px solid red;">
+                <div class="modal-header" style="background-color: #FFE6E2;">
+                    <h5>Add ordinance</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="form-group mt-2">
+                            <label for="">Author:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="">Approved No:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="">Proposed No:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="">Url</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="">Submitted</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group mt-2 d-flex justify-content-end">
+                            <button type="button" class="btn px-5 text-light" style="background-color:#FF5D5D;">Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
+     </div>
+
+           
         </div>
 
         <!-- Sign Out Confirmation Modal -->
