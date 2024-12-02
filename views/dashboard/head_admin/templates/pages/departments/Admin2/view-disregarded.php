@@ -1,5 +1,3 @@
-<!-- // STANDARD (DON'T MAKE ANY CHANGES) -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,19 +13,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
     <link href="../../../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Onboarding as Super Admin for Brgy. Management">
-    <meta property="og:description" content="Still in development phase.">
-    <meta property="og:image" content="URL_to_your_image.jpg">
-    <meta property="og:url" content="https://yourwebsite.com">
-    <meta property="og:type" content="website">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Onboarding as Super Admin for Brgy. Management">
-    <meta name="twitter:description" content="Still in development phase.">
-    <meta name="twitter:image" content="URL_to_your_image.jpg">
-    <meta name="twitter:url" content="https://yourwebsite.com">
     <style>
         .record-item {
             cursor: pointer;
@@ -63,37 +48,13 @@
             </div>
 
             <div class="view-disregarded-action d-flex justify-content-end align-items-center" style="gap: 5px">
-                <div class="sort>
-                    <label for="">Sort by:</label>
-                    <input type="text">
-                </div>
                 <div class="search">
                     <label for="">Search:</label>
                     <input type="text">
                 </div>
             </div>
-            <div class="view-disregarded-page shadow  bg-light rounded-3 py-5 px-4 container-fluid mt-2">
-                <div class="view-disregarded-header d-flex justify-content-between align-items-center">
-                    <h5>Disregarded Request (0 Unread)</h5>
-                    <button class="btn text-light" style="background-color: #FF5D5D;">Reload</button>
-                </div>
-                <div class="view-disregarded-body border mt-3">
-                    <div class="view-disregarded-body-title">
-                        <div class="view-disregarded-body-header d-flex justify-content-between align-items-center px-3 pt-4">
-                                <h5>0001 - Drug Testing</h5>
-                                <p>11/27/20024  &nbsp; 7:40 PM</p>
-                        </div>
-                        <div class="view-disregarded-body-content px-3 pb-3">
-                            <p>Requested by BADAC staff John Santos.</p>
-                            <button type="button" 
-                                    class="btn text-light" 
-                                    style="background-color: #FF5D5D"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewDetails">See Details</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="container">
+
         </div>
 
         <!-- View Details Modal -->
@@ -125,27 +86,11 @@
                             </div>
                             <div class="form-group mt-2">
                                 <label for="description">Description</label>
-                                <textarea name="description" class="form-control">
-
-                                </textarea>
-                            </div>
-                            <div class="form-group mt-2">
-                                <label for="files">Files</label>
-                                <input type="files" class="form-control" name="files" readonly>
-                            </div>
-                            <div class="form-group mt-2">
-                                <label for="files">Status</label>
-                                <select name="files" class="text-success form-control">
-                                    <option value="">Approved</option>
-                                </select>
+                                <textarea name="description" class="form-control" readonly></textarea>
                             </div>
                             <div class="form-group mt-2">
                                 <label for="reasonForDisregarding">Reason for disregarding:</label>
-                                <textarea name="reasonForDisregarding" class="form-control"></textarea>
-                            </div>
-                            <div class="form-group mt-2 d-flex justify-content-end align-items center wrap" style="gap:5px;">
-                                <button class="btn text-light" 
-                                        style="background-color:#FF5D5D;">Edit</button>
+                                <textarea name="reasonForDisregarding" class="form-control" readonly></textarea>
                             </div>
                         </form>
                     </div>
@@ -153,12 +98,10 @@
             </div>
         </div>
 
-
-
         <!-- Sign Out Confirmation Modal -->
         <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
             data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="signOutModalLabel">Confirm Sign Out</h5>
@@ -182,8 +125,53 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <!-- <script src="../../../user_data.js"></script> -->
     <script src="../../../diff-sidebar.js" type="module"></script>
 </body>
+<script>
+    
+    const disregardedRequestData = JSON.parse(localStorage.getItem("disregardedRequest"));
+   
+    let htmlContent = "";
+    for (const key in disregardedRequestData) {
+        htmlContent += `
+        <div class="record-item p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-primary">${disregardedRequestData[key].requester}</h5>
+                    <p class="text-secondary">${disregardedRequestData[key].department}</p>
+                </div>
+                <div>
+                    <p class="text-secondary">${disregardedRequestData[key].submitted}</p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p>${disregardedRequestData[key].description}</p>
+                </div>
+                <div>
+                    <button class="btn btn-primary view-details" data-bs-toggle="modal" data-bs-target="#viewDetails" onclick="populateModal(
+                        '${key}',
+                        '${disregardedRequestData[key].requester}',
+                        '${disregardedRequestData[key].department}',
+                        '${disregardedRequestData[key].submitted}',
+                        '${disregardedRequestData[key].description}',
+                        '${disregardedRequestData[key].reasonForDisregarding}'
+                    )">View Details</button>
+                </div>
+            </div>
+        </div>
+        `;
+    }
 
+    document.querySelector(".container").innerHTML = htmlContent;
+
+    function populateModal(id, requester, department, submitted, description, reasonForDisregarding) {
+        document.querySelector("#viewDetails input[name=pendingRequest]").value = id;
+        document.querySelector("#viewDetails input[name=requester]").value = requester;
+        document.querySelector("#viewDetails input[name=department]").value = department;
+        document.querySelector("#viewDetails input[name=submitted]").value = submitted;
+        document.querySelector("#viewDetails textarea[name=description]").value = description;
+        document.querySelector("#viewDetails textarea[name=reasonForDisregarding]").value = reasonForDisregarding;
+    }
+</script>
 </html>

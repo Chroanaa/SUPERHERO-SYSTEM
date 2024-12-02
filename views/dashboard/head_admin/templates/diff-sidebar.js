@@ -1,10 +1,10 @@
 // Import sidebar routes
-import { sidebarRoutes } from './sidebarRoutes.js';
+// import { sidebarRoutes } from "./sidebarRoutes.js";
 
 const header = document.querySelector(".header");
 
 if (header) {
-    header.innerHTML = `
+  header.innerHTML = `
         <nav class="sidebar">
             <div class="sidebar-content">
                 <div class="sidebar-header">Brgy. Sta. Lucia</div>
@@ -15,9 +15,8 @@ if (header) {
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="sidebar-submenu show">
-                        <div class="sidebar-submenu-item main">Overview</div>
-                        <div class="sidebar-submenu-item view-authorize">Authorization</div>
-                        <div class="sidebar-submenu-item transactions">Transactions</div>
+                        <div class="sidebar-submenu-item view-authorize"><a href = "/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/view_authority.php"> Authorization</a></div>
+                        <div class="sidebar-submenu-item transactions"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/transaction_logs.php"> Transactions </a></div>
                     </div>
                 </div>
                 <div class="sidebar-category">
@@ -26,12 +25,10 @@ if (header) {
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="sidebar-submenu">
-                        <div class="sidebar-submenu-item main-admin2">Overview</div>
-                        <div class="sidebar-submenu-item admin2-view-pending">View Pending Request</div>
-                        <div class="sidebar-submenu-item admin2-view-approval">View Approval Process</div>
-                        <div class="sidebar-submenu-item admin2-view-disregard">View Disregarded Process</div>
-                        <div class="sidebar-submenu-item admin2-city-ordinance">City Ordinance</div>
-                        <div class="sidebar-submenu-item">E-Forms (Secretary)</div>
+                        <div class="sidebar-submenu-item admin2-view-pending"><a href= "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-request.php">View Pending Request </a></div>
+                        <div class="sidebar-submenu-item admin2-view-approval"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-approval.php">View Approval Process </a></div>
+                        <div class="sidebar-submenu-item admin2-view-disregard"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-disregarded.php">View Disregarded Process </a></div>
+                        <div class="sidebar-submenu-item admin2-city-ordinance"> <a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/city-ordinance.php">City Ordinance </a></div>
                         <div class="sidebar-submenu-item admin2-notify">Notifications</div>
                     </div>
                 </div>
@@ -46,66 +43,72 @@ if (header) {
         </nav>
     `;
 
-    const sidebarContent = document.querySelector('.sidebar-content');
-    const ps = new PerfectScrollbar(sidebarContent);
+  const sidebarContent = document.querySelector(".sidebar-content");
+  const ps = new PerfectScrollbar(sidebarContent);
 
-    // Event listener for submenu toggling
-    sidebarContent.addEventListener('click', (event) => {
-        const categoryHeader = event.target.closest('.sidebar-category-header');
-        if (categoryHeader) {
-            const category = categoryHeader.parentElement;
-            const submenu = category.querySelector('.sidebar-submenu');
-            const toggleIcon = categoryHeader.querySelector('.toggle-icon');
+  // Event listener for submenu toggling
+  sidebarContent.addEventListener("click", (event) => {
+    const categoryHeader = event.target.closest(".sidebar-category-header");
+    if (categoryHeader) {
+      const category = categoryHeader.parentElement;
+      const submenu = category.querySelector(".sidebar-submenu");
+      const toggleIcon = categoryHeader.querySelector(".toggle-icon");
 
-            if (submenu) {
-                submenu.classList.toggle('show'); // Change from sidebar-submenu-show to show
-                toggleIcon.classList.toggle('rotate', submenu.classList.contains('show'));
-            }
-        }
-    });
-
-
-    // Ripple effect on hover
-    document.querySelectorAll('.sidebar-submenu-item').forEach(item => {
-        item.addEventListener('mouseenter', createRipple);
-    });
-
-    // Event listener for sidebar redirection based on class matching in sidebarRoutes
-    document.addEventListener("click", (e) => {
-        const targetClass = [...e.target.classList].find(className =>
-            sidebarRoutes.some(route => route.className === className)
+      if (submenu) {
+        submenu.classList.toggle("show"); // Change from sidebar-submenu-show to show
+        toggleIcon.classList.toggle(
+          "rotate",
+          submenu.classList.contains("show")
         );
+      }
+    }
+  });
 
-        if (targetClass) {
-            const route = sidebarRoutes.find(route => route.className === targetClass);
-            if (route) {
-                window.location.pathname = route.path;
-            }
-        }
-    });
+  // Ripple effect on hover
+  document.querySelectorAll(".sidebar-submenu-item").forEach((item) => {
+    item.addEventListener("mouseenter", createRipple);
+  });
+
+  // Event listener for sidebar redirection based on class matching in sidebarRoutes
+  // document.addEventListener("click", (e) => {
+  //   const targetClass = [...e.target.classList].find((className) =>
+  //     sidebarRoutes.some((route) => route.className === className)
+  //   );
+
+  //   if (targetClass) {
+  //     const route = sidebarRoutes.find(
+  //       (route) => route.className === targetClass
+  //     );
+  //     if (route) {
+  //       window.location.pathname = route.path;
+  //     }
+  //   }
+  // });
 }
 
 function createRipple(event) {
-    const button = event.currentTarget;
-    const ripple = document.createElement('span');
-    const rect = button.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = event.clientX - rect.left - size / 2;
-    const y = event.clientY - rect.top - size / 2;
+  const button = event.currentTarget;
+  const ripple = document.createElement("span");
+  const rect = button.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const x = event.clientX - rect.left - size / 2;
+  const y = event.clientY - rect.top - size / 2;
 
-    ripple.style.width = ripple.style.height = `${size}px`;
-    ripple.style.left = `${x}px`;
-    ripple.style.top = `${y}px`;
-    ripple.classList.add('ripple');
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+  ripple.classList.add("ripple");
 
-    button.appendChild(ripple);
+  button.appendChild(ripple);
 
-    ripple.addEventListener('animationend', () => {
-        ripple.remove();
-    });
+  ripple.addEventListener("animationend", () => {
+    ripple.remove();
+  });
 }
 
-document.getElementById('confirmSignOutBtn').addEventListener('click', function () {
+document
+  .getElementById("confirmSignOutBtn")
+  .addEventListener("click", function () {
     // Redirect to signout.php to handle session destruction and redirection
-    window.location.href = '../../../../../../../signout.php';
-});
+    window.location.href = "../../../../../../../signout.php";
+  });
