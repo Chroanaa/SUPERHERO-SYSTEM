@@ -58,14 +58,14 @@ if (header) {
 
     // Event listener for sidebar redirection based on class matching in sidebarRoutes
     document.addEventListener("click", (e) => {
-        const targetClass = [...e.target.classList].find(className =>
+        const targetClass = e.target.classList.value.split(' ').find(className =>
             sidebarRoutes.some(route => route.className === className)
         );
 
         if (targetClass) {
             const route = sidebarRoutes.find(route => route.className === targetClass);
             if (route) {
-                window.location.pathname = route.path;
+                window.location.href = route.path;
             }
         }
     });
