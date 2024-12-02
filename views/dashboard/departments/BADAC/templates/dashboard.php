@@ -102,6 +102,8 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
                <section class="dashboard container-fluid">
                   <div class="dashboard-search">
                      <input type="search" id="searchInput" placeholder="Search..." style="width: 30%; border-radius: 20px;" class="p-2">
+                     <button class="btn text-light ms-2" style="background-color: #1E477D;" onclick="printTable()">PRINT REPORT</button>
+                     <button class="btn text-light ms-2" style="background-color: #dc3545;" onclick="proceedToQcadaac()">QCADAAC</button>
                   </div>
                   <div class="dashboard-table mt-3">
                      <table class="table table-bordered">
@@ -352,6 +354,52 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
 
       // Attach forwardToDOH to the confirmation button
       document.getElementById("confirmBtn").addEventListener("click", forwardToDOH);
+
+      function printTable() {
+         const table = document.querySelector('.dashboard-table').cloneNode(true);
+         const actionColumnIndex = 4; // Index of the "Action" column
+
+         // Remove the "Action" column from the table header
+         table.querySelectorAll('th')[actionColumnIndex].remove();
+
+         // Remove the "Action" column from each row
+         table.querySelectorAll('tr').forEach(row => {
+            row.querySelectorAll('td')[actionColumnIndex]?.remove();
+         });
+
+         // Calculate total cases
+         const complaints = <?php echo json_encode($complaints['badac_all_complaints'] ?? []); ?>;
+         const now = new Date();
+         const monthlyCount = complaints.filter(complaint => new Date(complaint.case_created).getMonth() === now.getMonth()).length;
+         const quarterlyCount = complaints.filter(complaint => Math.floor(new Date(complaint.case_created).getMonth() / 3) === Math.floor(now.getMonth() / 3)).length;
+         const annualCount = complaints.filter(complaint => new Date(complaint.case_created).getFullYear() === now.getFullYear()).length;
+
+         // Create summary section
+         const summary = document.createElement('div');
+         summary.innerHTML = `
+            <h3>Case Summary</h3>
+            <p>Total Cases This Month: ${monthlyCount}</p>
+            <p>Total Cases This Quarter: ${quarterlyCount}</p>
+            <p>Total Cases This Year: ${annualCount}</p>
+         `;
+
+         // Append summary to the table
+         table.prepend(summary);
+
+         const printContents = table.innerHTML;
+         const originalContents = document.body.innerHTML;
+         document.body.innerHTML = printContents;
+         window.print();
+         document.body.innerHTML = originalContents;
+         location.reload();
+      }
+
+      function proceedToQcadaac() {
+         const subject = encodeURIComponent("Case Report from BADAC Brgy. Sta Lucia");
+         const body = encodeURIComponent("Dear QCADAAC,\n\nPlease find the attached case report.\n\nBest regards,\nBADAC Brgy. Sta Lucia");
+         const url = `https://mail.google.com/mail/?view=cm&fs=1&to=qcadaac@quezoncity.gov.ph&su=${subject}&body=${body}`;
+         window.open(url, '_blank');
+      }
    </script>
 </body>
 
