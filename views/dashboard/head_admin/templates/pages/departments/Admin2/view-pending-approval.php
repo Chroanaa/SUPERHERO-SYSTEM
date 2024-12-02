@@ -1,5 +1,3 @@
-<!-- // STANDARD (DON'T MAKE ANY CHANGES) -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,19 +13,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
     <link href="../../../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Onboarding as Super Admin for Brgy. Management">
-    <meta property="og:description" content="Still in development phase.">
-    <meta property="og:image" content="URL_to_your_image.jpg">
-    <meta property="og:url" content="https://yourwebsite.com">
-    <meta property="og:type" content="website">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Onboarding as Super Admin for Brgy. Management">
-    <meta name="twitter:description" content="Still in development phase.">
-    <meta name="twitter:image" content="URL_to_your_image.jpg">
-    <meta name="twitter:url" content="https://yourwebsite.com">
     <style>
         .record-item {
             cursor: pointer;
@@ -47,6 +32,14 @@
             font-size: 2rem;
             margin-bottom: 1rem;
         }
+        .status {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: green;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -63,10 +56,6 @@
             </div>
 
             <div class="view-approval-action d-flex justify-content-end align-items-center" style="gap: 5px">
-                <div class="sort>
-                    <label for="">Sort by:</label>
-                    <input type="text">
-                </div>
                 <div class="search">
                     <label for="">Search:</label>
                     <input type="text">
@@ -77,23 +66,9 @@
                     <h5>Approved Request (0 Unread)</h5>
                     <button class="btn text-light" style="background-color: #FF5D5D;">Reload</button>
                 </div>
-                <div class="view-approval-body border mt-3">
-                    <div class="view-approval-body-title">
-                        <div class="view-approval-body-header d-flex justify-content-between align-items-center px-3 pt-4">
-                                <h5>0001 - Drug Testing</h5>
-                                <p>11/27/20024  &nbsp; 7:40 PM</p>
-                        </div>
-                        <div class="view-approval-body-content px-3 pb-3">
-                            <p>Requested by BADAC staff John Santos.</p>
-                            <button type="button" 
-                                    class="btn text-light" 
-                                    style="background-color: #FF5D5D"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewDetails">See Details</button>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
+            <div class="container"></div>
         </div>
 
         <!-- View Details Modal -->
@@ -125,24 +100,13 @@
                             </div>
                             <div class="form-group mt-2">
                                 <label for="description">Description</label>
-                                <textarea name="description" class="form-control">
+                                <textarea name="description" class="form-control" readonly></textarea>
+                            </div>
+                           
+                           <div class="form-group mt-2">
+                                <p class="status"></p>
+                           </div>
 
-                                </textarea>
-                            </div>
-                            <div class="form-group mt-2">
-                                <label for="files">Files</label>
-                                <input type="files" class="form-control" name="files" readonly>
-                            </div>
-                            <div class="form-group mt-2">
-                                <label for="files">Status</label>
-                                <select name="files" class="text-success form-control">
-                                    <option value="">Approved</option>
-                                </select>
-                            </div>
-                            <div class="form-group mt-2 d-flex justify-content-end align-items center wrap" style="gap:5px;">
-                                <button class="btn text-light" 
-                                        style="background-color:#FF5D5D;">Edit</button>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -152,7 +116,7 @@
         <!-- Sign Out Confirmation Modal -->
         <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
             data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="signOutModalLabel">Confirm Sign Out</h5>
@@ -176,8 +140,48 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <!-- <script src="../../../user_data.js"></script> -->
     <script src="../../../diff-sidebar.js" type="module"></script>
 </body>
+<script>
 
+    const approved = JSON.parse(localStorage.getItem("approvedData"));
+    let htmlContent = "";
+    for(const key in approved) {
+      htmlContent += `
+        <div class="view-approval-body border bg-white mt-3">
+                    <div class="view-approval-body-title">
+                        <div class="view-approval-body-header d-flex justify-content-between align-items-center px-3 pt-4">
+                                <h5>${key} - ${approved[key].title} </h5>
+                                <p>${approved[key].submitted}</p>
+                        </div>
+                        <div class="view-approval-body-content px-3 pb-3">
+                            <p>Requested by ${approved[key].department} staff ${approved[key].requester}.</p>
+                            <button type="button" 
+                                    class="btn text-light" 
+                                    style="background-color: #FF5D5D"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#viewDetails" onclick="populateModal(
+                                        '${key}',
+                                        '${approved[key].requester}',
+                                        '${approved[key].department}',
+                                        '${approved[key].submitted}',
+                                        '${approved[key].description}',
+                                        '${approved[key].status}'
+                                    )">See Details</button>
+                        </div>
+                    </div>
+        </div>
+      `;
+    }
+    document.querySelector(".container").innerHTML = htmlContent;
+
+    function populateModal(requestId, requester, department, submitted, description, status) {
+        document.querySelector("#viewDetails input[name=pendingRequest]").value = requestId;
+        document.querySelector("#viewDetails input[name=requester]").value = requester;
+        document.querySelector("#viewDetails input[name=department]").value = department;
+        document.querySelector("#viewDetails input[name=submitted]").value = submitted;
+        document.querySelector("#viewDetails textarea[name=description]").value = description;
+        document.querySelector("#viewDetails .status").innerHTML = status;
+    }
+</script>
 </html>

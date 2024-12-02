@@ -1,5 +1,3 @@
-<!-- // STANDARD (DON'T MAKE ANY CHANGES) -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,19 +13,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
     <link href="../../../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Onboarding as Super Admin for Brgy. Management">
-    <meta property="og:description" content="Still in development phase.">
-    <meta property="og:image" content="URL_to_your_image.jpg">
-    <meta property="og:url" content="https://yourwebsite.com">
-    <meta property="og:type" content="website">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Onboarding as Super Admin for Brgy. Management">
-    <meta name="twitter:description" content="Still in development phase.">
-    <meta name="twitter:image" content="URL_to_your_image.jpg">
-    <meta name="twitter:url" content="https://yourwebsite.com">
     <style>
         .record-item {
             cursor: pointer;
@@ -67,21 +52,8 @@
                     <h5>View  Pending Request (0 Unread)</h5>
                     <button class="btn text-light" style="background-color: #FF5D5D;">Reload</button>
                 </div>
-                <div class="view-pending-body border mt-3">
-                    <div class="view-pending-body-title">
-                        <div class="view-pending-body-header d-flex justify-content-between align-items-center px-3 pt-4">
-                                <h5>0001 - Short Description for Request</h5>
-                                <p>11/27/20024</p>
-                        </div>
-                        <div class="view-pending-body-content px-3 pb-3">
-                            <p>Requested by BADAC staff John Santos.</p>
-                            <button type="button" 
-                                    class="btn text-light" 
-                                    style="background-color: #FF5D5D"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewDetails">See Details</button>
-                        </div>
-                    </div>
+                <div class="container">
+
                 </div>
             </div>
         </div>
@@ -100,37 +72,32 @@
                         <form action="#">
                             <div class="form-group">
                                 <label for="pendingRequest">Pending Request ID:</label>
-                                <input type="text" name="pendingRequest" class="form-control" readonly>
+                                <input type="text" id="id" name="pendingRequest" class="form-control" readonly>
                             </div>
                             <div class="form-group mt-2">
                                 <label for="requester">Requester:</label>
-                                <input type="text" class="form-control" name="requester" readonly>
+                                <input type="text" id="name" class="form-control" name="requester" readonly>
                             </div>
                             <div class="form-group mt-2">
                                 <label for="department">Department:</label>
-                                <input type="text" class="form-control" name="department" readonly>
+                                <input type="text" id="department" class="form-control" name="department" readonly>
                             </div>
                             <div class="form-group mt-2">
                                 <label for="submitted">Submitted</label>
-                                <input type="text" class="form-control" name="submitted" readonly>
+                                <input type="text" id="submitted" class="form-control" name="submitted" readonly>
                             </div>
                             <div class="form-group mt-2">
                                 <label for="description">Description</label>
-                                <textarea name="description" class="form-control">
-
-                                </textarea>
+                                <textarea name="description" id="description" class="form-control" readonly></textarea>
                             </div>
-                            <div class="form-group mt-2">
-                                <label for="files">Files</label>
-                                <input type="files" class="form-control" name="files" readonly>
-                            </div>
+                           
                             <div class="form-group mt-2 d-flex justify-content-end align-items center wrap" style="gap:5px;">
                                 <button class="btn text-light" 
                                         style="background-color:#BF3033;"
                                         data-bs-toggle="modal"
                                         data-bs-target="#disregard">Disregard</button>
                                 <button class="btn text-light" 
-                                        style="background-color:#04D73D;">Approve</button>
+                                        style="background-color:#04D73D;" onclick="approvedItem()">Approve</button>
                             </div>
                         </form>
                     </div>
@@ -175,20 +142,13 @@
                                 <textarea name="reasonForDisregarding" class="form-control"></textarea>
                             </div>
                             <div class="form-group d-flex justify-content-end">
-                                <button type="button" class=" mt-3 btn bg-light border">Save</button>
+                                <button type="button" class="mt-3 btn bg-light border" onclick="disregardItem()">Save</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
          </div>
-
-
-
-
-
-
-
 
         <!-- Sign Out Confirmation Modal -->
         <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -217,8 +177,141 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <!-- <script src="../../../user_data.js"></script> -->
     <script src="../../../diff-sidebar.js" type="module"></script>
 </body>
+<script>
+   
+    let htmlContent = ""
+    const pending = JSON.parse(localStorage.getItem("pendingData"));
+    for (const key in pending) {
+        htmlContent += `
+            <div class="view-pending-body border mt-3">
+                    <div class="view-pending-body-title">
+                        <div class="view-pending-body-header d-flex justify-content-between align-items-center px-3 pt-4">
+                                <h5>${key} - ${pending[key].title}</h5>
+                                <p>${pending[key].submitted}</p>
+                        </div>
+                        <div class="view-pending-body-content px-3 pb-3">
+                            <p>Requested by ${pending[key].department} staff ${pending[key].requester}.</p>
+                            <button type="button" 
+                                    class="btn text-light" 
+                                    style="background-color: #FF5D5D"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#viewDetails" onclick="populateModal(
+                                        '${key}',
+                                        '${pending[key].requester}',
+                                        '${pending[key].department}',
+                                        '${pending[key].submitted}',
+                                        '${pending[key].description}'
+                                    )">See Details</button>
+                            <button class="btn text-light" 
+                                    style="background-color:#04D73D;" onclick="approvedItem('${key}')">Approve</button>
+                        </div>
+                    </div>
+                </div>
+        `;
+    }
+    document.querySelector(".container").innerHTML = htmlContent;
 
+    function populateModal(id, requester, department, submitted, description) {
+        document.querySelector("#viewDetails input[name=pendingRequest]").value = id;
+        document.querySelector("#viewDetails input[name=requester]").value = requester;
+        document.querySelector("#viewDetails input[name=department]").value = department;
+        document.querySelector("#viewDetails input[name=submitted]").value = submitted;
+        document.querySelector("#viewDetails textarea[name=description]").value = description;
+    }
+
+    function approvedItem(key) {
+        const pending = JSON.parse(localStorage.getItem("pendingData"));
+        const approved = JSON.parse(localStorage.getItem("approvedData")) || {};
+
+        // Get the details of the item to be approved
+        const { requester, department, submitted, description } = pending[key];
+
+        // Add the item to the approvedData object
+        approved[key] = {
+            requester,
+            department,
+            submitted,
+            description,
+            status: "Approved"
+        };
+
+        // Remove the item from pendingData
+        delete pending[key];
+
+        // Update localStorage
+        localStorage.setItem("pendingData", JSON.stringify(pending));
+        localStorage.setItem("approvedData", JSON.stringify(approved));
+
+        // Refresh the displayed list of pending requests
+        renderPendingRequests();
+    }
+
+    function disregardItem() {
+        const key = document.querySelector("#viewDetails input[name=pendingRequest]").value;
+        const reasonForDisregarding = document.querySelector("#notesForDisregarding textarea[name=reasonForDisregarding]").value;
+        const pending = JSON.parse(localStorage.getItem("pendingData"));
+        const disregarded = JSON.parse(localStorage.getItem("disregardedRequest")) || {};
+
+        // Get the details of the item to be disregarded
+        const { requester, department, submitted, description } = pending[key];
+
+        // Add the item to the disregardedRequest object
+        disregarded[key] = {
+            requester,
+            department,
+            submitted,
+            description,
+            reasonForDisregarding
+        };
+
+        // Remove the item from pendingData
+        delete pending[key];
+
+        // Update localStorage
+        localStorage.setItem("pendingData", JSON.stringify(pending));
+        localStorage.setItem("disregardedRequest", JSON.stringify(disregarded));
+
+        // Refresh the displayed list of pending requests
+        renderPendingRequests();
+    }
+
+    function renderPendingRequests() {
+        const pending = JSON.parse(localStorage.getItem("pendingData"));
+        let htmlContent = "";
+        for (const key in pending) {
+            htmlContent += `
+                <div class="view-pending-body border mt-3">
+                    <div class="view-pending-body-title">
+                        <div class="view-pending-body-header d-flex justify-content-between align-items-center px-3 pt-4">
+                            <h5>${key} - ${pending[key].title}</h5>
+                            <p>${pending[key].submitted}</p>
+                        </div>
+                        <div class="view-pending-body-content px-3 pb-3">
+                            <p>Requested by ${pending[key].department} staff ${pending[key].requester}.</p>
+                            <button type="button" 
+                                    class="btn text-light" 
+                                    style="background-color: #FF5D5D"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#viewDetails" onclick="populateModal(
+                                        '${key}',
+                                        '${pending[key].requester}',
+                                        '${pending[key].department}',
+                                        '${pending[key].submitted}',
+                                        '${pending[key].description}'
+                                    )">See Details</button>
+                            <button class="btn text-light" 
+                                    style="background-color:#04D73D;" onclick="approvedItem('${key}')">Approve</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        document.querySelector(".container").innerHTML = htmlContent;
+    }
+
+    // Initial render of pending requests
+    renderPendingRequests();
+</script>
 </html>
