@@ -18,13 +18,14 @@ if (header) {
                         <div class="sidebar-submenu-item main">Home</div>
                         <div class="sidebar-submenu-item complaint-section">Complaint Records</div>
                         <div class="sidebar-submenu-item new-complaint">File New Complaint</div>
-                        <div class="sidebar-submenu-item create-report">Create Report</div>
-                        <div class="sidebar-submenu-item team-schedule">Team Schedule</div>
-                        <div class="sidebar-submenu-item vehicle-dispatch">Vehicle Dispatchment</div>
                         <div class="sidebar-submenu-item bpso-notify">Notifications</div>
                     </div>
                 </div>
-                
+                <!--
+                        <div class="sidebar-submenu-item create-report">Create Report</div>
+                        <div class="sidebar-submenu-item team-schedule">Team Schedule</div>
+                        <div class="sidebar-submenu-item vehicle-dispatch">Vehicle Dispatchment</div>
+                -->
                 <!-- <div class="sidebar-category">
             <div class="sidebar-category-header">
                 <span><i class="fa-solid fa-id-card category-icon"></i>User Profile</span>

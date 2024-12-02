@@ -18,7 +18,7 @@ if (header) {
                         <div class="sidebar-submenu-item dashboard">Dashboard</div>
                         <div class="sidebar-submenu-item notify">Notifications</div>
                         <div class="sidebar-submenu-item contacts">Contacts</div>
-                        <div class="sidebar-submenu-item gov-contact">Programs and Services</div>
+                        
                     </div>
 
                 </div>
@@ -30,6 +30,8 @@ if (header) {
             </div>
         </nav>
     `;
+
+    // <div class="sidebar-submenu-item gov-contact">Programs and Services</div>
 
     const sidebarContent = document.querySelector('.sidebar-content');
     const ps = new PerfectScrollbar(sidebarContent);
