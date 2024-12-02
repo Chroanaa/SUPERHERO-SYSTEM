@@ -1,3 +1,47 @@
+<?php
+// Start the session
+session_start();
+
+// Declare API endpoint URL for fetching BADAC complaints
+$api_url = 'https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/badac/complaint_records/';
+
+// Fetch the data from the API using cURL
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $api_url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+// Decode the JSON response from the API
+$complaints = json_decode($response, true);
+
+// Initialize counters
+$total_cases = 0;
+$resolved_cases = 0;
+$ongoing_cases = 0;
+$pending_cases = 0;
+
+// Calculate statistics if data is available
+if (isset($complaints['badac_all_complaints']) && is_array($complaints['badac_all_complaints'])) {
+    $total_cases = count($complaints['badac_all_complaints']);
+    
+    // Count cases by status
+    foreach ($complaints['badac_all_complaints'] as $complaint) {
+        switch (strtolower($complaint['case_status'])) {
+            case 'resolved':
+                $resolved_cases++;
+                break;
+            case 'ongoing':
+                $ongoing_cases++;
+                break;
+            case 'pending':
+                $pending_cases++;
+                break;
+        }
+    }
+}
+?>
+
 <!-- CUSTOM PROGRAM (FEEL FREE TO CHANGE IT) -->
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +95,7 @@
             <div class="card p-2 shadow" style="width: 400px; height: 200px;">
                <div class="total-cases card-body p-4 d-flex justify-content-evenly align-items-center">
                   <div class="card-label" style="color: #1E477D;">
-                     <h2>299</h2>
+                     <h2><?php echo $total_cases; ?></h2>
                      <h4>Total Cases</h4>
                   </div>
                   <div class="card-label">
@@ -62,7 +106,7 @@
             <div class="card p-2 shadow" style="width: 400px; height: 200px;">
                <div class="resolved-cases card-body p-4 d-flex justify-content-evenly align-items-center">
                   <div class="card-label" style="color: #1E477D;">
-                     <h2>159</h2>
+                     <h2><?php echo $resolved_cases; ?></h2>
                      <h4>Resolved Cases</h4>
                   </div>
                   <div class="card-label">
@@ -73,7 +117,7 @@
             <div class="card p-2 shadow" style="width: 400px; height: 200px;">
                <div class="ongoing-cases card-body p-4 d-flex justify-content-evenly align-items-center">
                   <div class="card-label" style="color: #A9262E;">
-                     <h2>150</h2>
+                     <h2><?php echo $ongoing_cases; ?></h2>
                      <h4>Ongoing Cases</h4>
                   </div>
                   <div class="card-label">
@@ -84,7 +128,7 @@
             <div class="card p-2 shadow" style="width: 400px; height: 200px;">
                <div class="pending-cases card-body p-4 d-flex justify-content-evenly align-items-center">
                   <div class="card-label" style="color: #A9262E;">
-                     <h2>53</h2>
+                     <h2><?php echo $pending_cases; ?></h2>
                      <h4>Pending Cases</h4>
                   </div>
                   <div class="card-label">
