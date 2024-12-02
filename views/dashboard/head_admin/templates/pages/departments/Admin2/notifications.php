@@ -62,6 +62,51 @@
                 <p>This contains the streamlined process based on activities.</p>
             </div>
 
+            <div class="notification-action d-flex justify-content-end align-items-center" style="gap: 5px">
+                <div class="sort">
+                    <label for="">Sort by:</label>
+                    <input type="text">
+                </div>
+                <div class="search">
+                    <label for="">Search:</label>
+                    <input type="text">         
+                </div>
+            </div>
+
+            <div class="notification-page shadow bg-light rounded-3 py-3 px-4 container-fluid">
+                <div class="notification-header d-flex justify-content-between align-items-center">
+                    <div class="notification-header-title">
+                        <a href="">(1 Unread)</a>
+                        <a href="">(3 Archrive)</a>
+                    </div>
+                    <button class="btn text-light" style="background-color: #FF5D5D;">Reload</button>
+                </div>
+                <div class="notification-body">
+                    <table class="table table-striped table=bordered">
+                        <tbody>
+                            <tr>
+                                <td>0001-Medical Mission</td>
+                                <td>From : HC staff Joe Digan.</td>
+                                <td>11/27/24 &nbsp;  7:40 PM</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm text-light" style="background-color:#FF5D5D;">Archieve</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>0001-Medical Mission</td>
+                                <td>From : HC staff Joe Digan.</td>
+                                <td>11/27/24 &nbsp;  7:40 PM</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm text-light" style="background-color:#FF5D5D;">Archieve</button>
+                                </td>                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+               
+
+            </div>
+
+            
 
         </div>
 
