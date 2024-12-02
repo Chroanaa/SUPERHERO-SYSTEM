@@ -70,7 +70,7 @@ $total_unsettled = $row_unsettled_cases['total_unsettled'];
         <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" class="sidebar-link">
             <div class="sidebar-submenu-item">Complaints</div>
         </a> 
-        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" class="sidebar-link">
+        <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/CFA/issuecfa.php" class="sidebar-link">
             <div class="sidebar-submenu-item">Issue CFA</div>
         </a>
         <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/schedule/schedule.php" class="sidebar-link">
@@ -214,7 +214,7 @@ $total_unsettled = $row_unsettled_cases['total_unsettled'];
 
 
 <div style="display: flex; justify-content: flex-start; align-items: center; gap: 40px; max-width: 100%; box-sizing: border-box;">
-    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" style="text-decoration: none; color: inherit;">
+    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/CFA/issuecfa.php" style="text-decoration: none; color: inherit;">
     <div id="total-case-2" class="clickable-div" style="width: 300px; height: 200px; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
      <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Unsettled</span>
      <h1 style="color: #303030; font-weight: 500; margin-top: 10%;"> 

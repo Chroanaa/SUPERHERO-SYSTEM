@@ -59,7 +59,7 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
                     <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" class="sidebar-link">
                         <div class="sidebar-submenu-item">Complaints</div>
                     </a> 
-                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" class="sidebar-link">
+                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/CFA/issuecfa.php" class="sidebar-link">
                         <div class="sidebar-submenu-item">Issue CFA</div>
                    </a>
                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/schedule/schedule.php" class="sidebar-link">
