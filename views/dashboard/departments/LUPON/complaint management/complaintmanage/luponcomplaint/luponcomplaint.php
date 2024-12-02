@@ -15,7 +15,7 @@ $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 foreach ($turnovers as &$turnover) {
     $turnover['formatted_hearing_time'] = date('g:iA', strtotime($turnover['hearing_time']));
 }
-unset($turnover); // Break reference to avoid potential bugs
+unset($turnover); 
 ?>
 
 
@@ -83,7 +83,7 @@ unset($turnover); // Break reference to avoid potential bugs
                     <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" class="sidebar-link">
                         <div class="sidebar-submenu-item">Complaints</div>
                     </a> 
-                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" class="sidebar-link">
+                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/CFA/issuecfa.php" class="sidebar-link">
                         <div class="sidebar-submenu-item">Issue CFA</div>
                    </a>
                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/schedule/schedule.php" class="sidebar-link">
@@ -389,7 +389,7 @@ $current_page = basename($_SERVER['PHP_SELF']); // Get the current filename.
 }
 
 .title span {
-    color: black; /* I-override ang kulay ng mga span */
+    color: black;
 }
 
 .badge {

@@ -3,10 +3,10 @@ include 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
 
 if (isset($_GET['case_number'])) {
     $case_number = $_GET['case_number']; $sql = "SELECT * FROM turnover WHERE case_number = :case_number"; $stmt = $pdo->prepare($sql); $stmt->bindParam(':case_number', $case_number, PDO::PARAM_STR);
-    $stmt->execute(); $case_details = $stmt->fetch(PDO::FETCH_ASSOC);
- if (!$case_details) { echo "No case."; exit; }
- $date_of_incident = $case_details['date_of_incident']; $formatted_date = date('F j, Y', strtotime($date_of_incident));  
- $hearing_time = $case_details['hearing_time'];  $formatted_time_12hr = date('g:i A', strtotime($hearing_time));  
+    $stmt->execute(); $turnover = $stmt->fetch(PDO::FETCH_ASSOC);
+ if (!$turnover) { echo "No case."; exit; }
+ $date_of_incident = $turnover['date_of_incident']; $formatted_date = date('F j, Y', strtotime($date_of_incident));  
+ $hearing_time = $turnover['hearing_time'];  $formatted_time_12hr = date('g:i A', strtotime($hearing_time));  
 } else { echo "No casenumber."; exit;}
 ?>
 
@@ -116,7 +116,7 @@ if (isset($_GET['case_number'])) {
  <!-- Dashboard Side -->
  <nav style="width: 77%; margin-top: 10px; border-radius: 7px; margin-left: 21%; height: 104px; border: 1px solid #d4d4d4; background-color: #ffffff; position: relative; box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);">
     <h1 style="font-size: 2rem; position: absolute; left: 3%; top: 25px;">
-        SUMMON LETTER
+    CERTIFICATE TO FILE ACTION
     </h1>  
 </nav>
 
@@ -128,7 +128,7 @@ if (isset($_GET['case_number'])) {
   <nav style="margin-top: 30px; margin-left: 21%; padding: 20px; min-height: 10vh; width: 77%; box-sizing: border-box; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
 
 <div style="display: flex; justify-content: center; align-items: center;">
-  <div style="height: 906px; width: 816px; margin-left: 0; overflow-y: hidden;">
+  <div style="height: 906px; width: 916px; margin-left: 0; overflow-y: hidden;">
 
         
         <div id="generatedescription" name="complaint_description" placeholder="Report description..." style="overflow-y: auto; height: 506px; border-radius: 5px; ">
@@ -143,85 +143,86 @@ if (isset($_GET['case_number'])) {
 </h5>
 
 <h6 style="margin-left: 10%; margin-top: 6%;">KP Kalatas Blg. 9</h6>
-<h6 style="margin-left: 60%; margin-top: 4%;">Usaping Pambarangay: 
-  <span id="case_number" style="color: red;"><?php echo htmlspecialchars($case_details['case_number']); ?></span>
+<h6 style="margin-left: 60%; margin-top: 4%;">Barangay Case No: 
+  <span id="case_number" style="color: red;"><?php echo htmlspecialchars($turnover['case_number']); ?></span>
 </h6>
 
 <h6 style="margin-left: 10%; margin-top: 6%; line-height: 1.8;">
-  <span id="complainant_name" style="color: red;"><?php echo htmlspecialchars($case_details['complainant_name']); ?></span><br>
+  <span id="complainant_name" style="color: red;"><?php echo htmlspecialchars($turnover['complainant_name']); ?></span><br>
   Complainant/s<br>
   -Laban kay/kina<br>
-  <span id="respondent_name" style="color: red;"><?php echo htmlspecialchars($case_details['respondent_name']); ?></span><br>
+  <span id="respondent_name" style="color: red;"><?php echo htmlspecialchars($turnover['respondent_name']); ?></span><br>
   Respondent/s
 </h6>
 
 
 
-<h6 style="margin-left: 10%; margin-top: 8%;">IPINAG SUSUMBONG</h6>
 
 <h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
-  Ikaw/kayo, ay tinatawagan upang humarap sa akin/amin nang personal kasama ang iyong mga saksi sa ika 
-  <span id="case_number" style="color: red;"><?php echo htmlspecialchars($formatted_date); ?></span> ,sa ganap ika 
-  <span id="case_number" style="color: red;"><?php echo htmlspecialchars($formatted_time_12hr); ?></span> ng araw para sagutin ang sumbong laban sa iyo na inihain sa akin, kalakip nito ang kopya ng sumbong, 
-  para sa pag-aayos ng inyong hidwaan ng may sumbong Binabalaan ka na sa iyong pagtanggi o pagbabale-wala sa patawag na ito, ikaw ay mawawalan ng karapatang maghain ng kontra sumbong sa usapin na ito.
-  Kailangang sundin mo ang patawag na ito, kung hindi, ikaw ay mapaparusahan sa kasalanang paglapastangan sa hukuman.
+    This is to certify that:
 </h6>
 
-
-
-
-
-<h6 style="margin-left: 60%; margin-top: 4%;">
-    <br>_________________________<br>
-    Punong Barangay/Pinuno ng Lupon
-</h6>
-
-<h6 style="margin-left: 60.5%; margin-top: 4%; line-height: 3.8;">
-    Sa pahintulot ng Punong Barangay
-    <br style="margin-left: 60%; margin-top: 4%;">_________________________<br>
-</h6>
-<h6 style="margin-left: 71.5%; margin-top: -2.5%;">
-    Barangay Secretary
+<h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
+    1. This complaint was filed on <span style="color: red;"><?php echo htmlspecialchars($formatted_date); ?></span>
 </h6>
 
 
 <h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
-    ULAT NG OPISYAL NA NAGDALA NG PATAWAG
+2. There has been personal confrontation between the parties before the Punong Barangay because the respondent was absent and that mediation failed.
 </h6>
 
 <h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
-    Inihatid ko ang patawag na ito sa nagsumbong/isinusumbong na si _________________ noong ika- ____ araw ng _____________, 2024 sa pamamagitan ng [isulat ang (mga) pangalan ng inirereklamo sa paraan kung paano ito ipinarating sa kanya/kanila.]
+3. The Pangkat ng Tagapagkasundo was constituted but there has been personal confrontation before the Pangkat likewise did not result into a settlement. 
 </h6>
 
 <h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
-    ____________ 1. Iniabot ko nang tuwiran sa kanya/kanila ang patawag, o
+4. Therefore, the corresponding complaint for the dispute may now be filed in court/government office.
 </h6>
 
 <h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
-    ____________ 2. Iniabot ko nang tuwiran sa kanya/kanila ang patawag at siya/sila tumangging tanggapin ito, o
+The [Day]
 </h6>
 
 <h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
-    ____________ 3. Iniwan ko ang patawag sa isang taong nasa hustong gulang at may sariling pagpapasya na naninirahan sa bahay ng isinusumbong. o
+Attested by [Lupon Team]
 </h6>
 
-<h6 style="text-align: left; margin-left: auto; margin-right: auto; line-height: 1.8; width: 80%; margin-top: 6%;">
-    ____________ 4. Iniwan ko ang patawag sa kanyang/kanilang opisina/lugar ng hanapbuhay kay (Pangalan) isang taong namamahala sa tanggapan/hanapbuhay.
-</h6>
+<div style="display: flex; justify-content: center; align-items: center; gap: 40%;">
+    <h6 style="margin-top: 10%;">
+        Clarence Ordejon<br>
+        Lupon Tagapamayapa
+    </h6>
+
+    <h6 style="margin-top: 10%; margin-left: 0%;">
+        Clarence Ordejon<br>
+        Lupon Secretary
+    </h6>
+</div>
 
 
-<h6 style="margin-left: 60%; margin-top: 6%;">
-    <br>__________________________<br>
-    Punong Barangay/Pinuno ng Lupon
-</h6>
+<div style="display: flex; justify-content: center; align-items: center; gap: 40%;">
+    <h6 style="margin-top: 10%;">
+        Clarence Ordejon<br>
+        Lupon Secretary
+    </h6>
 
-<h6 style="margin-left: 10%; margin-top: 6%;">Tinanggap ng mga Ipinagsusumbong/kinatawan.</h6>
+    <h6 style="margin-top: 10%;">
+        Clarence Ordejon<br>
+        Lupon Tagapamayapa
+    </h6>
+</div>
 
-<h6 style="margin-left: 10%; margin-top: 3%;">
-    <br>__________________________<br>
-    Complainant /s
 
-</h6>
+<div style="display: flex; justify-content: center; align-items: center; ">
+    <h6 style="margin-top: 10%;">
+        Clarence Ordejon<br>
+        Lupon Tagapamayapa
+    </h6>
+</div>
+
+
+
+
 
        
 </div>
@@ -234,7 +235,7 @@ if (isset($_GET['case_number'])) {
   <button id="printButton" class="btn btn-primary btn-hover" style="font-weight: 500; width: 200px; height: 60px; border-radius: 6px; border: 1px solid #b1b1b1; display: flex; justify-content: center; align-items: center; text-decoration: none; 
 color: white; background-color: #007bff;">PRINT </button>
 
-        <a href="seedetails.php?case_number=<?php echo urlencode($_GET['case_number']); ?>"  class="btn btn-primary btn-hover" 
+        <a href="issuecfa.php?case_number=<?php echo urlencode($_GET['case_number']); ?>"  class="btn btn-primary btn-hover" 
         style="font-weight: 500; width: 200px; height: 60px; border-radius: 6px; border: 1px solid #b1b1b1; 
         display: flex; justify-content: center; align-items: center; text-decoration: none; color: white;background-color: rgb(23, 23, 23);">
         BACK
@@ -429,7 +430,7 @@ document.getElementById('printButton').addEventListener('click', function() {
     doc.text('Contact #: 417-1412 / 358-3664 / 0939-950-9991 / 625-1755', 105, topMargin + 25, { align: 'center' });
     // Content script from db
     doc.setFont('times', 'normal');
-    doc.setFontSize(10); doc.text('KP Kalatas Blg. 9', 10, 40); doc.text('Usaping Pambarangay: ', 140, 50); doc.setTextColor(255, 0, 0); doc.text(caseNumber, 174, 50);
+    doc.setFontSize(10); doc.text('KP Kalatas Blg. 9', 10, 40); doc.text('Barangay Case No: ', 140, 50); doc.setTextColor(255, 0, 0); doc.text(caseNumber, 174, 50);
     doc.setTextColor(255, 0, 0);
     doc.text(complainantName, 10, 60); 
     doc.setTextColor(0, 0, 0);
@@ -441,28 +442,28 @@ document.getElementById('printButton').addEventListener('click', function() {
     doc.setTextColor(0, 0, 0);
     doc.text('Respondent/s', 10, 80);
 
-    var formattedDate = "<?php echo htmlspecialchars(string: $formatted_date); ?>"; var formattedTime = "<?php echo htmlspecialchars(string: $formatted_time_12hr); ?>";
+    doc.text(' CERTIFICATE TO FILE ACTION', 80, topMargin + 100);
 
-    // Summons DEscription
-   var summonsText = `Ikaw/kayo, ay tinatawagan upang humarap sa akin/amin nang personal kasama ang iyong mga saksi sa ika ${formattedDate}, sa ganap ika ${formattedTime} ng araw para sagutin ang sumbong laban sa iyo na inihain sa akin, kalakip nito ang kopya ng sumbong, para sa pag-aayos ng inyong hidwaan ng may sumbong. Binabalaan ka na sa iyong pagtanggi o pagbabale-wala sa patawag na ito, ikaw ay mawawalan ng karapatang maghain ng kontra sumbong sa usapin na ito. Kailangang sundin mo ang patawag na ito, kung hindi, ikaw ay mapaparusahan sa kasalanang paglapastangan sa hukuman.`;
-    var summonsTextArray = doc.splitTextToSize(summonsText, 190); doc.text(summonsTextArray, 10, topMargin + 95);
-
-    doc.text('_________________________', 150, topMargin + 125); doc.text('Punong Barangay/Pinuno ng Lupon', 150, topMargin + 130); doc.text('Sa pahintulot ng Punong Barangay', 150, topMargin + 138);
-    doc.text('_________________________', 150, topMargin + 145); doc.text('Barangay Secretary', 150, topMargin + 150);
-
-    doc.text('ULAT NG OPISYAL NA NAGDALA NG PATAWAG', 10, topMargin + 170);
-    doc.text('Inihatid ko ang patawag na ito sa nagsumbong/isinusumbong na si _________________ noong ika- ____ araw ng _____________,', 10, topMargin + 175);
-    doc.text(' 2024 sa pamamagitan ng [isulat ang (mga) pangalan ng inirereklamo sa paraan kung paano ito ipinarating sa kanya/kanila.]', 10, topMargin + 180);
-    doc.text('__________1. Iniabot ko nang tuwiran sa kanya/kanila ang patawag, o naninirahan ', 10, topMargin + 185);
-    doc.text('__________2. Iniabot ko nang tuwiran sa kanya/kanila ang patawag at siya/sila tumangging tanggapin ito, o', 10, topMargin + 190);
-    doc.text('__________3. Iniwan ko ang patawag sa isang taong nasa hustong gulang at may sariling pagpapasya na naninirahan', 10, topMargin + 195);
-    doc.text(' sa bahay ng isinusumbong. o', 10, topMargin + 200);
-    doc.text('__________4. Iniwan ko ang patawag sa kanyang/kanilang opisina/lugar ng hanapbuhay kay (Pangalan)', 10, topMargin + 210);
-    doc.text('isang taong namamahala sa tanggapan/hanapbuhay.', 10, topMargin + 215);
+    doc.text(' This is to certify that:', 10, topMargin + 120);
+    var formattedDate = "<?php echo htmlspecialchars($formatted_date); ?>";
+    doc.text('1. This complaint was filed on ' + formattedDate, 10, topMargin + 130);
+    doc.text('2. There has been personal confrontation between the parties before the Punong Barangay because the respondent', 10, topMargin + 140);
+    doc.text('was absent and that mediation failed.', 10, topMargin + 145);
+    doc.text('3. The Pangkat ng Tagapagkasundo was constituted but there has been personal confrontation before the Pangkat likewise did not result. ', 10, topMargin + 155);
+    doc.text('into a settlement. sa bahay ng isinusumbong. o', 10, topMargin + 160);
+    doc.text('4. Therefore, the corresponding complaint for the dispute may now be filed in court/government office.', 10, topMargin + 170);
+    doc.text('This ', 10, topMargin + 180);
+    doc.text('Attested by: ', 10, topMargin + 190);
 
   
-    doc.text('__________________________', 150, topMargin + 240); doc.text('Punong Barangay/Pinuno ng Lupon', 150, topMargin + 245); doc.text('Tinanggap ng mga Ipinagsusumbong/kinatawan.', 10, topMargin + 260);
-    doc.text('__________________________', 10, topMargin + 270); doc.text('Complainant /s', 10, topMargin + 275); doc.save('generate.pdf');
+    doc.text('Clarence Ordejon', 150, topMargin + 210); doc.text('LUPON Secretary.',150, topMargin + 215);
+    doc.text('Clarence Ordejon', 30, topMargin + 210); doc.text('LUPON Tagapamayapa', 30, topMargin + 215); 
+
+    doc.text('Clarence Ordejon', 150, topMargin + 235); doc.text('LUPON Tagapamayapa',150, topMargin + 240);
+    doc.text('Clarence Ordejon', 30, topMargin + 235); doc.text('LUPON President', 30, topMargin + 240); 
+
+    doc.text('Hon. Clarence Ordejon', 90, topMargin + 260); doc.text('Punong Barangay.',90, topMargin + 265);
+    doc.save('cfa.pdf');
 });
 
 

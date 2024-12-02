@@ -7,7 +7,12 @@ $sort_order = 'DESC'; if (isset($_GET['sort']) && $_GET['sort'] == 'oldest') { $
 $sql = "SELECT case_number, date_of_incident, complainant_name, hearing_date, DATE_FORMAT(hearing_time, '%l:%i%p') AS hearing_time, case_officer, case_status 
 FROM turnover WHERE case_status = 'unsettled' AND hearing_date IS NOT NULL AND hearing_time IS NOT NULL ORDER BY hearing_date $sort_order, hearing_time ASC"; 
 $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
+
+
 
 
 
@@ -24,7 +29,7 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
-    <link href="../../../../../custom/css/index.css" rel="stylesheet">
+    <link href="../../../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Onboarding as LUPON for Brgy. Management">
@@ -65,7 +70,7 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
                     <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/complaintmanage/complaint.php" class="sidebar-link">
                         <div class="sidebar-submenu-item">Complaints</div>
                     </a> 
-                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/issuecfa.php" class="sidebar-link">
+                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/CFA/issuecfa.php" class="sidebar-link">
                         <div class="sidebar-submenu-item">Issue CFA</div>
                    </a>
                    <a href="http://localhost:3000/views/dashboard/departments/LUPON/complaint%20management/schedule/schedule.php" class="sidebar-link">
@@ -167,11 +172,21 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
                     echo "<td>" . htmlspecialchars(string: $turnover["case_officer"]) . "</td>";
                     echo "<td>" . htmlspecialchars(string: $turnover["case_status"]) . "</td>";
                     echo "<td>
-                        <a href='.php?case_number=" . urlencode(string: $turnover["case_number"]) . "' class='btn-container'>
-                            <button type='button' class='btn btn-primary btn-hover'>See details</button>
-                        </a>
-                    </td>";
-                    echo "</tr>";
+        <button type='button' class='btn btn-primary open-modal' 
+                data-bs-toggle='modal' 
+                data-bs-target='#complaintCreateModal' 
+                data-bs-case-number='" . htmlspecialchars($turnover['case_number']) . "'
+                style='height: 40px;'>
+                See details
+        </button>&nbsp;&nbsp;
+        <button class='btn btn-primary' onclick='window.location.href=\"cfa.php?case_number=" . urlencode($turnover["case_number"]) . "\"' 
+                style='border: none; height: 40px;'>
+                Generate CFA
+        </button>
+      </td>";
+echo "</tr>";
+
+
                 }
             } else {
                 echo "<tr><td colspan='8'>No turnover record</td></tr>";
@@ -188,6 +203,43 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
 
 
 
+
+
+
+
+
+
+   
+
+
+
+ <div id="complaintCreateModal" class="modal fade" tabindex="-1" aria-labelledby="complaintCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="complaintCreateModalLabel">Case Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="title">Case Number: <span id="modalCaseNumber">Onload</span></p>
+                <p class="title">Hearing Date: <span id="modalHearingDate">Onload</span></p>
+                <p class="title">Hearing Time: <span id="modalHearingTime">Onload</span></p>
+                <p class="title">Case Officer: <span id="modalCaseOfficer">Onload</span></p>
+                <p class="title">Case Resolution: <span id="modalCaseNotes">Onload</span></p>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" style="background-color: rgb(23, 23, 23);" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+       
+           
+        
 
 
 
@@ -256,6 +308,16 @@ $stmt = $pdo->prepare($sql); $stmt->execute(); $turnovers = $stmt->fetchAll(PDO:
 .sidebar-category-header {
     position: relative; 
 }
+
+.title {
+    color: red;
+}
+
+.title span {
+    color: black;
+}
+
+
     </style>
     <script>
         const sidebar = document.querySelector('.sidebar-content');
@@ -365,6 +427,44 @@ function filterTable() {
     }
     }
     }
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.open-modal');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const caseNumber = button.getAttribute('data-bs-case-number');
+            console.log('Clicked Case Number:', caseNumber);
+
+            // Fetch case details
+            fetch('fetchcfa.php?case_number=' + caseNumber)
+                .then(response => {
+                    console.log('Fetch Response:', response); 
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched Data:', data);
+
+                    if (data.success) {
+                        document.getElementById('modalCaseNumber').innerText = data.case_number || 'N/A';
+                        document.getElementById('modalHearingDate').innerText = data.hearing_date || 'N/A';
+                        document.getElementById('modalHearingTime').innerText = data.hearing_time || 'N/A';
+                        document.getElementById('modalCaseOfficer').innerText = data.case_officer || 'N/A';
+                        document.getElementById('modalCaseNotes').innerText = data.case_notes || 'No notes available';
+                    } else {
+                        alert(data.message || 'Unable to fetch case details.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching case details.');
+                });
+        });
+    });
+});
+
 
     </script>
 </body>
