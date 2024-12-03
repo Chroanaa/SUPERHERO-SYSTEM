@@ -15,8 +15,8 @@ if (header) {
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="sidebar-submenu show">
-                        <div class="sidebar-submenu-item view-authorize"><a href = "/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/view_authority.php"> Authorization</a></div>
-                        <div class="sidebar-submenu-item transactions"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/transaction_logs.php"> Transactions </a></div>
+                        <div class="sidebar-submenu-item view-authorize"><a href = "/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/view_authority.php"> Authorization</a></div>
+                        <div class="sidebar-submenu-item transactions"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/transaction_logs.php"> Transactions </a></div>
                     </div>
                 </div>
                 <div class="sidebar-category">
@@ -25,10 +25,10 @@ if (header) {
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="sidebar-submenu">
-                        <div class="sidebar-submenu-item admin2-view-pending"><a href= "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-request.php">View Pending Request </a></div>
-                        <div class="sidebar-submenu-item admin2-view-approval"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-approval.php">View Approval Process </a></div>
-                        <div class="sidebar-submenu-item admin2-view-disregard"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-disregarded.php">View Disregarded Process </a></div>
-                        <div class="sidebar-submenu-item admin2-city-ordinance"> <a href = "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/city-ordinance.php">City Ordinance </a></div>
+                        <div class="sidebar-submenu-item admin2-view-pending"><a href= "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-request.php">View Pending Request </a></div>
+                        <div class="sidebar-submenu-item admin2-view-approval"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-approval.php">View Approval Process </a></div>
+                        <div class="sidebar-submenu-item admin2-view-disregard"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-disregarded.php">View Disregarded Process </a></div>
+                        <div class="sidebar-submenu-item admin2-city-ordinance"> <a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/city-ordinance.php">City Ordinance </a></div>
                         <div class="sidebar-submenu-item admin2-notify">Notifications</div>
                     </div>
                 </div>

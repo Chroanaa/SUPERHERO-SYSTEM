@@ -258,7 +258,7 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
                <div class="modal-footer">
                   <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                   data-bs-target="#ConfirmModal">Forward to DSWD</button>
-                  <button type="button" class="btn btn-primary">Message</button>
+                  <!-- <button type="button" class="btn btn-primary">Message</button> -->
                </div>
             </div>
          </div>

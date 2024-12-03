@@ -24,8 +24,8 @@ function getTemplatePath($userType) {
         'BPSO' => 'views/dashboard/departments/BPSO/Dashboard/dashboard.php',
         'Admin1' => 'views/dashboard/departments/Admin1/templates/dashboard.php',
         'Admin2' => 'views/dashboard/departments/Admin2/templates/dashboard/dashboard.twig',
-        'BCPC' => 'views/dashboard/departments/BCPC/dashboard.html',
-        'LUPON' => 'views/dashboard/departments/LUPON/templates/dashboard.php'
+        'BCPC' => 'views/dashboard/departments/BCPC/dashboard.php',
+        'LUPON' => 'views/dashboard/departments/LUPON/dashboard/dashboard.php'
     ];
     return $paths[$userType] ?? null;
 }

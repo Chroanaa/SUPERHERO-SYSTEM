@@ -141,37 +141,68 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script src="../../../diff-sidebar.js" type="module"></script>
-</body>
-<script>
+    <script>
+    // Set mock data for testing
+    const testData = {
+        "REQ123": {
+            title: "Budget Allocation",
+            requester: "John Doe",
+            department: "Finance",
+            submitted: "2024-12-01",
+            description: "Request for budget allocation for Q1 projects.",
+            status: "Approved"
+        },
+        "REQ124": {
+            title: "IT Equipment Purchase",
+            requester: "Jane Smith",
+            department: "IT",
+            submitted: "2024-11-30",
+            description: "Request for purchasing new laptops and accessories.",
+            status: "Approved"
+        },
+        "REQ125": {
+            title: "Maintenance Work",
+            requester: "Michael Lee",
+            department: "Facilities",
+            submitted: "2024-11-29",
+            description: "Request for maintenance and repair of office equipment.",
+            status: "Approved"
+        }
+    };
 
+    // Store the test data in localStorage
+    localStorage.setItem("approvedData", JSON.stringify(testData));
+
+    // Retrieve the data from localStorage and render it on the page
     const approved = JSON.parse(localStorage.getItem("approvedData"));
     let htmlContent = "";
-    for(const key in approved) {
-      htmlContent += `
+    for (const key in approved) {
+        htmlContent += `
         <div class="view-approval-body border bg-white mt-3">
-                    <div class="view-approval-body-title">
-                        <div class="view-approval-body-header d-flex justify-content-between align-items-center px-3 pt-4">
-                                <h5>${key} - ${approved[key].title} </h5>
-                                <p>${approved[key].submitted}</p>
-                        </div>
-                        <div class="view-approval-body-content px-3 pb-3">
-                            <p>Requested by ${approved[key].department} staff ${approved[key].requester}.</p>
-                            <button type="button" 
-                                    class="btn text-light" 
-                                    style="background-color: #FF5D5D"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewDetails" onclick="populateModal(
-                                        '${key}',
-                                        '${approved[key].requester}',
-                                        '${approved[key].department}',
-                                        '${approved[key].submitted}',
-                                        '${approved[key].description}',
-                                        '${approved[key].status}'
-                                    )">See Details</button>
-                        </div>
-                    </div>
+            <div class="view-approval-body-title">
+                <div class="view-approval-body-header d-flex justify-content-between align-items-center px-3 pt-4">
+                    <h5>${key} - ${approved[key].title}</h5>
+                    <p>${approved[key].submitted}</p>
+                </div>
+                <div class="view-approval-body-content px-3 pb-3">
+                    <p>Requested by ${approved[key].department} staff ${approved[key].requester}.</p>
+                    <button type="button" 
+                            class="btn text-light" 
+                            style="background-color: #FF5D5D"
+                            data-bs-toggle="modal"
+                            data-bs-target="#viewDetails" 
+                            onclick="populateModal(
+                                '${key}',
+                                '${approved[key].requester}',
+                                '${approved[key].department}',
+                                '${approved[key].submitted}',
+                                '${approved[key].description}',
+                                '${approved[key].status}'
+                            )">See Details</button>
+                </div>
+            </div>
         </div>
-      `;
+        `;
     }
     document.querySelector(".container").innerHTML = htmlContent;
 
@@ -184,4 +215,6 @@
         document.querySelector("#viewDetails .status").innerHTML = status;
     }
 </script>
+
+</body>
 </html>
