@@ -62,169 +62,48 @@
         <div class="main-content">
             <div class="welcome-message">
                 <h2 class="text-danger">City Ordinances</h2>
-                <p>This contains the streamlined processing made by other departments.</p>
             </div>
 
             <div class="city-ordinance-action d-flex justify-content-end align-items-center" style="gap: 5px">
-                <div class="sort>
-                    <label for="">Sort by:</label>
-                    <input type="text">
+              
+            <div class="search">
+                  <label for="">Search:</label>
+                    <input type="text">          
                 </div>
-            2<div class="search">
-               p-2      <label for="">Search:</label>
-                    <input type="text">p            </div>
-            </div>
+          
 
             <div class="city-ordinance-page shadow bg-light rounded-3 py-5 px-4 container-fluid">
                 <div class="city-ordinance-header d-flex justify-content-end align-items-center">
-                    <button class="btn text-light" style="background-color: #FF5D5D;">Add ordinance</button>
+                    <label for="ordinanceNumber">Select from what Council</label>
+                    <select name="ordinanceNumber" id="ordinanceNumber">
+                     <option value="" selected disabled><--- SELECT ---> </option>    
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="pre-war">pre-war</option>
+                    </select>
                 </div>
                 <div class="city-ordinance-body row row-cols-sm-2">
-                    <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
-                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No:  SP-2501, S-2016 </h5>
-                                <p>1/13/2022</p>
-                            </div>
-                            <div class="city-ordinance-body pb-5">
-                                <p>Proposed No:  PO 19CC-594</p>
-                            </div>
-                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                                <p>Author: ALEXIS R. HERRERA</p>
-                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#cityOrdinanceDetails">See Details</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
-                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No:  SP-2501, S-2016 </h5>
-                                <p>1/13/2022</p>
-                            </div>
-                            <div class="city-ordinance-body pb-5">
-                                <p>Proposed No:  PO 19CC-594</p>
-                            </div>
-                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                                <p>Author: ALEXIS R. HERRERA</p>
-                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#cityOrdinanceDetails">See Details</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
-                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No:  SP-2501, S-2016 </h5>
-                                <p>1/13/2022</p>
-                            </div>
-                            <div class="city-ordinance-body pb-5">
-                                <p>Proposed No:  PO 19CC-594</p>
-                            </div>
-                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                                <p>Author: ALEXIS R. HERRERA</p>
-                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#cityOrdinanceDetails">See Details</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
-                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No:  SP-2501, S-2016 </h5>
-                                <p>1/13/2022</p>
-                            </div>
-                            <div class="city-ordinance-body pb-5">
-                                <p>Proposed No:  PO 19CC-594</p>
-                            </div>
-                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                                <p>Author: ALEXIS R. HERRERA</p>
-                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#cityOrdinanceDetails">See Details</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
-                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No:  SP-2501, S-2016 </h5>
-                                <p>1/13/2022</p>
-                            </div>
-                            <div class="city-ordinance-body pb-5">
-                                <p>Proposed No:  PO 19CC-594</p>
-                            </div>
-                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                                <p>Author: ALEXIS R. HERRERA</p>
-                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#cityOrdinanceDetails">See Details</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
-                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No:  SP-2501, S-2016 </h5>
-                                <p>1/13/2022</p>
-                            </div>
-                            <div class="city-ordinance-body pb-5">
-                                <p>Proposed No:  PO 19CC-594</p>
-                            </div>
-                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                                <p>Author: ALEXIS R. HERRERA</p>
-                                <button type="button" class="btn text-light" style="background-color: #FF5D5D;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#cityOrdinanceDetails">See Details</button>
-                            </div>
-                        </div>
-                    </div>
+                    
+                   
                 </div>
 
             </div>
 
 
     <!-- City Ordinance Details modal -->
-     <div class="modal" id="cityOrdinanceDetails">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border: 1px solid red;">
-                <div class="modal-header" style="background-color: #FFE6E2;">
-                    <h5>Add ordinance</h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="">
-                        <div class="form-group mt-2">
-                            <label for="">Author:</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="">Approved No:</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="">Proposed No:</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="">Url</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group mt-2">
-                            <label for="">Submitted</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group mt-2 d-flex justify-content-end">
-                            <button type="button" class="btn px-5 text-light" style="background-color:#FF5D5D;">Add</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-     </div>
+
 
            
         </div>
@@ -259,5 +138,38 @@
     <!-- <script src="../../../user_data.js"></script> -->
     <script src="../../../diff-sidebar.js" type="module"></script>
 </body>
-
+<script>
+    const selectOrdinance =document.querySelector('#ordinanceNumber');
+    const ordinanceBody = document.querySelector('.city-ordinance-body');
+    selectOrdinance.addEventListener('change', (e) => {
+        getOrdinanceData(e.target.value);
+    });
+    const getOrdinanceData = async (number) =>{
+        
+       try{
+        const response = await fetch(`./get_ordinance_controller.php?number=${number}`);
+        const data = await response.json();
+         data.forEach(item => {
+            ordinanceBody.innerHTML += `
+            <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No: <a href =${item.href}>${item.link}</a> </h5>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                            <p>Title: ${item.title ?? "no title"} </p>
+                                <p>Author: ${item.author ?? "no auhor"}</p>
+                            
+                            </div>
+                        </div>
+                    </div>
+            `
+         })
+       
+       }
+         catch(error){
+              console.log(error);
+         }
+    }
+</script>
 </html>
