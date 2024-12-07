@@ -79,6 +79,7 @@
                      <option value="" selected disabled><--- SELECT ---> </option>    
                         <option value="9">9</option>
                         <option value="10">10</option>
+                        <!-- 
                         <option value="11">11</option>
                         <option value="12">12</option>
                         <option value="13">13</option>
@@ -90,7 +91,8 @@
                         <option value="19">19</option>
                         <option value="20">20</option>
                         <option value="21">21</option>
-                        <option value="22">22</option>
+                        <option value="22">22</option> 
+                        -->
                         <option value="pre-war">pre-war</option>
                     </select>
                 </div>
