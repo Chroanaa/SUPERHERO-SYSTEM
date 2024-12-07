@@ -29,19 +29,19 @@
     <meta name="twitter:image" content="URL_to_your_image.jpg">
     <meta name="twitter:url" content="https://yourwebsite.com">
     <style>
-        .record-item {
+        .record-ordinance {
             cursor: pointer;
             transition: all 0.3s ease;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .record-item:hover {
+        .record-ordinance:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .record-item.selected {
+        .record-ordinance.selected {
             background-color: #007bff;
             color: white;
         }
@@ -65,16 +65,14 @@
             </div>
 
             <div class="city-ordinance-action d-flex justify-content-end align-items-center" style="gap: 5px">
-              
-            <div class="search">
+               <div class="search">
                   <label for="">Search:</label>
                     <input type="text">          
                 </div>
-          
-
+           </div>
             <div class="city-ordinance-page shadow bg-light rounded-3 py-5 px-4 container-fluid">
                 <div class="city-ordinance-header d-flex justify-content-end align-items-center">
-                    <label for="ordinanceNumber">Select from what Council</label>
+                    <label for="ordinanceNumber">Select from what Council: </label>
                     <select name="ordinanceNumber" id="ordinanceNumber">
                      <option value="" selected disabled><--- SELECT ---> </option>    
                         <option value="9">9</option>
@@ -141,35 +139,107 @@
 <script>
     const selectOrdinance =document.querySelector('#ordinanceNumber');
     const ordinanceBody = document.querySelector('.city-ordinance-body');
-    selectOrdinance.addEventListener('change', (e) => {
-        getOrdinanceData(e.target.value);
+    let limit = 6;
+
+
+
+        selectOrdinance.addEventListener('change', (e) => {
+        getNewOrdinanceData(e.target.value, limit);
     });
-    const getOrdinanceData = async (number) =>{
-        
+  
+     const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            console.log(entry)
+            if(entry.isIntersecting){
+                limit += 5;
+                getOrdinanceData(selectOrdinance.value ? selectOrdinance.value : 9, limit);
+                
+            }
+            console.log(entries)
+            
+        });
+    }, {
+        threshold: 1,
+        rootMargin:'100px'
+    });
+    let loading =false
+    const getNewOrdinanceData = async (number, limit) =>{
+       loading = true 
+        if(loading){
+        //     ordinanceBody.innerHTML = `
+        // <div class="loading-container text-center w-100">
+        //     <div class="spinner-border text-primary" role="status">
+        //         <span class="visually-hidden">Loading...</span>
+        //     </div>
+        //     <p class="mt-2">Loading ordinances...</p>
+        // </div>
+        //  `
+        ordinanceBody.innerHTML = ``;
+        }
        try{
-        const response = await fetch(`./get_ordinance_controller.php?number=${number}`);
+        const response = await fetch(`./get_ordinance_controller.php?number=${number}&limit=${limit}`);
         const data = await response.json();
-         data.forEach(item => {
+        data.slice(0, limit).forEach(ordinance => {
             ordinanceBody.innerHTML += `
             <div class="col p-2">
                         <div class="city-ordinance-card p-3 border">
                             <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No: <a href =${item.href}>${item.link}</a> </h5>
+                                <p>Approved No: <a href =${ordinance.href}>${ordinance.link}</a> </h5>
                             </div>
                             <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                            <p>Title: ${item.title ?? "no title"} </p>
-                                <p>Author: ${item.author ?? "no auhor"}</p>
+                            <p>Title: ${ordinance.title ?? "no title"} </p>
+                                <p>Author: ${ordinance.author ?? "no author"}</p>
                             
                             </div>
                         </div>
                     </div>
             `
-         })
-       
-       }
+            
+           
+        });
+        const cards = document.querySelectorAll('.city-ordinance-card');
+        const lastCard = cards[cards.length - 1];
+        observer.observe(lastCard);
+    }
          catch(error){
               console.log(error);
+         }finally{
+            loading = false;
          }
     }
+
+   const getOrdinanceData = async (number, limit) => {
+         try{
+        const response = await fetch(`./get_ordinance_controller.php?number=${number}&limit=${limit}`);
+        const data = await response.json();
+        data.slice(0, limit).forEach(ordinance => {
+            ordinanceBody.innerHTML += `
+            <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No: <a href =${ordinance.href}>${ordinance.link}</a> </h5>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                            <p>Title: ${ordinance.title ?? "no title"} </p>
+                                <p>Author: ${ordinance.author ?? "no author"}</p>
+                            
+                            </div>
+                        </div>
+                    </div>
+            `
+            
+           
+        });
+        const cards = document.querySelectorAll('.city-ordinance-card');
+        const lastCard = cards[cards.length - 1];
+        observer.observe(lastCard);
+    }
+         catch(error){
+              console.log(error);
+         }finally{
+            loading = false;
+         }
+    }
+
 </script>
 </html>
