@@ -67,7 +67,7 @@
             <div class="city-ordinance-action d-flex justify-content-end align-items-center" style="gap: 5px">
                <div class="search">
                   <label for="">Search:</label>
-                    <input type="text">          
+                    <input type="text" class = "form-control" id = "searchInput">          
                 </div>
            </div>
             <div class="city-ordinance-page shadow bg-light rounded-3 py-5 px-4 container-fluid">
@@ -139,43 +139,35 @@
 <script>
     const selectOrdinance =document.querySelector('#ordinanceNumber');
     const ordinanceBody = document.querySelector('.city-ordinance-body');
+    const search = document.querySelector('#searchInput');
     let limit = 6;
+   let currentOrdinance = {}
 
-
-
+    search.addEventListener('change', (e) => {
+     if(e.target.value){
+        const filtered = Object.values(currentOrdinance).filter(ordinance => ordinance.title.toLowerCase().includes(e.target.value.toLowerCase()));
+        console.log(filtered);
+     }
+    });
         selectOrdinance.addEventListener('change', (e) => {
         getNewOrdinanceData(e.target.value, limit);
     });
   
      const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            console.log(entry)
             if(entry.isIntersecting){
                 limit += 5;
                 getOrdinanceData(selectOrdinance.value ? selectOrdinance.value : 9, limit);
                 
             }
-            console.log(entries)
             
         });
     }, {
         threshold: 1,
         rootMargin:'100px'
     });
-    let loading =false
     const getNewOrdinanceData = async (number, limit) =>{
-       loading = true 
-        if(loading){
-        //     ordinanceBody.innerHTML = `
-        // <div class="loading-container text-center w-100">
-        //     <div class="spinner-border text-primary" role="status">
-        //         <span class="visually-hidden">Loading...</span>
-        //     </div>
-        //     <p class="mt-2">Loading ordinances...</p>
-        // </div>
-        //  `
-        ordinanceBody.innerHTML = ``;
-        }
+      ordinanceBody.innerHTML = '';
        try{
         const response = await fetch(`./get_ordinance_controller.php?number=${number}&limit=${limit}`);
         const data = await response.json();
@@ -184,27 +176,25 @@
             <div class="col p-2">
                         <div class="city-ordinance-card p-3 border">
                             <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No: <a href =${ordinance.href}>${ordinance.link}</a> </h5>
+                                <p>Approved No: <a href class = "ordinance-link" =${ordinance.href}>${ordinance.link}</a> </h5>
                             </div>
                             <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                            <p>Title: ${ordinance.title ?? "no title"} </p>
-                                <p>Author: ${ordinance.author ?? "no author"}</p>
+                            <p class = "ordinance-title">Title: ${ordinance.title ?? "no title"} </p>
+                                <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
                             
                             </div>
                         </div>
                     </div>
-            `
-            
-           
+            `    
         });
+        populateObject();
         const cards = document.querySelectorAll('.city-ordinance-card');
         const lastCard = cards[cards.length - 1];
         observer.observe(lastCard);
     }
+    
          catch(error){
               console.log(error);
-         }finally{
-            loading = false;
          }
     }
 
@@ -217,19 +207,19 @@
             <div class="col p-2">
                         <div class="city-ordinance-card p-3 border">
                             <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No: <a href =${ordinance.href}>${ordinance.link}</a> </h5>
+                                <p>Approved No: <a href class = "ordinance-link" =${ordinance.href}>${ordinance.link}</a> </h5>
                             </div>
                             <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                            <p>Title: ${ordinance.title ?? "no title"} </p>
-                                <p>Author: ${ordinance.author ?? "no author"}</p>
+                            <p class = "ordinance-title">Title: ${ordinance.title ?? "no title"} </p>
+                                <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
                             
                             </div>
                         </div>
                     </div>
+                    
             `
-            
-           
         });
+          populateObject();
         const cards = document.querySelectorAll('.city-ordinance-card');
         const lastCard = cards[cards.length - 1];
         observer.observe(lastCard);
@@ -237,9 +227,23 @@
          catch(error){
               console.log(error);
          }finally{
-            loading = false;
          }
     }
+const populateObject = () => {
+    currentOrdinance = {};
+    const cards = document.querySelectorAll('.city-ordinance-card');
+    cards.forEach((card, key) => {
+            
+            currentOrdinance[key] = {
+            title: document.querySelector('.ordinance-title').textContent,
+            author: document.querySelector('.ordinance-author').textContent,
+            link: document.querySelector('.ordinance-link').textContent,
+           href: document.querySelector('.ordinance-link').href,
+            }
+        });
+console.log(currentOrdinance)
+}
+
 
 </script>
 </html>

@@ -14,4 +14,5 @@ function getOrdinanceData($number, $limit){
 if(isset($_GET['number'])){
     getOrdinanceData($_GET['number'], $_GET['limit'] ?? 6);
 }
+
 ?>
