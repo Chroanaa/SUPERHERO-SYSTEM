@@ -7,7 +7,7 @@ function getOrdinanceData($number, $limit){
 
     $items = array_slice(json_decode($ordinanceJson), 0, $limit);
     echo json_encode($items);
-}else{
+} else {
     echo json_encode(array("message" => "File not found"));
 }
 }
