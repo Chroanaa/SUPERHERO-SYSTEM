@@ -92,7 +92,8 @@ usort($complaints, function ($a, $b) {
    $dateB = strtotime($b['case_created']['S']);
    return $dateB <=> $dateA; // Descending order
 });
-#
+
+
 ?>
 
 <!DOCTYPE html>
@@ -130,18 +131,17 @@ usort($complaints, function ($a, $b) {
          </div>
          <div id="complaintsection" style="display: block;">
             <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; align-items: flex-start;">
-               <input type="text" id="search-input" placeholder="Search..." onkeyup="filterTable()" style="padding: 10px; width: 35%; max-width: 700px;">
+               <!-- <input type="text" id="search-input" placeholder="Search..." onkeyup="filterTable()" style="padding: 10px; width: 35%; max-width: 700px;"> -->
                <!-- Category dropdown -->
                <div class="dropdown" style="display: flex; justify-content: flex-start; align-items: center;">
-                  <button id="dropdownButton" class="btn btn-info dropdown-toggle btn-hover" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: block; width: 250px; height: 50px; font-size: 20px; background-color: #ffffff; border: 1px solid #b1b1b1;">
+                  <!-- <button id="dropdownButton" class="btn btn-info dropdown-toggle btn-hover" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: block; width: 250px; height: 50px; font-size: 20px; background-color: #ffffff; border: 1px solid #b1b1b1;">
                      Category
-                  </button>
+                  </button> -->
                   <ul class="dropdown-menu" style="z-index: 2;">
                      <li><a class="dropdown-item" href="#" onclick="selectCategory('Minor case')">Minor case</a></li>
                      <li><a class="dropdown-item" href="#" onclick="selectCategory('Major case')">Major case</a></li>
                   </ul>
                </div>
-               <!-- Case table -->
                <table id="tablecase" class="table table-bordered" style="border: 1px solid #d4d4d4; text-align: center;">
                   <thead>
                      <tr>
@@ -153,38 +153,25 @@ usort($complaints, function ($a, $b) {
                      </tr>
                   </thead>
                   <tbody>
-                     <?php foreach ($complaints as $complaint): ?>
+                     <?php foreach ($complaints as $index => $complaint): ?>
                         <tr>
                            <td><?= formatCaseNumber($complaint['case_number']['N']) ?></td>
                            <td><?= formatCaseCreatedDate($complaint['case_created']['S']) ?></td>
                            <td class="text-truncate" style="max-width: 200px; overflow: hidden; white-space: nowrap;">
                               <?php
                               if (isset($complaint['case_type']['L']) && is_array($complaint['case_type']['L'])) {
-                                 // Loop through the case types and display initial_case and case_type
                                  $caseTypes = array_map(function ($item) {
-                                    $initialCase = isset($item['M']['initial_case']['S']) ? htmlspecialchars($item['M']['initial_case']['S']) : '';
-                                    // $caseType = isset($item['M']['case_type']['S']) ? htmlspecialchars($item['M']['case_type']['S']) : '';
-                                    return $initialCase;
+                                    return isset($item['M']['initial_case']['S']) ? htmlspecialchars($item['M']['initial_case']['S']) : 'N/A';
                                  }, $complaint['case_type']['L']);
-
-                                 echo implode(', ', $caseTypes); // Join all the case types with commas
+                                 echo implode(', ', $caseTypes);
                               } else {
-                                 echo 'N/A'; // If no case types, show N/A
+                                 echo 'N/A';
                               }
                               ?>
                            </td>
                            <td><?= $complaint['case_status']['S'] ?></td>
                            <td>
-                              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewDetailsModal" onclick="
-                                 populateModal(
-                                    '<?= isset($complaint['case_number']['N']) ? formatCaseNumber($complaint['case_number']['N']) : '' ?>',
-                                    '<?= isset($complaint['incident_case_time']['S']) && isset($complaint['incident_case_issued']['S']) ? formatIncidentDateTime($complaint['incident_case_time']['S'], $complaint['incident_case_issued']['S']) : '' ?>',
-                                    '<?= isset($complaint['case_type']['S']) ? $complaint['case_type']['S'] : '' ?>',
-                                    '<?= isset($complaint['case_status']['S']) ? $complaint['case_status']['S'] : '' ?>',
-                                    '<?= isset($complaint['case_complainants']) ? formatNames($complaint['case_complainants']) : '' ?>',
-                                    '<?= isset($complaint['case_respondents']) ? formatNames($complaint['case_respondents']) : '' ?>',
-                                    '<?= isset($complaint['case_description']['S']) ? htmlspecialchars($complaint['case_description']['S']) : '' ?>'
-                                 )">
+                              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewDetailsModal<?= $index ?>">
                                  View Details
                               </button>
                            </td>
@@ -192,34 +179,52 @@ usort($complaints, function ($a, $b) {
                      <?php endforeach; ?>
                   </tbody>
                </table>
+
             </div>
          </div>
       </div>
    </div>
 
-   <!-- View Details Modal -->
-   <div class="modal fade" id="viewDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
-               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-               <p><strong>Case Number:</strong> <span id="modal-case-number"></span></p>
-               <p><strong>Incident Date:</strong> <span id="modal-incident-date"></span></p>
-               <!-- <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p> -->
-               <p><strong>Case Status:</strong> <span id="modal-case-status"></span></p>
-               <p><strong>Complainants:</strong> <span id="modal-complainants"></span></p>
-               <p><strong>Respondents:</strong> <span id="modal-respondents"></span></p>
-               <p><strong>Case Description:</strong> <span id="modal-case-description"></span></p>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-danger">Turnover (LUPON)</button>
+   <?php foreach ($complaints as $index => $complaint): ?>
+      <!-- View Details Modal for Case #<?= $index ?> -->
+      <div class="modal fade" id="viewDetailsModal<?= $index ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                  <p><strong>Case Number:</strong> <?= isset($complaint['case_number']['N']) ? formatCaseNumber($complaint['case_number']['N']) : 'N/A' ?></p>
+                  <p><strong>Incident Date:</strong> <?= isset($complaint['incident_case_time']['S']) && isset($complaint['incident_case_issued']['S']) ? formatIncidentDateTime($complaint['incident_case_time']['S'], $complaint['incident_case_issued']['S']) : 'N/A' ?></p>
+                  <p><strong>Case Type:</strong></p>
+                  <ul class="d-flex flex-column ps-3">
+                     <?php
+                     if (isset($complaint['case_type']['L']) && is_array($complaint['case_type']['L'])) {
+                        $caseTypes = array_map(function ($item) {
+                           $initialCase = isset($item['M']['initial_case']['S']) ? htmlspecialchars($item['M']['initial_case']['S']) : 'N/A';
+                           $caseTypeDetail = isset($item['M']['case_type']['S']) ? htmlspecialchars($item['M']['case_type']['S']) : 'N/A';
+                           return "<li class=''><span class='me-2'>$initialCase</span><span class='text-muted'>($caseTypeDetail)</span></li>";
+                        }, $complaint['case_type']['L']);
+                        echo implode('', $caseTypes);
+                     } else {
+                        echo '<li>N/A</li>';
+                     }
+                     ?>
+                  </ul>
+                  <p><strong>Case Status:</strong> <?= isset($complaint['case_status']['S']) ? htmlspecialchars($complaint['case_status']['S']) : 'N/A' ?></p>
+                  <p><strong>Complainants:</strong> <?= isset($complaint['case_complainants']) ? formatNames($complaint['case_complainants']) : 'N/A' ?></p>
+                  <p><strong>Respondents:</strong> <?= isset($complaint['case_respondents']) ? formatNames($complaint['case_respondents']) : 'N/A' ?></p>
+                  <p><strong>Case Description:</strong> <?= isset($complaint['case_description']['S']) ? htmlspecialchars($complaint['case_description']['S']) : 'N/A' ?></p>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-danger">Turnover (LUPON)</button>
+               </div>
             </div>
          </div>
       </div>
-   </div>
+   <?php endforeach; ?>
+
 
    <!-- Sign Out Confirmation Modal -->
    <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -268,35 +273,6 @@ usort($complaints, function ($a, $b) {
             }
 
             rows[i].style.display = match ? '' : 'none';
-         }
-      }
-
-      function populateModal(caseNumber, incidentDate, caseType, caseStatus, complainants, respondents, description) {
-         console.log('caseType:', caseType); // Debugging caseType
-
-         // Populate modal fields
-         document.getElementById('modal-case-number').textContent = caseNumber || 'N/A';
-         document.getElementById('modal-incident-date').textContent = incidentDate || 'N/A';
-         document.getElementById('modal-case-status').textContent = caseStatus || 'N/A';
-         document.getElementById('modal-complainants').textContent = complainants || 'N/A';
-         document.getElementById('modal-respondents').textContent = respondents || 'N/A';
-         document.getElementById('modal-case-description').textContent = description || 'N/A';
-
-         // Handle caseType
-         if (Array.isArray(caseType)) {
-            // Map through the array and format case types
-            let formattedCaseTypes = caseType.map(function(item) {
-               let initialCase = item?.initial_case || 'N/A';
-               let caseTypeDetail = item?.case_type || 'N/A';
-               return `${initialCase} - ${caseTypeDetail}`;
-            });
-            document.getElementById('modal-case-type').textContent = formattedCaseTypes.join(', ');
-         } else if (typeof caseType === 'string' && caseType.trim() !== '') {
-            // If caseType is a valid string
-            document.getElementById('modal-case-type').textContent = caseType;
-         } else {
-            // Default to N/A if caseType is invalid or not provided
-            document.getElementById('modal-case-type').textContent = 'N/A';
          }
       }
    </script>
