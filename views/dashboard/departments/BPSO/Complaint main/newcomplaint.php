@@ -35,7 +35,8 @@
          display: none;
       }
 
-      #bcpc-form-container {
+      #bcpc-form-container,
+      #badac-form-container {
          display: none;
       }
 
@@ -97,151 +98,203 @@
             <h2>NEW COMPLAINT</h2>
          </div>
 
-         <!-- New Complaint-->
+         <!-- New Complaint -->
          <div id="newcomplaintsection">
 
             <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff;">
                <form action="../../../../../controllers/departments/BPSO/complaint.php" method="POST" style="max-width: 1200px; margin: 0 auto;">
-                  
                   <input type="hidden" name="case_status" id="hiddenCaseStatus" value="Ongoing">
-
-                  <!-- Complainant Section -->
-                  <div style="display: flex; justify-content: flex-end; gap: 250px; margin-bottom: 30px;">
-                     <div style="width: 400px;">
+                  <!-- Complainant and Respondent Section -->
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                     <div style="width: 45%;">
                         <label style="font-size: 20px; font-weight: 600;">Complainant 1</label>
                         <div id="complainant-container" style="display: flex; flex-direction: column; gap: 10px;">
-                           <input type="text" name="complainant_name[]" placeholder="Name" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-                           <input type="text" name="complainant_address[]" placeholder="Address" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-
-                           <!-- This is for BADAC things (need it for complainant don't uncomment) -->
-
-                           <fieldset class="adult-person" style="border: 1px solid #d4d4d4; padding: 10px; border-radius: 5px;">
-                              <legend style="font-size: 1rem;">Is this person an Adult?</legend>
-                              <div style="display: flex; gap: 10px; align-items: center;">
-                                 <input type="radio" name="complainant_adult[]" value="yes" style="width: 18px; height: 18px">
-                                 <label for="yes">Yes</label>
-                                 <input type="radio" name="complainant_adult[]" value="no" style="width: 18px; height: 18px;">
-                                 <label for="no">No</label>
-                              </div>
-                           </fieldset>
-
-                           <!-- This is for BCPC things -->
-
-                           <!-- <label class="adult-person" style="font-size: 1rem;">
-                              Is this person a Adult?
-                              <div style="display: flex; gap: 10px; align-items: center;">
-                                 <input type="radio" name="complainant_adult[]" value="yes"> Yes
-                                 <input type="radio" name="complainant_adult[]" value="no"> No
-                              </div>
-                           </label> -->
-
+                           <input type="text" name="complainant_name[]" placeholder="Name" class="form-control">
+                           <input type="text" name="complainant_address[]" placeholder="Address" class="form-control">
                         </div>
-                        <button type="button" id="hideGreen" onclick="addComplainant()">+</button>
-
-                        <!-- This button is hidden but this is for two checkboxes -->
-                        <button type="button" id="complainant-both-btn" onclick="bothCheckedAddComplainant()">+</button>
+                        <label style="font-size: 16px; font-weight: 600; margin-top: 10px;">Is this a resident in our barangay?</label>
+                        <div style="display: flex; gap: 20px;">
+                           <label>
+                              <input type="radio" name="is_resident[]" value="yes" class="form-check-input">
+                              Yes
+                           </label>
+                           <label>
+                              <input type="radio" name="is_resident[]" value="no" class="form-check-input">
+                              No
+                           </label>
+                        </div>
+                        <!-- <button type="button" id="hideGreen" onclick="addComplainant()">+</button>
+                        <button type="button" id="complainant-both-btn" onclick="bothCheckedAddComplainant()">+</button> -->
                      </div>
-                     <!-- Respondent Section -->
-                     <div style="width: 400px;">
+                     <div style="width: 45%;">
                         <label style="font-size: 20px; font-weight: 600;">Respondent 1</label>
                         <div id="respondent-container" style="display: flex; flex-direction: column; gap: 10px;">
-                           <input type="text" name="respondent_name[]" placeholder="Name" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-                           <input type="text" name="respondent_address[]" placeholder="Address" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-
-                           <!-- This is for BADAC things -->
-
-                           <label class="pwud-question" style="font-size: 1rem;">
-                              Is this person a PWUD?
-                              <div style="display: flex; gap: 10px; align-items: center;">
-                                 <input type="radio" name="respondent_pwud[]" value="yes"> Yes
-                                 <input type="radio" name="respondent_pwud[]" value="no"> No
-                              </div>
+                           <input type="text" name="respondent_name[]" placeholder="Name" class="form-control">
+                           <input type="text" name="respondent_address[]" placeholder="Address" class="form-control">
+                        </div>
+                        <label style="font-size: 16px; font-weight: 600; margin-top: 10px;">Is this a resident in our barangay?</label>
+                        <div style="display: flex; gap: 20px;">
+                           <label>
+                              <input type="radio" name="is_resident[]" value="yes" class="form-check-input">
+                              Yes
                            </label>
-
-                           <!-- This is for BCPC things -->
-
-                           <label class="adult-person" style="font-size: 1rem;">
-                              Is this person a Adult?
-                              <div style="display: flex; gap: 10px; align-items: center;">
-                                 <input type="radio" name="respondent_adult[]" value="yes"> Yes
-                                 <input type="radio" name="respondent_adult[]" value="no"> No
-                              </div>
+                           <label>
+                              <input type="radio" name="is_resident[]" value="no" class="form-check-input">
+                              No
                            </label>
                         </div>
-                        <button type="button" id="hideGreen" onclick="addRespondent()">+</button>
-
-                        <!-- This button is hidden but this is for two checkboxes -->
-                        <button type="button" id="respondent-both-btn" onclick="bothCheckedAddRespondent()">+</button>
+                        <!-- <button type="button" id="hideGreen" onclick="addRespondent()">+</button>
+                        <button type="button" id="respondent-both-btn" onclick="bothCheckedAddRespondent()">+</button> -->
                      </div>
                   </div>
 
-                  <div id="confirmatory" style="margin-top: 24px;">
-                     <!-- Add Check if the Complaint does involve Minor -->
-                     <label for="minorInvolved" class="mb-3">Fill out more details (Specify both if necessary)</label>
-                     <div id="Checkbox1" class="mb-2">
-                        <input type="checkbox" id="minorInvolved" style="margin-right: 10px;">
-                        <!-- onclick="handleMinorInvolved(this); bothCheckedComplainant_Respondent();" -->
-                        <label for="minorInvolved">Minor Involved</label>
-                     </div>
+                  <!-- Complaint Description -->
+                  <div class="mb-3">
+                     <label for="complaint-description" class="form-label">I-hayag ang iyong reklamo:</label>
+                     <textarea class="form-control" id="complaint-description" rows="12" placeholder="Complainant statement starts here ..." readonly></textarea>
+                  </div>
 
-                     <!-- Add Check if the Complaint does involve Drugs -->
-                     <div id="Checkbox2">
-                        <input type="checkbox" id="drugInvolved" style="margin-right: 10px;">
-                        <!-- onclick="handleDrugInvolved(this); bothCheckedComplainant_Respondent();" -->
-                        <label for="drugInvolved">Drug Involved</label>
+                  <!-- Evaluate Assessment based on the statement given by complainant -->
+                  <div id="evaluate-button">
+                     <button id="evaluateBtn" class="btn btn-danger w-100 mt-2" disabled>Identify Case</button>
+                  </div>
+
+                  <!-- Loading Spinner for Evaluate button -->
+                  <!-- <div class="modal fade" id="loadingModalBtn" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                     <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                           <div class="modal-body d-flex justify-content-center align-items-center" style="height: 200px;">
+                              <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;" role="status">
+                                 <span class="sr-only"></span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div> -->
+
+                  <div id="confirmatory" style="display: flex; flex-direction: column; margin-top: 24px;">
+                     <!-- Add Case Type Label -->
+                     <label for="caseType" class="mb-3">
+                        Specify initial case (Kindly specify all applicable options)
+                     </label>
+                     <div id="case-options" class="d-flex flex-wrap">
+                        <!-- Minor Involved -->
+                        <div id="Checkbox1" class="mb-2 me-3">
+                           <input type="checkbox" id="minorInvolved" style="margin-right: 2px;" disabled>
+                           <label for="minorInvolved">Minor Involved</label>
+                        </div>
+
+                        <!-- Drug Involved -->
+                        <div id="Checkbox2" class="mb-2 me-3">
+                           <input type="checkbox" id="drugInvolved" style="margin-right: 2px;" disabled>
+                           <label for="drugInvolved">Drug Related</label>
+                        </div>
+
+                        <!-- Theft or Robbery -->
+                        <div id="Checkbox3" class="mb-2 me-3">
+                           <input type="checkbox" id="theftInvolved" style="margin-right: 2px;" disabled>
+                           <label for="theftInvolved">Theft or Robbery</label>
+                        </div>
+
+                        <!-- Physical Violence -->
+                        <div id="Checkbox4" class="mb-2 me-3">
+                           <input type="checkbox" id="violenceInvolved" style="margin-right: 2px;" disabled>
+                           <label for="violenceInvolved">Physical Violence</label>
+                        </div>
+
+                        <!-- Domestic Issues -->
+                        <div id="Checkbox5" class="mb-2 me-3">
+                           <input type="checkbox" id="domesticIssue" style="margin-right: 2px;" disabled>
+                           <label for="domesticIssue">Domestic Issue</label>
+                        </div>
+
+                        <!-- Vandalism -->
+                        <div id="Checkbox6" class="mb-2 me-3">
+                           <input type="checkbox" id="vandalismInvolved" style="margin-right: 2px;" disabled>
+                           <label for="vandalismInvolved">Vandalism</label>
+                        </div>
+
+                        <!-- Fraud -->
+                        <div id="Checkbox7" class="mb-2 me-3">
+                           <input type="checkbox" id="fraudInvolved" style="margin-right: 2px;" disabled>
+                           <label for="fraudInvolved">Fraud</label>
+                        </div>
+
+                        <!-- Harassment -->
+                        <div id="Checkbox8" class="mb-2 me-3">
+                           <input type="checkbox" id="harassmentInvolved" style="margin-right: 2px;" disabled>
+                           <label for="harassmentInvolved">Harassment</label>
+                        </div>
+
+                        <!-- Public Disturbance -->
+                        <div id="Checkbox9" class="mb-2 me-3">
+                           <input type="checkbox" id="publicDisturbance" style="margin-right: 2px;" disabled>
+                           <label for="publicDisturbance">Public Disturbance</label>
+                        </div>
+
+                        <!-- Cyber Crime -->
+                        <div id="Checkbox13" class="mb-2 me-3">
+                           <input type="checkbox" id="cyberCrimeInvolved" style="margin-right: 2px;" disabled>
+                           <label for="cyberCrimeInvolved">Cyber Crime</label>
+                        </div>
+
+                        <!-- Trespassing -->
+                        <div id="Checkbox14" class="mb-2 me-3">
+                           <input type="checkbox" id="trespassingInvolved" style="margin-right: 2px;" disabled>
+                           <label for="trespassingInvolved">Trespassing</label>
+                        </div>
                      </div>
                   </div>
 
-                  <!-- Complaint Category Dropdown -->
-                  <div style="display: flex; justify-content: flex-start; margin-top: 24px;">
-                     <input type="hidden" name="case_type" id="hiddenCategory" value="">
-                     <button id="dropdowncategory" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;">
-                        Case Type
-                     </button>
-                     <ul class="dropdown-menu">
-                        <li type="button" onclick="updateButtonText('Minor case', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Minor case</li>
-                        <li type="button" onclick="updateButtonText('Major case', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Major case</li>
-                     </ul>
-                  </div>
-
-
-                  <!-- Second Complaint Category Dropdown -->
-                  <div style="display: flex; justify-content: flex-start; margin-top: 24px;">
-                     <input type="hidden" name="second_complaint_category" id="SecondHiddenCategory" value="">
-                     <button id="second_dropdown_category" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Case Type
-                     </button>
-                     <ul class="dropdown-menu">
-                        <li type="button" onclick="updateButtonText('Minor case', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Minor case</li>
-                        <li type="button" onclick="updateButtonText('Major case', 'dropdowncategory', event)" class="dropdown-item" style="cursor: pointer;">Major case</li>
-                     </ul>
+                  <div id="caseTypeContainer">
+                     <div id="caseTypeButton" style="display: flex; justify-content: flex-start; margin-top: 24px;">
+                        <input type="hidden" name="case_type" id="hiddenCategory" value="">
+                        <button id="dropdowncategory" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;" disabled>
+                           Case Type
+                        </button>
+                        <ul id="caseTypeDropdown" class="dropdown-menu">
+                           <!-- This will be dynamically filled with case types -->
+                        </ul>
+                     </div>
                   </div>
 
                   <!-- Place of Incident and Date/Time -->
                   <div id="nested-container" class="mt-3">
                      <div id="nested-incident">
                         <label for="place-of-incident">Place of Incident:</label>
-                        <input type="text" id="place-of-incident" name="place_of_incident" placeholder="Place of Incident..." style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                        <input type="text" id="place-of-incident" name="place_of_incident" placeholder="Place of Incident..." style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
                      </div>
                   </div>
 
                   <div id="nested-container" style="margin-bottom: 24px;">
                      <div id="nested-children" class="mb-3">
                         <label for="incidence-date">Incident Date:</label>
-                        <input type="date" id="incidence-date" name="incidence_date" style=" width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                        <input type="date" id="incidence-date" name="incidence_date" style=" width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
                      </div>
                      <div id="nested-children" class="mb-3">
                         <label for="incidence-time">Incident Time:</label>
-                        <input type="time" id="incidence-time" name="incident_case_time" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
-                     </div>
-
-                     <!-- Complaint Description -->
-                     <div id="complaint-description">
-                        <label for="complaint-description">Ilagay ang iyong reklamo:</label>
-                        <textarea id="complaint-description" name="case_description" placeholder="Complaint description..." style="width: 100%; height: 300px; max-width: 1200px; border: 1px solid #b1b1b1; border-radius: 3px; padding: 15px; font-size: 1rem;"></textarea>
+                        <input type="time" id="incidence-time" name="incident_case_time" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
                      </div>
                   </div>
-                  
+
+
+                  <!-- This will shown if special case specified to BCPC from minor involved -->
+                  <div id="badac-form-container">
+                     <div id="header-label-badac">
+                        <h2>Ano ang iyong ebidensiya?</h2>
+                     </div>
+                     <div id="badac-form">
+                        <!-- Child Name -->
+                        <div id="nested-container" class="mt-3 mb-3">
+                           <div id="nested-incident">
+                              <!-- <label for="drug-evidence" class="mb-2">Current Address</label> -->
+                              <textarea id="drug-evidence" name="drug_evidence" placeholder="Pagdating sa usaping droga I-hayag ang detalye" style="width: 100%; height: 300px; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;"></textarea>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+
                   <!-- This will shown if special case specified to BCPC from minor involved -->
                   <div id="bcpc-form-container">
                      <div id="header-label-bcpc">
@@ -302,18 +355,18 @@
                      <div id="special-case-things">
                         <input type="hidden" name="affiliated_dept_case" id="hiddenAffiliatedDeptCase" value="BPSO">
                         <input type="hidden" name="special_case" id="hiddenSpecialCase" value="">
-                        <button id="specialcasedrop" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 400px; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;">
-                           Special Case Involved
+                        <button id="specialcasedrop" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 400px; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;" disabled>
+                           Affiliated Department
                         </button>
                         <ul class="dropdown-menu" style="position: absolute; top: 100%; left: 0; width: 100%; max-width: 400px;">
                            <li type="button" onclick="updateButtonText('BADAC & BCPC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BADAC & BCPC</li>
                            <li type="button" onclick="updateButtonText('BCPC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BCPC</li>
                            <li type="button" onclick="updateButtonText('BADAC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BADAC</li>
-                           <li type="button" onclick="updateButtonText('None', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">None</li>
+                           <li type="button" onclick="updateButtonText('BPSO', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BPSO</li>
                         </ul>
                      </div>
                      <div>
-                        <button type="submit" id="openModalButton" class="btn btn-primary" style="width: 300px; height: 60px; font-size: 1rem; font-weight: 600;">Confirm</button>
+                        <button type="submit" id="openModalButton" class="btn btn-primary" style="width: 300px; height: 60px; font-size: 1rem; font-weight: 600;" disabled>Confirm</button>
                      </div>
                   </div>
                   <!-- <div id="report-create" class="create">
@@ -391,9 +444,13 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
    <script src="../sidebar.js" type="module"></script>
-   <script src="dashboard.js"></script>
-   <script src="./ComplaintForm.js"></script>
-   <script src="./MoreComplaints.js"></script>
+   <script src="./dashboard.js"></script>
+   <script src="./evaluateData/evaluateBtn.js"></script>
+   <script>
+
+   </script>
+   <!-- <script src="./ComplaintForm.js"></script> -->
+   <!-- <script src="./MoreComplaints.js"></script> -->
 </body>
 
 </html>

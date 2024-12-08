@@ -197,9 +197,9 @@ usort($complaints, function ($a, $b) {
                <p><strong>Respondents:</strong> <span id="modal-respondents"></span></p>
                <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
             </div>
-            <!-- <div class="modal-footer">
-               <button type="button" class="btn btn-danger">Cancel</button>
-            </div> -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger">Forward Case</button>
+            </div>
          </div>
       </div>
    </div>

@@ -29,19 +29,19 @@
     <meta name="twitter:image" content="URL_to_your_image.jpg">
     <meta name="twitter:url" content="https://yourwebsite.com">
     <style>
-        .record-item {
+        .record-ordinance {
             cursor: pointer;
             transition: all 0.3s ease;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .record-item:hover {
+        .record-ordinance:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .record-item.selected {
+        .record-ordinance.selected {
             background-color: #007bff;
             color: white;
         }
@@ -65,21 +65,18 @@
             </div>
 
             <div class="city-ordinance-action d-flex justify-content-end align-items-center" style="gap: 5px">
-              
-            <div class="search">
+               <div class="search">
                   <label for="">Search:</label>
-                    <input type="text">          
+                    <input type="text" class = "form-control" id = "searchInput">          
                 </div>
-          
-
+           </div>
             <div class="city-ordinance-page shadow bg-light rounded-3 py-5 px-4 container-fluid">
                 <div class="city-ordinance-header d-flex justify-content-end align-items-center">
-                    <label for="ordinanceNumber">Select from what Council</label>
+                    <label for="ordinanceNumber">Select from what Council: </label>
                     <select name="ordinanceNumber" id="ordinanceNumber">
                      <option value="" selected disabled><--- SELECT ---> </option>    
                         <option value="9">9</option>
                         <option value="10">10</option>
-                        <!-- 
                         <option value="11">11</option>
                         <option value="12">12</option>
                         <option value="13">13</option>
@@ -91,8 +88,7 @@
                         <option value="19">19</option>
                         <option value="20">20</option>
                         <option value="21">21</option>
-                        <option value="22">22</option> 
-                        -->
+                        <option value="22">22</option>
                         <option value="pre-war">pre-war</option>
                     </select>
                 </div>
@@ -143,35 +139,111 @@
 <script>
     const selectOrdinance =document.querySelector('#ordinanceNumber');
     const ordinanceBody = document.querySelector('.city-ordinance-body');
-    selectOrdinance.addEventListener('change', (e) => {
-        getOrdinanceData(e.target.value);
+    const search = document.querySelector('#searchInput');
+    let limit = 6;
+   let currentOrdinance = {}
+
+    search.addEventListener('change', (e) => {
+     if(e.target.value){
+        const filtered = Object.values(currentOrdinance).filter(ordinance => ordinance.title.toLowerCase().includes(e.target.value.toLowerCase()));
+        console.log(filtered);
+     }
     });
-    const getOrdinanceData = async (number) =>{
-        
+        selectOrdinance.addEventListener('change', (e) => {
+        getNewOrdinanceData(e.target.value, limit);
+    });
+  
+     const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                limit += 5;
+                getOrdinanceData(selectOrdinance.value ? selectOrdinance.value : 9, limit);
+                
+            }
+            
+        });
+    }, {
+        threshold: 1,
+        rootMargin:'100px'
+    });
+    const getNewOrdinanceData = async (number, limit) =>{
+      ordinanceBody.innerHTML = '';
        try{
-        const response = await fetch(`./get_ordinance_controller.php?number=${number}`);
+        const response = await fetch(`./get_ordinance_controller.php?number=${number}&limit=${limit}`);
         const data = await response.json();
-         data.forEach(item => {
+        data.slice(0, limit).forEach(ordinance => {
             ordinanceBody.innerHTML += `
             <div class="col p-2">
                         <div class="city-ordinance-card p-3 border">
                             <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No: <a href =${item.href}>${item.link}</a> </h5>
+                                <p>Approved No: <a href class = "ordinance-link" =${ordinance.href}>${ordinance.link}</a> </h5>
                             </div>
                             <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
-                            <p>Title: ${item.title ?? "no title"} </p>
-                                <p>Author: ${item.author ?? "no auhor"}</p>
+                            <p class = "ordinance-title">Title: ${ordinance.title ?? "no title"} </p>
+                                <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
                             
                             </div>
                         </div>
                     </div>
-            `
-         })
-       
-       }
+            `    
+        });
+        populateObject();
+        const cards = document.querySelectorAll('.city-ordinance-card');
+        const lastCard = cards[cards.length - 1];
+        observer.observe(lastCard);
+    }
+    
          catch(error){
               console.log(error);
          }
     }
+
+   const getOrdinanceData = async (number, limit) => {
+         try{
+        const response = await fetch(`./get_ordinance_controller.php?number=${number}&limit=${limit}`);
+        const data = await response.json();
+        data.slice(0, limit).forEach(ordinance => {
+            ordinanceBody.innerHTML += `
+            <div class="col p-2">
+                        <div class="city-ordinance-card p-3 border">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No: <a href class = "ordinance-link" =${ordinance.href}>${ordinance.link}</a> </h5>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                            <p class = "ordinance-title">Title: ${ordinance.title ?? "no title"} </p>
+                                <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    
+            `
+        });
+          populateObject();
+        const cards = document.querySelectorAll('.city-ordinance-card');
+        const lastCard = cards[cards.length - 1];
+        observer.observe(lastCard);
+    }
+         catch(error){
+              console.log(error);
+         }finally{
+         }
+    }
+const populateObject = () => {
+    currentOrdinance = {};
+    const cards = document.querySelectorAll('.city-ordinance-card');
+    cards.forEach((card, key) => {
+            
+            currentOrdinance[key] = {
+            title: document.querySelector('.ordinance-title').textContent,
+            author: document.querySelector('.ordinance-author').textContent,
+            link: document.querySelector('.ordinance-link').textContent,
+           href: document.querySelector('.ordinance-link').href,
+            }
+        });
+console.log(currentOrdinance)
+}
+
+
 </script>
 </html>

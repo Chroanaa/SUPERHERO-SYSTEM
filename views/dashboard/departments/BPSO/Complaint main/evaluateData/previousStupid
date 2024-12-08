@@ -1,0 +1,140 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const complaintDescription = document.getElementById('complaint-description');
+    const evaluateBtn = document.getElementById('evaluateBtn');
+    const complainantInputs = document.querySelectorAll('#complainant-container input');
+    const respondentInputs = document.querySelectorAll('#respondent-container input');
+    const caseCheckboxes = document.querySelectorAll('#case-options input[type="checkbox"]');
+    const dropdownCategory = document.getElementById('dropdowncategory');
+    const caseTypeDropdown = document.getElementById('caseTypeDropdown');
+
+    const caseTypes = {
+        minorInvolved: {
+            keywords: ['bata', 'binugbog ang aking anak', 'inabuso yung bata', 'pagpapabaya sa bata'],
+            types: ['Juvenile Delinquency', 'Child Endangerment', 'Neglection or Exploitation']
+        },
+        drugInvolved: {
+            keywords: ['may bentahan ng droga', 'pinagbantaan ako dahil sa droga', 'droga', 'gamot na ipinagbabawal'],
+            types: ['Drug Related Offense', 'Substance Trafficking', 'Rehabilitation Case']
+        },
+        theftInvolved: {
+            keywords: ['nakawan', 'ninakawan', 'magnanakaw', 'pagnanakaw'],
+            types: ['Stealing']
+        },
+        violenceInvolved: {
+            keywords: ['may suntukan', 'sapakan', 'nagbabanta', 'patayan', 'may pinatay', 'karahasan'],
+            types: ['Assault', 'Homicide or Attempted Murder', 'Gender-Based Violence']
+        },
+        domesticIssue: {
+            keywords: ['abuso', 'karahasan sa tahanan', 'alitan sa pamilya', 'diskriminasyon'],
+            types: ['Domestic Violence', 'Family Feud or Custody Dispute', 'Emotional or Verbal Abuse']
+        },
+        vandalismInvolved: {
+            keywords: ['sulat sa pader', 'sira ang ari-arian', 'pagvandal', 'paninira sa pampublikong lugar'],
+            types: ['Property Defacement', 'Public Infrastructure Damage', 'Graffiti Offense']
+        },
+        fraudInvolved: {
+            keywords: ['panloloko', 'pekeng dokumento', 'pekeng kontrata', 'pandaraya', 'scam'],
+            types: ['Forgery', 'Financial Fraud', 'Identity Theft']
+        },
+        harassmentInvolved: {
+            keywords: ['pangha-harass', 'pananakot', 'hipo', 'verbal abuse', 'pambabastos', 'bastos'],
+            types: ['Bullying', 'Sexual Harassment', 'Workplace Harassment']
+        },
+        publicDisturbance: {
+            keywords: ['gulo sa kalsada', 'maingay', 'sigawan', 'away sa pampublikong lugar', 'videoke', 'ingay'],
+            types: ['Public Nuisance', 'Unlawful Assembly', 'Disorderly Conduct']
+        },
+        cyberCrimeInvolved: {
+            keywords: ['hacking', 'pagnanakaw ng impormasyon', 'online scam', 'cyber bullying'],
+            types: ['Hacking', 'Identity Theft', 'Cyber Harassment']
+        },
+        trespassingInvolved: {
+            keywords: ['panghihimasok', 'nanghihimasok', 'pagpasok sa hindi pagmay-ari', 'hindi may ari', 'trespassing', 'pang-aabala'],
+            types: ['Unauthorized Entry', 'Property Trespassing', 'Breaking and Entering']
+        }
+    };
+
+    function checkInputs() {
+        const allComplainantFilled = Array.from(complainantInputs).every(input => input.value.trim() !== '');
+        const allRespondentFilled = Array.from(respondentInputs).every(input => input.value.trim() !== '');
+
+        if (allComplainantFilled && allRespondentFilled) {
+            complaintDescription.removeAttribute('readonly');
+        } else {
+            complaintDescription.setAttribute('readonly', 'readonly');
+        }
+    }
+
+    function autoFillCaseTypes() {
+        const description = complaintDescription.value.toLowerCase();
+        let detectedCases = [];
+        // console.log('Auto-filling case types. Description:', description);  // Log description
+    
+        for (const [caseId, caseInfo] of Object.entries(caseTypes)) {
+            if (caseInfo.keywords.some(keyword => description.includes(keyword.toLowerCase()))) {
+                console.log('Detected case:', caseId);  // Log detected case
+                document.getElementById(caseId).checked = true;
+                detectedCases.push(caseId);
+            } else {
+                document.getElementById(caseId).checked = false;
+            }
+        }
+    
+        // updateCaseTypeDropdown(detectedCases);
+    }
+    
+    // function updateCaseTypeDropdown(detectedCases) {
+    //     const caseTypeDropdown = document.getElementById('caseTypeDropdown');
+    //     const dropdownCategory = document.getElementById('dropdowncategory');
+
+    //     // Ensure the dropdown exists and prevent errors if it's not available
+    //     if (!caseTypeDropdown || !dropdownCategory) return;
+
+    //     // Clear previous dropdown items
+    //     caseTypeDropdown.innerHTML = '';
+
+    //     // Enable/Disable the dropdown button based on detected cases
+    //     dropdownCategory.disabled = detectedCases.length === 0;
+
+    //     // If there are detected cases, populate the dropdown
+    //     if (detectedCases.length > 0) {
+    //         dropdownCategory.textContent = `Case Type for ${detectedCases.map(id => document.querySelector(`label[for="${id}"]`).textContent).join(', ')}`;
+
+    //         detectedCases.forEach(caseId => {
+    //             caseTypes[caseId].types.forEach(type => {
+    //                 const li = document.createElement('li');
+    //                 li.innerHTML = `<a class="dropdown-item" href="#">${type}</a>`;
+    //                 li.querySelector('a').addEventListener('click', function (e) {
+    //                     e.preventDefault();
+    //                     document.getElementById('hiddenCategory').value = this.textContent;
+    //                     dropdownCategory.textContent = this.textContent;
+    //                 });
+    //                 caseTypeDropdown.appendChild(li);
+    //             });
+    //         });
+    //     } else {
+    //         dropdownCategory.textContent = 'Case Type';
+    //     }
+    // }
+
+    complainantInputs.forEach(input => input.addEventListener('input', checkInputs));
+    respondentInputs.forEach(input => input.addEventListener('input', checkInputs));
+
+    complaintDescription.addEventListener('input', function () {
+        evaluateBtn.disabled = this.value.trim() === '';
+    });
+
+    evaluateBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        console.log('Identifying case...');
+        autoFillCaseTypes();
+        // console.log('Description: ', complaintDescription.value);  // Log the description
+        caseCheckboxes.forEach(checkbox => checkbox.disabled = false);
+    });
+
+    caseCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            updateCaseTypeDropdown(Array.from(caseCheckboxes).filter(cb => cb.checked).map(cb => cb.id));
+        });
+    });
+});
