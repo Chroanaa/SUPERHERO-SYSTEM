@@ -66,6 +66,7 @@ function updateButtonText(text, buttonId, event) {
 document.addEventListener('DOMContentLoaded', function () {
     const minorInvolvedCheckbox = document.getElementById('minorInvolved');
     const drugInvolvedCheckbox = document.getElementById('drugInvolved');
+    const HarassmentCheckbox = document.getElementById("harassmentInvolved");
     const bcpcFormContainer = document.getElementById('bcpc-form-container');
     const badacFormContainer = document.getElementById('badac-form-container');
     const specialCaseDropdown = document.getElementById('specialcasedrop');
@@ -73,6 +74,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Modal elements
     const minorInvolvedModal = new bootstrap.Modal(document.getElementById('minorInvolvedModal'));
     const drugInvolvedModal = new bootstrap.Modal(document.getElementById('drugInvolvedModal'));
+    const harassmentModal = new bootstrap.Modal(document.getElementById('VAWCInvolvedModal'));
+
+    HarassmentCheckbox.addEventListener('click', function () {
+        harassmentModal.show();
+    });
 
     // Listen for minor involved checkbox change
     minorInvolvedCheckbox.addEventListener('change', function () {

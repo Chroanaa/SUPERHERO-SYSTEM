@@ -131,7 +131,10 @@ usort($complaints, function ($a, $b) {
          </div>
          <div id="complaintsection" style="display: block;">
             <div style="margin-top: 13px; padding: 20px; min-height: 100vh; width: 100%; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; align-items: flex-start;">
-               <!-- <input type="text" id="search-input" placeholder="Search..." onkeyup="filterTable()" style="padding: 10px; width: 35%; max-width: 700px;"> -->
+               <div class="d-flex mb-3" style="width: 540px;">
+                  <input type="text" id="search-input" placeholder="Search..." onkeyup="filterTable()" style="padding: 10px; width: 100%; max-width: 700px;">
+                  <button class="btn text-light ms-2 w-100" style="background-color: #1E477D;" onclick="printTable()">PRINT REPORT</button>
+               </div>
                <!-- Category dropdown -->
                <div class="dropdown" style="display: flex; justify-content: flex-start; align-items: center;">
                   <!-- <button id="dropdownButton" class="btn btn-info dropdown-toggle btn-hover" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: block; width: 250px; height: 50px; font-size: 20px; background-color: #ffffff; border: 1px solid #b1b1b1;">
@@ -274,6 +277,72 @@ usort($complaints, function ($a, $b) {
 
             rows[i].style.display = match ? '' : 'none';
          }
+      }
+
+      function printTable() {
+         // Select the correct table by its ID
+         const table = document.querySelector('#tablecase').cloneNode(true);
+         const actionColumnIndex = 4; // Index of the "Actions" column in your table
+
+         // Remove the "Actions" column from the table header
+         table.querySelectorAll('th')[actionColumnIndex]?.remove();
+
+         // Remove the "Actions" column from each row
+         table.querySelectorAll('tr').forEach(row => {
+            row.querySelectorAll('td')[actionColumnIndex]?.remove();
+         });
+
+         // Get the current date
+         const now = new Date();
+
+         // Append a summary section to the table (this assumes PHP output)
+         const complaints = <?php echo json_encode($complaints); ?>;
+         const monthlyCount = complaints.filter(complaint => {
+            const complaintDate = new Date(complaint.case_created.S);
+            return complaintDate.getMonth() === now.getMonth() && complaintDate.getFullYear() === now.getFullYear();
+         }).length;
+
+         const quarterlyCount = complaints.filter(complaint => {
+            const complaintDate = new Date(complaint.case_created.S);
+            return (
+               Math.floor(complaintDate.getMonth() / 3) === Math.floor(now.getMonth() / 3) &&
+               complaintDate.getFullYear() === now.getFullYear()
+            );
+         }).length;
+
+         const annualCount = complaints.filter(complaint => {
+            const complaintDate = new Date(complaint.case_created.S);
+            return complaintDate.getFullYear() === now.getFullYear();
+         }).length;
+
+         // Add summary details to the table
+         const summary = document.createElement('div');
+         summary.innerHTML = `
+        <h3>Case Summary</h3>
+        <p>Total Cases This Month: ${monthlyCount}</p>
+        <p>Total Cases This Quarter: ${quarterlyCount}</p>
+        <p>Total Cases This Year: ${annualCount}</p>
+    `;
+
+         // Create a container to print the table and summary
+         const printContainer = document.createElement('div');
+         printContainer.appendChild(summary);
+         printContainer.appendChild(table);
+
+         // Save the current content of the body
+         const originalContents = document.body.innerHTML;
+
+         // Replace the body content with the print contents
+         document.body.innerHTML = printContainer.innerHTML;
+
+         // Print the table
+         window.print();
+
+         // Restore the original body content
+         document.body.innerHTML = originalContents;
+
+         // Reload the page to reset any JavaScript state
+         location.reload();
       }
    </script>
 </body>

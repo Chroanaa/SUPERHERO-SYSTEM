@@ -216,7 +216,7 @@ if (isset($complaints['vawc_case_records']) && count($complaints['vawc_case_reco
          <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
             <div class="modal-content">
                <div class="modal-header">
-                  <h5 class="modal-title" id="signOutModalLabel">Forward Case to DSWD</h5>
+                  <h5 class="modal-title" id="signOutModalLabel">Turnover (DSWD)</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
@@ -251,13 +251,13 @@ if (isset($complaints['vawc_case_records']) && count($complaints['vawc_case_reco
                      <p><strong>Complainants:</strong></p>
                      <ul class="d-flex flex-column ps-3">
                         <?php foreach ($complaint['case_complainants'] ?? [] as $complainant): ?>
-                           <li><?= htmlspecialchars($complainant['name']) ?> (<?= htmlspecialchars($complainant['address']) ?>)</li>
+                           <li><?= htmlspecialchars($complainant['name']) ?> (Address: <?= htmlspecialchars($complainant['address']) ?>)</li>
                         <?php endforeach; ?>
                      </ul>
                      <p><strong>Respondents:</strong></p>
                      <ul class="d-flex flex-column ps-3">
                         <?php foreach ($complaint['case_respondents'] ?? [] as $respondent): ?>
-                           <li><?= htmlspecialchars($respondent['name']) ?> (<?= htmlspecialchars($respondent['address']) ?>)</li>
+                           <li><?= htmlspecialchars($respondent['name']) ?> (Address: <?= htmlspecialchars($respondent['address']) ?>)</li>
                         <?php endforeach; ?>
                         <!-- <button class="btn btn-danger w-100 mt-2">Monitor & Review</button> -->
                      </ul>

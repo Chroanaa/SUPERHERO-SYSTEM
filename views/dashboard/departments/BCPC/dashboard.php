@@ -251,13 +251,13 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
                      <p><strong>Complainants:</strong></p>
                      <ul class="d-flex flex-column ps-3">
                         <?php foreach ($complaint['case_complainants'] ?? [] as $complainant): ?>
-                           <li><?= htmlspecialchars($complainant['name']) ?> (<?= htmlspecialchars($complainant['address']) ?>)</li>
+                           <li><?= htmlspecialchars($complainant['name']) ?> (Address: <?= htmlspecialchars($complainant['address']) ?>)</li>
                         <?php endforeach; ?>
                      </ul>
                      <p><strong>Respondents:</strong></p>
                      <ul class="d-flex flex-column ps-3">
                         <?php foreach ($complaint['case_respondents'] ?? [] as $respondent): ?>
-                           <li><?= htmlspecialchars($respondent['name']) ?> (<?= htmlspecialchars($respondent['address']) ?>)</li>
+                           <li><?= htmlspecialchars($respondent['name']) ?> (Address: <?= htmlspecialchars($respondent['address']) ?>)</li>
                         <?php endforeach; ?>
                         <!-- <button class="btn btn-danger w-100 mt-2">Monitor & Review</button> -->
                      </ul>

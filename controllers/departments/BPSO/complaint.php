@@ -145,12 +145,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Determine the DynamoDB tables
     $tableNames = ['bms_bpso_portal_complaint_records']; // Always include BPSO table
 
-    // Check if BADAC or BCPC is selected and add corresponding table
-    if ($postData['affiliated_dept_case'] === 'BCPC' || $postData['affiliated_dept_case'] === 'BADAC' || $postData['affiliated_dept_case'] === 'BADAC & BCPC') {
+    // Check if BADAC or BCPC is selected and add corresponding table(s)
+    if ($postData['affiliated_dept_case'] === 'BCPC' || $postData['affiliated_dept_case'] === 'BADAC & BCPC') {
         $tableNames[] = 'bms_bcpc_portal_complaint_records';
     }
 
     if ($postData['affiliated_dept_case'] === 'BADAC' || $postData['affiliated_dept_case'] === 'BADAC & BCPC') {
+        $tableNames[] = 'bms_badac_portal_complaint_records';
+    }
+
+    if ($postData['affiliated_dept_case'] === 'BCPC') {
+        $tableNames[] = 'bms_bcpc_portal_complaint_records';
+    }
+
+    if ($postData['affiliated_dept_case'] === 'BADAC') {
         $tableNames[] = 'bms_badac_portal_complaint_records';
     }
 
