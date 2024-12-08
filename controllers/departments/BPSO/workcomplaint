@@ -51,21 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Handle BCPC child data
     if (isset($_POST['child_name']) && is_array($_POST['child_name'])) {
         foreach ($_POST['child_name'] as $index => $child_name) {
-            // Validate and sanitize child age
-            $child_age = $_POST['child_age'][$index] ?? '';  // Get the child age
-            if (!is_numeric($child_age)) {
-                // Handle the case where child_age is not a valid number (e.g., set to 0 or skip)
-                $child_age = 0;  // or use a default value like 0 if the age is invalid
-            }
-
             $bcpc_children_infos[] = [
                 'child_name' => $child_name,
-                'child_age' => (string) $child_age,  // Ensure it's a string number
+                'child_age' => $_POST['child_age'][$index] ?? '',
                 'child_gender' => $_POST['child_gender'][$index] ?? '',
                 'child_address' => $_POST['child_address'][$index] ?? ''
             ];
         }
     }
+
     // Handle case_type as an array of objects (case_type and initial_case)
     $caseType = [];
     if (isset($_POST['case_type']) && is_array($_POST['case_type'])) {
@@ -135,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'bcpc_children_infos' => !empty($bcpc_children_infos) ? ['L' => array_map(fn($c) => [
             'M' => [
                 'child_name' => ['S' => $c['child_name']],
-                'child_age' => ['N' => (string) $c['child_age']], // Ensure child age is a valid numeric value // Ensure it's a number
+                'child_age' => ['N' => (string) $c['child_age']], // Ensure it's a number
                 'child_gender' => ['S' => $c['child_gender']],
                 'child_address' => ['S' => $c['child_address']]
             ]
@@ -196,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'case_status' => ['S' => $postData['case_status']],
         'case_created' => ['S' => $postData['case_created']],
         'bcpc_children_infos' => $postData['bcpc_children_infos'],
-    ];
+    ];    
 
     // Put the item into DynamoDB for each table
     try {

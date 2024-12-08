@@ -30,7 +30,6 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
 }
 ?>
 
-
 <!-- CUSTOM PROGRAM (FEEL FREE TO CHANGE IT) -->
 <!DOCTYPE html>
 <html lang="en">
@@ -218,6 +217,27 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
       </div>
 
 
+      <!-- Forward to DSWD -->
+      <div class="modal fade" id="ConfirmModal" tabindex="-1" aria-labelledby="ConfirmModalLabel" aria-hidden="true"
+         data-bs-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="signOutModalLabel">Forward Case to DSWD</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  This action cannot be undone.
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" id="confirmBtn" data-bs-dismiss="modal">Proceed</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+
       <!-- View Details Modal -->
       <div class="modal fade" id="viewDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
          <div class="modal-dialog modal-lg">
@@ -236,8 +256,9 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
                   <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
                </div>
                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">Update</button>
-                  <button type="button" class="btn btn-danger">Forward Case</button>
+                  <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                  data-bs-target="#ConfirmModal">Forward to DSWD</button>
+                  <!-- <button type="button" class="btn btn-primary">Message</button> -->
                </div>
             </div>
          </div>
@@ -268,6 +289,44 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
             document.getElementById("modal-respondents").textContent = respondents;
             document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
          }
+
+         document.getElementById("confirmBtn").addEventListener("click", function() {
+            // Collect data from the modal
+            const caseData = {
+               forwardFrom: "BCPC of Brgy. Sta Lucia",
+               caseNumber: document.getElementById("modal-case-number").textContent.trim() || "N/A",
+               incidentTime: document.getElementById("modal-incident-date").textContent.trim() || "N/A",
+               caseCreated: document.getElementById("modal-case-type").textContent.trim() || "N/A",
+               caseDescription: document.getElementById("modal-case-description").textContent.trim() || "N/A",
+               caseStatus: document.getElementById("modal-case-status").textContent.trim() || "N/A",
+               complainants: document.getElementById("modal-complainants").textContent.trim() || "N/A",
+               respondents: document.getElementById("modal-respondents").textContent.trim() || "N/A",
+            };
+
+            // Format the data into a string
+            const formattedCaseData = `
+               Forward Case From: ${caseData.forwardFrom}
+
+               Case Number: ${caseData.caseNumber}
+               Incident Case Time: ${caseData.incidentTime}
+               Case Created: ${caseData.caseCreated}
+               Case Description: ${caseData.caseDescription}
+
+               Case Status: ${caseData.caseStatus}
+
+               Case Complainants:
+               - ${caseData.complainants.replace(/,/g, "\n- ")}
+
+               Case Respondents:
+               - ${caseData.respondents.replace(/,/g, "\n- ")}
+            `;
+
+            // Save the formatted data in localStorage for retrieval on the redirected page
+            localStorage.setItem("forwardedCaseData", formattedCaseData);
+
+            // Redirect to the specified page
+            window.open("http://localhost:3000/views/dashboard/departments/BCPC/third-party/upload-file-dswd.php", "_blank");
+         });
       </script>
 </body>
 

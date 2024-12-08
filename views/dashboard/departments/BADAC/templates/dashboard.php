@@ -116,58 +116,50 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
                               <th>Action</th>
                            </tr>
                         </thead>
-                        <?php
-                        if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_complaints']) > 0) {
-                           foreach ($complaints['badac_all_complaints'] as $complaint) {
-                              $case_number = $complaint['case_number'] ?? 'N/A';
-                              $case_created = $complaint['case_created'] ?? 'N/A';
-                              $case_type = $complaint['case_type'] ?? 'N/A';
-                              $case_status = $complaint['case_status'] ?? 'N/A';
+                        <tbody>
+                           <?php if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_complaints']) > 0): ?>
+                              <?php foreach ($complaints['badac_all_complaints'] as $index => $complaint): ?>
+                                 <?php
+                                 // Get the complaint data
+                                 $case_number = $complaint['case_number'] ?? 'N/A';
+                                 $case_created = $complaint['case_created'] ?? 'N/A';
+                                 $case_type = implode(', ', array_map(fn($type) => $type['case_type'], $complaint['case_type'] ?? []));
+                                 $case_status = $complaint['case_status'] ?? 'N/A';
 
-                              // Format the case_created date
-                              $formatted_date = 'N/A';
-                              if ($case_created != 'N/A') {
-                                 try {
-                                    // Create DateTime object with case_created
-                                    $date = new DateTime($case_created, new DateTimeZone('UTC'));
-                                    // Convert timezone to Asia/Taipei
-                                    $date->setTimezone(new DateTimeZone('Asia/Taipei'));
-                                    // Format the date in the desired format
-                                    $formatted_date = $date->format('M j, Y \a\s \o\f g:i A');
-                                 } catch (Exception $e) {
-                                    // Handle potential errors with an error message or log
-                                    $formatted_date = 'Invalid Date';
+                                 // Format the date
+                                 $formatted_date = 'N/A';
+                                 if ($case_created !== 'N/A') {
+                                    try {
+                                       $date = new DateTime($case_created, new DateTimeZone('UTC'));
+                                       $date->setTimezone(new DateTimeZone('Asia/Taipei'));
+                                       $formatted_date = $date->format('M j, Y \a\s \o\f g:i A');
+                                    } catch (Exception $e) {
+                                       $formatted_date = 'Invalid Date';
+                                    }
                                  }
-                              }
-
-                              // Encode complaint data as JSON
-                              $complaint_json = htmlspecialchars(json_encode($complaint));
-                        ?>
+                                 ?>
+                                 <tr>
+                                    <td><?= htmlspecialchars($case_number) ?></td>
+                                    <td><?= htmlspecialchars($formatted_date) ?></td>
+                                    <td><?= htmlspecialchars($case_type) ?></td>
+                                    <td><?= htmlspecialchars($case_status) ?></td>
+                                    <td>
+                                       <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewDetailsModal<?= $index ?>">
+                                          View Details
+                                       </button>
+                                    </td>
+                                 </tr>
+                              <?php endforeach; ?>
+                           <?php else: ?>
                               <tr>
-                                 <td><?php echo htmlspecialchars($case_number); ?></td>
-                                 <td><?php echo htmlspecialchars($formatted_date); ?></td>
-                                 <td><?php echo htmlspecialchars($case_type); ?></td>
-                                 <td><?php echo htmlspecialchars($case_status); ?></td>
-                                 <td>
-                                    <button class="btn btn-danger"
-                                       data-bs-toggle="modal"
-                                       data-bs-target="#viewDetailsModal"
-                                       onclick="viewDetails('<?php echo $complaint_json; ?>')">
-                                       View Details
-                                    </button>
-                                 </td>
+                                 <td colspan="5">No complaints available</td>
                               </tr>
-                        <?php
-                           }
-                        } else {
-                           echo "<tr><td colspan='5'>No complaints available</td></tr>";
-                        }
-                        ?>
+                           <?php endif; ?>
                         </tbody>
                      </table>
 
                   </div>
-                  <div class="pagination-container container-fluid d-flex justify-content-between">
+                  <!-- <div class="pagination-container container-fluid d-flex justify-content-between">
                      <label for="">Showing 1 to 5 of 5 entries </label>
                      <ul class="pagination">
                         <li class="page-item"><a class="page-link" href="#">Previous</a></li>
@@ -176,39 +168,56 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
                         <li class="page-item"><a class="page-link" href="#">3</a></li>
                         <li class="page-item"><a class="page-link" href="#">Next</a></li>
                      </ul>
-                  </div>
+                  </div> -->
                </section>
             </div>
          </div>
       </div>
    </div>
 
-   <!-- View Details Modal -->
-   <div class="modal fade" id="viewDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
-               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-               <p><strong>Case Number:</strong> <span id="modal-case-number"></span></p>
-               <p><strong>Incident Date:</strong> <span id="modal-incident-date"></span></p>
-               <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p>
-               <p><strong>Case Status:</strong> <span id="modal-case-status"></span></p>
-               <p><strong>Complainants:</strong> <span id="modal-complainants"></span></p>
-               <p><strong>Respondents:</strong> <span id="modal-respondents"></span></p>
-               <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                  data-bs-target="#ConfirmModal">Forward to DOH</button>
-               <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                  data-bs-target="#MessageModal">Message</button>
+   <!-- View Details Modals outside the table -->
+   <?php foreach ($complaints['badac_all_complaints'] as $index => $complaint): ?>
+      <div class="modal fade" id="viewDetailsModal<?= $index ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                  <p><strong>Case Number:</strong> <?= htmlspecialchars($complaint['case_number']) ?></p>
+                  <p><strong>Incident Date:</strong> <?= htmlspecialchars($formatted_date) ?></p>
+                  <p><strong>Case Type:</strong></p>
+                  <ul class="d-flex flex-column ps-3">
+                     <?php foreach ($complaint['case_type'] ?? [] as $type): ?>
+                        <li><?= htmlspecialchars($type['case_type']) ?></li>
+                     <?php endforeach; ?>
+                  </ul>
+                  <p><strong>Case Status:</strong> <?= htmlspecialchars($complaint['case_status']) ?></p>
+                  <p><strong>Complainants:</strong></p>
+                  <ul class="d-flex flex-column ps-3">
+                     <?php foreach ($complaint['case_complainants'] ?? [] as $complainant): ?>
+                        <li><?= htmlspecialchars($complainant['name']) ?> (<?= htmlspecialchars($complainant['address']) ?>)</li>
+                     <?php endforeach; ?>
+                  </ul>
+                  <p><strong>Respondents:</strong></p>
+                  <ul class="d-flex flex-column ps-3">
+                     <?php foreach ($complaint['case_respondents'] ?? [] as $respondent): ?>
+                        <li><?= htmlspecialchars($respondent['name']) ?> (<?= htmlspecialchars($respondent['address']) ?>)</li>
+                     <?php endforeach; ?>
+                     <!-- <button class="btn btn-danger w-100 mt-2">Monitor & Review</button> -->
+                  </ul>
+                  <p><strong>Description:</strong> <?= htmlspecialchars($complaint['case_description']) ?></p>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#UpdateModal">Update</button>
+                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ConfirmModal">Forward to DOH</button>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#MessageModal">Message</button>
+               </div>
             </div>
          </div>
       </div>
-   </div>
+   <?php endforeach; ?>
 
    <!-- Forward to DOH -->
    <div class="modal fade" id="ConfirmModal" tabindex="-1" aria-labelledby="ConfirmModalLabel" aria-hidden="true"
@@ -229,9 +238,52 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
       </div>
    </div>
 
+   <form action="../../../../../controllers/departments/BADAC/handler.php" method="post">
+      <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="signOutModalLabel">Update Case Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <div class="mb-3">
+                     <label for="caseNumber" class="form-label">Case Number</label>
+                     <input type="text" class="form-control" id="caseNumber" name="caseNumber" value="<?= htmlspecialchars($case_number) ?>" readonly>
+                  </div>
+
+                  <div class="mb-3">
+                     <label for="caseType" class="form-label">Case Type</label>
+                     <select class="form-select" id="caseType" name="caseType" required>
+                        <option value="" disabled <?= !$case_type ? 'selected' : '' ?>>Select Case Type</option>
+                        <option value="Severe" <?= ($case_type == 'Severe') ? 'selected' : '' ?>>Severe</option>
+                        <option value="Mild" <?= ($case_type == 'Mild') ? 'selected' : '' ?>>Mild</option>
+                        <option value="Moderate" <?= ($case_type == 'Moderate') ? 'selected' : '' ?>>Moderate</option>
+                     </select>
+                  </div>
+
+                  <div class="mb-3">
+                     <label for="caseStatus" class="form-label">Case Status</label>
+                     <select class="form-select" id="caseStatus" name="caseStatus" required>
+                        <option value="" disabled selected>Select Case Status</option>
+                        <option value="Pending" <?= ($case_status == 'Pending') ? 'selected' : '' ?>>Pending</option>
+                        <option value="Resolved" <?= ($case_status == 'Resolved') ? 'selected' : '' ?>>Resolved</option>
+                     </select>
+                  </div>
+
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-danger">Submit</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </form>
+
+
    <!-- Modal for sending message -->
-   <div class="modal fade" id="MessageModal" tabindex="-1" aria-labelledby="MessageModalLabel" aria-hidden="true"
-      data-bs-backdrop="static" data-bs-keyboard="false">
+   <div class="modal fade" id="MessageModal" tabindex="-1" aria-labelledby="MessageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
       <div class="modal-dialog modal-dialog-centered">
          <div class="modal-content">
             <div class="modal-header">
@@ -288,47 +340,66 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
    <script src="./javascript/sendMessage.js"></script>
    <!-- <script src="./javascript/addCaseForm.js"></script> -->
    <script>
-      function viewDetails(caseData) {
-         // Parse the case data passed to the function
-         const caseDetails = JSON.parse(caseData);
-
-         // Populate modal fields
-         document.getElementById("modal-case-number").textContent = caseDetails.case_number || "N/A";
-         document.getElementById("modal-incident-date").textContent = caseDetails.case_created || "N/A";
-         document.getElementById("modal-case-type").textContent = caseDetails.case_type || "N/A";
-         document.getElementById("modal-case-status").textContent = caseDetails.case_status || "N/A";
-
-         // Format complainants and respondents
-         const complainants = caseDetails.case_complainants.map(complainant => complainant.name).join(", ") || "N/A";
-         const respondents = caseDetails.case_respondents.map(respondent => respondent.name).join(", ") || "N/A";
-
-         document.getElementById("modal-complainants").textContent = complainants;
-         document.getElementById("modal-respondents").textContent = respondents;
-         document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
-      }
-
       let selectedComplaint = null;
 
-      function viewDetails(caseData) {
-         // Parse the case data passed to the function
-         const caseDetails = JSON.parse(caseData);
+      // function viewDetails(caseData) {
+      //    // Parse the case data passed to the function
+      //    const caseDetails = JSON.parse(caseData);
 
-         // Populate modal fields
-         document.getElementById("modal-case-number").textContent = caseDetails.case_number || "N/A";
-         document.getElementById("modal-incident-date").textContent = caseDetails.case_created || "N/A";
-         document.getElementById("modal-case-type").textContent = caseDetails.case_type || "N/A";
-         document.getElementById("modal-case-status").textContent = caseDetails.case_status || "N/A";
+      //    // Populate modal fields
+      //    document.getElementById("modal-case-number").textContent = caseDetails.case_number || "N/A";
+      //    document.getElementById("modal-incident-date").textContent = caseDetails.case_created || "N/A";
+      //    document.getElementById("modal-case-type").textContent = caseDetails.case_type || "N/A";
+      //    document.getElementById("modal-case-status").textContent = caseDetails.case_status || "N/A";
 
-         const complainants = caseDetails.case_complainants.map(complainant => complainant.name).join(", ") || "N/A";
-         const respondents = caseDetails.case_respondents.map(respondent => respondent.name).join(", ") || "N/A";
+      //    const complainants = caseDetails.case_complainants.map(complainant => complainant.name).join(", ") || "N/A";
+      //    const respondents = caseDetails.case_respondents.map(respondent => respondent.name).join(", ") || "N/A";
 
-         document.getElementById("modal-complainants").textContent = complainants;
-         document.getElementById("modal-respondents").textContent = respondents;
-         document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
+      //    document.getElementById("modal-complainants").textContent = complainants;
+      //    document.getElementById("modal-respondents").textContent = respondents;
+      //    document.getElementById("modal-case-description").textContent = caseDetails.case_description || "N/A";
 
-         // Store the currently selected complaint
-         selectedComplaint = caseDetails;
-      }
+      //    // Store the currently selected complaint
+      //    selectedComplaint = caseDetails;
+      // }
+
+      document.getElementById("confirmBtn").addEventListener("click", function() {
+         // Collect data from the modal
+         const caseData = {
+            forwardFrom: "BADAC of Brgy. Sta Lucia",
+            caseNumber: document.getElementById("modal-case-number").textContent.trim() || "N/A",
+            incidentTime: document.getElementById("modal-incident-date").textContent.trim() || "N/A",
+            caseCreated: document.getElementById("modal-case-type").textContent.trim() || "N/A",
+            caseDescription: document.getElementById("modal-case-description").textContent.trim() || "N/A",
+            caseStatus: document.getElementById("modal-case-status").textContent.trim() || "N/A",
+            complainants: document.getElementById("modal-complainants").textContent.trim() || "N/A",
+            respondents: document.getElementById("modal-respondents").textContent.trim() || "N/A",
+         };
+
+         // Format the data into a string
+         const formattedCaseData = `
+            Forward Case From: ${caseData.forwardFrom}
+
+            Case Number: ${caseData.caseNumber}
+            Incident Case Time: ${caseData.incidentTime}
+            Case Created: ${caseData.caseCreated}
+            Case Description: ${caseData.caseDescription}
+
+            Case Status: ${caseData.caseStatus}
+
+            Case Complainants:
+            - ${caseData.complainants.replace(/,/g, "\n- ")}
+
+            Case Respondents:
+            - ${caseData.respondents.replace(/,/g, "\n- ")}
+         `;
+
+         // Save the formatted data in localStorage for retrieval on the redirected page
+         localStorage.setItem("forwardedCaseData", formattedCaseData);
+
+         // Redirect to the specified page
+         window.open("http://localhost:3000/views/dashboard/departments/BADAC/templates/third-party/upload-file-doh.php", "_blank");
+      });
 
       function forwardToDOH() {
          if (!selectedComplaint) {

@@ -178,41 +178,47 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script src="../../../diff-sidebar.js" type="module"></script>
-</body>
-<script>
-   
-    let htmlContent = ""
-    const pending = JSON.parse(localStorage.getItem("pendingData"));
-    for (const key in pending) {
-        htmlContent += `
-            <div class="view-pending-body border mt-3">
-                    <div class="view-pending-body-title">
-                        <div class="view-pending-body-header d-flex justify-content-between align-items-center px-3 pt-4">
-                                <h5>${key} - ${pending[key].title}</h5>
-                                <p>${pending[key].submitted}</p>
-                        </div>
-                        <div class="view-pending-body-content px-3 pb-3">
-                            <p>Requested by ${pending[key].department} staff ${pending[key].requester}.</p>
-                            <button type="button" 
-                                    class="btn text-light" 
-                                    style="background-color: #FF5D5D"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#viewDetails" onclick="populateModal(
-                                        '${key}',
-                                        '${pending[key].requester}',
-                                        '${pending[key].department}',
-                                        '${pending[key].submitted}',
-                                        '${pending[key].description}'
-                                    )">See Details</button>
-                            <button class="btn text-light" 
-                                    style="background-color:#04D73D;" onclick="approvedItem('${key}')">Approve</button>
-                        </div>
-                    </div>
-                </div>
-        `;
-    }
-    document.querySelector(".container").innerHTML = htmlContent;
+    <script>
+    // Sample data for testing pending requests
+    const samplePendingData = {
+        "REQ001": {
+            "title": "Document Verification",
+            "requester": "John Doe",
+            "department": "Records Department",
+            "submitted": "2024-12-01 10:30 AM",
+            "description": "Verification of birth certificate for processing a passport."
+        },
+        "REQ002": {
+            "title": "Barangay Clearance",
+            "requester": "Jane Smith",
+            "department": "Barangay Office",
+            "submitted": "2024-12-01 11:00 AM",
+            "description": "Requesting barangay clearance for job application."
+        },
+        "REQ003": {
+            "title": "Community ID",
+            "requester": "Michael Tan",
+            "department": "Community Affairs",
+            "submitted": "2024-12-02 09:15 AM",
+            "description": "Issuance of a new community ID."
+        }
+    };
 
+    // Initialize localStorage with sample data if not already present
+    if (!localStorage.getItem("pendingData")) {
+        localStorage.setItem("pendingData", JSON.stringify(samplePendingData));
+    }
+
+    // Approved and disregarded datasets initialization (empty by default)
+    if (!localStorage.getItem("approvedData")) {
+        localStorage.setItem("approvedData", JSON.stringify({}));
+    }
+
+    if (!localStorage.getItem("disregardedRequest")) {
+        localStorage.setItem("disregardedRequest", JSON.stringify({}));
+    }
+
+    // Function to populate the modal with request details
     function populateModal(id, requester, department, submitted, description) {
         document.querySelector("#viewDetails input[name=pendingRequest]").value = id;
         document.querySelector("#viewDetails input[name=requester]").value = requester;
@@ -221,6 +227,7 @@
         document.querySelector("#viewDetails textarea[name=description]").value = description;
     }
 
+    // Function to approve a pending request
     function approvedItem(key) {
         const pending = JSON.parse(localStorage.getItem("pendingData"));
         const approved = JSON.parse(localStorage.getItem("approvedData")) || {};
@@ -248,6 +255,7 @@
         renderPendingRequests();
     }
 
+    // Function to disregard a pending request
     function disregardItem() {
         const key = document.querySelector("#viewDetails input[name=pendingRequest]").value;
         const reasonForDisregarding = document.querySelector("#notesForDisregarding textarea[name=reasonForDisregarding]").value;
@@ -277,6 +285,7 @@
         renderPendingRequests();
     }
 
+    // Function to render the pending requests dynamically
     function renderPendingRequests() {
         const pending = JSON.parse(localStorage.getItem("pendingData"));
         let htmlContent = "";
@@ -314,4 +323,6 @@
     // Initial render of pending requests
     renderPendingRequests();
 </script>
+
+</body>
 </html>
