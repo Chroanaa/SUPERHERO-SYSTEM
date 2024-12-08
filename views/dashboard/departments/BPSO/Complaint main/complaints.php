@@ -54,7 +54,8 @@ function formatCaseNumber($caseNumber)
 }
 
 // Format incident date and time
-function formatIncidentDateTime($incidentCaseTime, $incidentCaseIssued) {
+function formatIncidentDateTime($incidentCaseTime, $incidentCaseIssued)
+{
    $dateTime = new DateTime($incidentCaseTime, new DateTimeZone('GMT'));
    $dateTime->setTimezone(new DateTimeZone('Asia/Taipei'));
 
@@ -62,26 +63,27 @@ function formatIncidentDateTime($incidentCaseTime, $incidentCaseIssued) {
    return $dateTime->format('M, d, Y \a\s \o\f h:i A');
 }
 
-function formatNames($namesArray) {
-    // Debug the incoming data structure
-    error_log('Names Array: ' . print_r($namesArray, true));
-    
-    // Check if $namesArray is a DynamoDB 'L' (List) type
-    if (isset($namesArray['L']) && is_array($namesArray['L'])) {
-        $names = array_map(function ($item) {
-            // Each item in the list should be an 'M' (Map) type
-            if (isset($item['M']['name']['S'])) {
-                return htmlspecialchars($item['M']['name']['S']);
-            }
-            return '';
-        }, $namesArray['L']);
+function formatNames($namesArray)
+{
+   // Debug the incoming data structure
+   error_log('Names Array: ' . print_r($namesArray, true));
 
-        // Filter out empty values and join
-        $names = array_filter($names);
-        return implode(', ', $names);
-    }
-    
-    return '';
+   // Check if $namesArray is a DynamoDB 'L' (List) type
+   if (isset($namesArray['L']) && is_array($namesArray['L'])) {
+      $names = array_map(function ($item) {
+         // Each item in the list should be an 'M' (Map) type
+         if (isset($item['M']['name']['S'])) {
+            return htmlspecialchars($item['M']['name']['S']);
+         }
+         return '';
+      }, $namesArray['L']);
+
+      // Filter out empty values and join
+      $names = array_filter($names);
+      return implode(', ', $names);
+   }
+
+   return '';
 }
 
 // Sort complaints by 'case_created' in descending order (latest first)
@@ -140,7 +142,7 @@ usort($complaints, function ($a, $b) {
                   </ul>
                </div>
                <!-- Case table -->
-               <!-- <table id="tablecase" class="table table-bordered" style="border: 1px solid #d4d4d4; text-align: center;">
+               <table id="tablecase" class="table table-bordered" style="border: 1px solid #d4d4d4; text-align: center;">
                   <thead>
                      <tr>
                         <th scope="col">Case Number</th>
@@ -151,18 +153,33 @@ usort($complaints, function ($a, $b) {
                      </tr>
                   </thead>
                   <tbody>
-                  <?php foreach ($complaints as $complaint): ?>
+                     <?php foreach ($complaints as $complaint): ?>
                         <tr>
-                           <td><?= formatCaseNumber($complaint['case_number']['N']) ?></td> 
+                           <td><?= formatCaseNumber($complaint['case_number']['N']) ?></td>
                            <td><?= formatCaseCreatedDate($complaint['case_created']['S']) ?></td>
-                           <td><?= $complaint['case_types']['S'] ?></td>
+                           <td class="text-truncate" style="max-width: 200px; overflow: hidden; white-space: nowrap;">
+                              <?php
+                              if (isset($complaint['case_type']['L']) && is_array($complaint['case_type']['L'])) {
+                                 // Loop through the case types and display initial_case and case_type
+                                 $caseTypes = array_map(function ($item) {
+                                    $initialCase = isset($item['M']['initial_case']['S']) ? htmlspecialchars($item['M']['initial_case']['S']) : '';
+                                    // $caseType = isset($item['M']['case_type']['S']) ? htmlspecialchars($item['M']['case_type']['S']) : '';
+                                    return $initialCase;
+                                 }, $complaint['case_type']['L']);
+
+                                 echo implode(', ', $caseTypes); // Join all the case types with commas
+                              } else {
+                                 echo 'N/A'; // If no case types, show N/A
+                              }
+                              ?>
+                           </td>
                            <td><?= $complaint['case_status']['S'] ?></td>
                            <td>
                               <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewDetailsModal" onclick="
                                  populateModal(
                                     '<?= isset($complaint['case_number']['N']) ? formatCaseNumber($complaint['case_number']['N']) : '' ?>',
                                     '<?= isset($complaint['incident_case_time']['S']) && isset($complaint['incident_case_issued']['S']) ? formatIncidentDateTime($complaint['incident_case_time']['S'], $complaint['incident_case_issued']['S']) : '' ?>',
-                                    '<?= isset($complaint['case_types']['S']) ? $complaint['case_types']['S'] : '' ?>',
+                                    '<?= isset($complaint['case_type']['S']) ? $complaint['case_type']['S'] : '' ?>',
                                     '<?= isset($complaint['case_status']['S']) ? $complaint['case_status']['S'] : '' ?>',
                                     '<?= isset($complaint['case_complainants']) ? formatNames($complaint['case_complainants']) : '' ?>',
                                     '<?= isset($complaint['case_respondents']) ? formatNames($complaint['case_respondents']) : '' ?>',
@@ -174,7 +191,7 @@ usort($complaints, function ($a, $b) {
                         </tr>
                      <?php endforeach; ?>
                   </tbody>
-               </table> -->
+               </table>
             </div>
          </div>
       </div>
@@ -191,14 +208,14 @@ usort($complaints, function ($a, $b) {
             <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                <p><strong>Case Number:</strong> <span id="modal-case-number"></span></p>
                <p><strong>Incident Date:</strong> <span id="modal-incident-date"></span></p>
-               <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p>
+               <!-- <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p> -->
                <p><strong>Case Status:</strong> <span id="modal-case-status"></span></p>
                <p><strong>Complainants:</strong> <span id="modal-complainants"></span></p>
                <p><strong>Respondents:</strong> <span id="modal-respondents"></span></p>
-               <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
+               <p><strong>Case Description:</strong> <span id="modal-case-description"></span></p>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-danger">Forward Case</button>
+               <button type="button" class="btn btn-danger">Turnover (LUPON)</button>
             </div>
          </div>
       </div>
@@ -255,13 +272,32 @@ usort($complaints, function ($a, $b) {
       }
 
       function populateModal(caseNumber, incidentDate, caseType, caseStatus, complainants, respondents, description) {
-         document.getElementById('modal-case-number').textContent = caseNumber;
-         document.getElementById('modal-incident-date').textContent = incidentDate;
-         document.getElementById('modal-case-type').textContent = caseType;
-         document.getElementById('modal-case-status').textContent = caseStatus;
-         document.getElementById('modal-complainants').textContent = complainants;
-         document.getElementById('modal-respondents').textContent = respondents;
-         document.getElementById('modal-case-description').textContent = description;
+         console.log('caseType:', caseType); // Debugging caseType
+
+         // Populate modal fields
+         document.getElementById('modal-case-number').textContent = caseNumber || 'N/A';
+         document.getElementById('modal-incident-date').textContent = incidentDate || 'N/A';
+         document.getElementById('modal-case-status').textContent = caseStatus || 'N/A';
+         document.getElementById('modal-complainants').textContent = complainants || 'N/A';
+         document.getElementById('modal-respondents').textContent = respondents || 'N/A';
+         document.getElementById('modal-case-description').textContent = description || 'N/A';
+
+         // Handle caseType
+         if (Array.isArray(caseType)) {
+            // Map through the array and format case types
+            let formattedCaseTypes = caseType.map(function(item) {
+               let initialCase = item?.initial_case || 'N/A';
+               let caseTypeDetail = item?.case_type || 'N/A';
+               return `${initialCase} - ${caseTypeDetail}`;
+            });
+            document.getElementById('modal-case-type').textContent = formattedCaseTypes.join(', ');
+         } else if (typeof caseType === 'string' && caseType.trim() !== '') {
+            // If caseType is a valid string
+            document.getElementById('modal-case-type').textContent = caseType;
+         } else {
+            // Default to N/A if caseType is invalid or not provided
+            document.getElementById('modal-case-type').textContent = 'N/A';
+         }
       }
    </script>
 </body>
