@@ -20,7 +20,16 @@ if (header) {
                         <div class="sidebar-submenu-item contacts">Contacts</div>
                         
                     </div>
-
+                </div>
+                <div class="sidebar-category">
+                    <div class="sidebar-category-header">
+                        <span><i class="fas fa-child category-icon"></i>Violence Against Women and Children</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="sidebar-submenu-show">
+                        <div class="sidebar-submenu-item vawc-case-record">Case Records</div>
+                        <div class="sidebar-submenu-item ">Services</div>
+                    </div>
                 </div>
                 <div class="sidebar-category">
                     <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">

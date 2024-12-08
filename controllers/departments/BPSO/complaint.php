@@ -154,6 +154,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tableNames[] = 'bms_badac_portal_complaint_records';
     }
 
+    if ($postData['affiliated_dept_case'] === 'VAWC') {
+        $tableNames[] = 'bms_vawc_portal_case_records';
+    }
+
     // Initialize the DynamoDbClient
     $dynamoDbClient = new DynamoDbClient([
         'region' => $awsRegion,

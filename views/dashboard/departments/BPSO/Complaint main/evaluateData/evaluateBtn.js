@@ -54,14 +54,20 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         illegalParkingInvolved: {
             keywords: [
-                "ilegal na paradahan", 
-                "walang pahintulot na paradahan", 
-                "nakaharang na sasakyan", 
-                "sagabal sa kalsada", 
-                "walang parking", 
+                "ilegal na paradahan",
+                "walang pahintulot na paradahan",
+                "nakaharang na sasakyan",
+                "sagabal sa kalsada",
+                "walang parking",
                 "paradahan sa kalsada"
             ],
-            types: [],
+            types: [
+                "Obstruction of Traffic",
+                "Parking Violation",
+                "Illegal Parking in Public Roadway",
+                "Disruption of Public Safety",
+                "Unlicensed Parking Activity"
+            ],
         },
     };
 
@@ -77,13 +83,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function autoFillCaseTypes() {
-        const description = complaintDescription.value.toLowerCase();
+        const description = complaintDescription.value.toLowerCase(); // Convert to lowercase
         const words = description.split(/\s+/); // Split description into individual words
         let detectedCases = [];
 
         for (const [caseId, caseInfo] of Object.entries(caseTypes)) {
+            // Create a regular expression for each keyword to ensure exact word matches
+            const regex = new RegExp(`\\b(${caseInfo.keywords.join('|')})\\b`, 'i'); // 'i' for case-insensitive matching
+
             // Check if any keyword matches a whole word in the description
-            if (caseInfo.keywords.some(keyword => words.includes(keyword.toLowerCase()))) {
+            if (regex.test(description)) {
                 document.getElementById(caseId).checked = true;
                 detectedCases.push(caseId);
             } else {
@@ -91,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        // Update the dropdown or any other relevant UI element with detected case types
         updateCaseTypeDropdown(detectedCases);
     }
 

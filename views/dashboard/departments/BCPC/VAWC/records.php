@@ -3,7 +3,7 @@
 session_start();
 
 // API endpoint URL for fetching BCPC complaints
-$api_url = 'https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/bcpc/complaint_records/';
+$api_url = 'https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/vawc/complaint_records/';
 
 // Fetch the data from the API using cURL
 $ch = curl_init();
@@ -18,13 +18,13 @@ $complaints = json_decode($response, true);
 $error_message = '';
 
 // Check if the API response is valid
-if (!$complaints || $http_code !== 200 || !isset($complaints['bcpc_all_complaints'])) {
+if (!$complaints || $http_code !== 200 || !isset($complaints['vawc_case_records'])) {
    $error_message = "Error fetching complaints data.";
 }
 
 // Sort complaints by 'case_created' field in descending order
-if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_complaints']) > 0) {
-   usort($complaints['bcpc_all_complaints'], function ($a, $b) {
+if (isset($complaints['vawc_case_records']) && count($complaints['vawc_case_records']) > 0) {
+   usort($complaints['vawc_case_records'], function ($a, $b) {
       $dateA = new DateTime($a['case_created']);
       $dateB = new DateTime($b['case_created']);
       return $dateB <=> $dateA; // Sort newest first
@@ -115,9 +115,9 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
             <div class="main-container container-fluid">
                <div class="container-fluid d-flex justify-content-end">
                   <div class="breadcrumb">
-                     <span class="breadcrumb-item active">BCPC</span>
+                     <span class="breadcrumb-item active">VAWC</span>
                      <div class="breadcrumb-item">
-                        <a href="Home" class="text-danger">Dashboard</a>
+                        <a href="Home" class="text-danger">Case Records</a>
                      </div>
                   </div>
                </div>
@@ -139,8 +139,8 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
                            </tr>
                         </thead>
                         <tbody>
-                           <?php if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_complaints']) > 0): ?>
-                              <?php foreach ($complaints['bcpc_all_complaints'] as $index => $complaint): ?>
+                           <?php if (isset($complaints['vawc_case_records']) && count($complaints['vawc_case_records']) > 0): ?>
+                              <?php foreach ($complaints['vawc_case_records'] as $index => $complaint): ?>
                                  <?php
                                  // Get the complaint data
                                  $case_number = $complaint['case_number'] ?? 'N/A';
@@ -230,7 +230,7 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
       </div>
 
       <!-- View Details Modals outside the table -->
-      <?php foreach ($complaints['bcpc_all_complaints'] as $index => $complaint): ?>
+      <?php foreach ($complaints['vawc_case_records'] as $index => $complaint): ?>
          <div class="modal fade" id="viewDetailsModal<?= $index ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                <div class="modal-content">
@@ -278,7 +278,7 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
                   <div class="modal-footer">
                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#UpdateModal">Update</button>
                      <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                        data-bs-target="#ConfirmModal">Turnover (DSWD)</button>
+                        data-bs-target="#ConfirmModal">Forward to DSWD</button>
                      <button type="button" class="btn btn-primary">Message</button>
                   </div>
                </div>
@@ -365,8 +365,8 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
          crossorigin="anonymous"></script>
-      <script src="./javascript/sidebar.js" type="module"></script>
-      <script src="./javascript/addCaseForm.js"></script>
+      <script src="../javascript/sidebar.js" type="module"></script>
+      <script src="../javascript/addCaseForm.js"></script>
       <script>
          function viewDetails(caseData) {
             // Parse the case data passed to the function
@@ -438,7 +438,7 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
             });
 
             // Calculate total cases
-            const complaints = <?php echo json_encode($complaints['bcpc_all_complaints'] ?? []); ?>;
+            const complaints = <?php echo json_encode($complaints['vawc_case_records'] ?? []); ?>;
             const now = new Date();
             const monthlyCount = complaints.filter(complaint => new Date(complaint.case_created).getMonth() === now.getMonth()).length;
             const quarterlyCount = complaints.filter(complaint => Math.floor(new Date(complaint.case_created).getMonth() / 3) === Math.floor(now.getMonth() / 3)).length;
@@ -465,7 +465,7 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
          }
 
          function proceedToQcadaac() {
-            const subject = encodeURIComponent("Case Report from BCPC Brgy. Sta Lucia");
+            const subject = encodeURIComponent("Case Report from VAWC (BCPC) of Brgy. Sta Lucia");
             const body = encodeURIComponent("Dear QC,\n\nPlease find the attached case report.\n\nBest regards,\nBADAC Brgy. Sta Lucia");
             const url = `https://mail.google.com/mail/?view=cm&fs=1&to=qcadaac@quezoncity.gov.ph&su=${subject}&body=${body}`;
             window.open(url, '_blank');

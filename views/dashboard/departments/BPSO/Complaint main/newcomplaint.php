@@ -142,6 +142,10 @@
                               <input type="radio" name="is_respondent_resident[]" value="no" class="form-check-input">
                               No
                            </label>
+                           <label>
+                              <input type="radio" name="is_respondent_resident[]" value="Unidentified" class="form-check-input">
+                              Unidentified
+                           </label>
                         </div>
                         <!-- <button type="button" id="hideGreen" onclick="addRespondent()">+</button>
                         <button type="button" id="respondent-both-btn" onclick="bothCheckedAddRespondent()">+</button> -->
@@ -367,6 +371,7 @@
                         <ul class="dropdown-menu" style="position: absolute; top: 100%; left: 0; width: 100%; max-width: 400px;">
                            <li type="button" onclick="updateButtonText('BADAC & BCPC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BADAC & BCPC</li>
                            <li type="button" onclick="updateButtonText('BCPC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BCPC</li>
+                           <li type="button" onclick="updateButtonText('VAWC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">VAWC</li>
                            <li type="button" onclick="updateButtonText('BADAC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BADAC</li>
                            <li type="button" onclick="updateButtonText('BPSO', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BPSO</li>
                         </ul>
