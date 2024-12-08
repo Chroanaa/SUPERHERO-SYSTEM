@@ -112,14 +112,14 @@
                            <input type="text" name="complainant_name[]" placeholder="Name" class="form-control">
                            <input type="text" name="complainant_address[]" placeholder="Address" class="form-control">
                         </div>
-                        <label style="font-size: 16px; font-weight: 600; margin-top: 10px;">Is this a resident in our barangay?</label>
+                        <label style="font-size: 16px; font-weight: 600; margin-top: 10px;">Are you a resident in our barangay?</label>
                         <div style="display: flex; gap: 20px;">
                            <label>
-                              <input type="radio" name="is_resident[]" value="yes" class="form-check-input">
+                              <input type="radio" name="is_complainant_resident[]" value="yes" class="form-check-input">
                               Yes
                            </label>
                            <label>
-                              <input type="radio" name="is_resident[]" value="no" class="form-check-input">
+                              <input type="radio" name="is_complainant_resident[]" value="no" class="form-check-input">
                               No
                            </label>
                         </div>
@@ -135,11 +135,11 @@
                         <label style="font-size: 16px; font-weight: 600; margin-top: 10px;">Is this a resident in our barangay?</label>
                         <div style="display: flex; gap: 20px;">
                            <label>
-                              <input type="radio" name="is_resident[]" value="yes" class="form-check-input">
+                              <input type="radio" name="is_respondent_resident[]" value="yes" class="form-check-input">
                               Yes
                            </label>
                            <label>
-                              <input type="radio" name="is_resident[]" value="no" class="form-check-input">
+                              <input type="radio" name="is_respondent_resident[]" value="no" class="form-check-input">
                               No
                            </label>
                         </div>
@@ -151,7 +151,7 @@
                   <!-- Complaint Description -->
                   <div class="mb-3">
                      <label for="complaint-description" class="form-label">I-hayag ang iyong reklamo:</label>
-                     <textarea class="form-control" id="complaint-description" rows="12" placeholder="Complainant statement starts here ..." readonly></textarea>
+                     <textarea class="form-control" id="complaint-description" name="case_description" rows="12" placeholder="Complainant statement starts here ..." readonly></textarea>
                   </div>
 
                   <!-- Evaluate Assessment based on the statement given by complainant -->
@@ -180,75 +180,83 @@
                      <div id="case-options" class="d-flex flex-wrap">
                         <!-- Minor Involved -->
                         <div id="Checkbox1" class="mb-2 me-3">
-                           <input type="checkbox" id="minorInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="minorInvolved" name="initial_case[minorInvolved]" value="Minor Involved" style="margin-right: 2px;" disabled>
                            <label for="minorInvolved">Minor Involved</label>
                         </div>
 
                         <!-- Drug Involved -->
                         <div id="Checkbox2" class="mb-2 me-3">
-                           <input type="checkbox" id="drugInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="drugInvolved" name="initial_case[drugInvolved]" value="Drug Related" style="margin-right: 2px;" disabled>
                            <label for="drugInvolved">Drug Related</label>
                         </div>
 
                         <!-- Theft or Robbery -->
                         <div id="Checkbox3" class="mb-2 me-3">
-                           <input type="checkbox" id="theftInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="theftInvolved" name="initial_case[theftInvolved]" value="Theft / Robbery" style="margin-right: 2px;" disabled>
                            <label for="theftInvolved">Theft or Robbery</label>
                         </div>
 
                         <!-- Physical Violence -->
                         <div id="Checkbox4" class="mb-2 me-3">
-                           <input type="checkbox" id="violenceInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="violenceInvolved" name="initial_case[violenceInvolved]" value="Violence" style="margin-right: 2px;" disabled>
                            <label for="violenceInvolved">Physical Violence</label>
                         </div>
 
                         <!-- Domestic Issues -->
                         <div id="Checkbox5" class="mb-2 me-3">
-                           <input type="checkbox" id="domesticIssue" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="domesticIssue" name="initial_case[domesticIssue]" value="Domestic" style="margin-right: 2px;" disabled>
                            <label for="domesticIssue">Domestic Issue</label>
                         </div>
 
                         <!-- Vandalism -->
                         <div id="Checkbox6" class="mb-2 me-3">
-                           <input type="checkbox" id="vandalismInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="vandalismInvolved" name="initial_case[vandalismInvolved]" value="Vandalism" style="margin-right: 2px;" disabled>
                            <label for="vandalismInvolved">Vandalism</label>
                         </div>
 
                         <!-- Fraud -->
                         <div id="Checkbox7" class="mb-2 me-3">
-                           <input type="checkbox" id="fraudInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="fraudInvolved" name="initial_case[fraudInvolved]" value="Fraud" style="margin-right: 2px;" disabled>
                            <label for="fraudInvolved">Fraud</label>
                         </div>
 
                         <!-- Harassment -->
                         <div id="Checkbox8" class="mb-2 me-3">
-                           <input type="checkbox" id="harassmentInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="harassmentInvolved" name="initial_case[harassmentInvolved]" value="Harassment" style="margin-right: 2px;" disabled>
                            <label for="harassmentInvolved">Harassment</label>
                         </div>
 
                         <!-- Public Disturbance -->
                         <div id="Checkbox9" class="mb-2 me-3">
-                           <input type="checkbox" id="publicDisturbance" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="publicDisturbance" name="initial_case[publicDisturbance]" value="Public Disturbance" style="margin-right: 2px;" disabled>
                            <label for="publicDisturbance">Public Disturbance</label>
                         </div>
 
                         <!-- Cyber Crime -->
                         <div id="Checkbox13" class="mb-2 me-3">
-                           <input type="checkbox" id="cyberCrimeInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="cyberCrimeInvolved" name="initial_case[cyberCrimeInvolved]" value="Cyber Crime" style="margin-right: 2px;" disabled>
                            <label for="cyberCrimeInvolved">Cyber Crime</label>
                         </div>
 
                         <!-- Trespassing -->
                         <div id="Checkbox14" class="mb-2 me-3">
-                           <input type="checkbox" id="trespassingInvolved" style="margin-right: 2px;" disabled>
+                           <input type="checkbox" id="trespassingInvolved" name="initial_case[trespassingInvolved]" value="Trespassing" style="margin-right: 2px;" disabled>
                            <label for="trespassingInvolved">Trespassing</label>
                         </div>
+
+                        <!-- Illegal Parking -->
+                        <div id="Checkbox15" class="mb-2 me-3">
+                           <input type="checkbox" id="illegalParkingInvolved" name="initial_case[illegalParkingInvolved]" value="Illegal Parking" style="margin-right: 2px;" disabled>
+                           <label for="illegalParkingInvolved">Illegal Parking</label>
+                        </div>
+
                      </div>
                   </div>
 
+
                   <div id="caseTypeContainer">
                      <div id="caseTypeButton" style="display: flex; justify-content: flex-start; margin-top: 24px;">
-                        <input type="hidden" name="case_type" id="hiddenCategory" value="">
+                        <!-- <input type="hidden" name="case_type" id="hiddenCategory" value=""> -->
                         <button id="dropdowncategory" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;" disabled>
                            Case Type
                         </button>
@@ -269,7 +277,7 @@
                   <div id="nested-container" style="margin-bottom: 24px;">
                      <div id="nested-children" class="mb-3">
                         <label for="incidence-date">Incident Date:</label>
-                        <input type="date" id="incidence-date" name="incidence_date" style=" width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
+                        <input type="date" id="incidence-date" name="incidence_case_issued" style=" width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
                      </div>
                      <div id="nested-children" class="mb-3">
                         <label for="incidence-time">Incident Time:</label>
@@ -284,15 +292,13 @@
                         <h2>Ano ang iyong ebidensiya?</h2>
                      </div>
                      <div id="badac-form">
-                        <!-- Child Name -->
                         <div id="nested-container" class="mt-3 mb-3">
                            <div id="nested-incident">
                               <!-- <label for="drug-evidence" class="mb-2">Current Address</label> -->
-                              <textarea id="drug-evidence" name="drug_evidence" placeholder="Pagdating sa usaping droga I-hayag ang detalye" style="width: 100%; height: 300px; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;"></textarea>
+                              <textarea id="drug-evidence" name="case_drug_related_description" placeholder="Pagdating sa usaping droga I-hayag ang detalye" style="width: 100%; height: 300px; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;"></textarea>
                            </div>
                         </div>
                      </div>
-
                   </div>
 
                   <!-- This will shown if special case specified to BCPC from minor involved -->
@@ -305,21 +311,21 @@
                         <div id="nested-container" class="mt-3 mb-3">
                            <div id="nested-incident">
                               <label for="child-name" class="mb-2">Child Name</label>
-                              <input type="text" id="child-name" name="child_name" placeholder="Child Name" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                              <input type="text" id="child-name" name="child_name[]" placeholder="Child Name" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                            </div>
                         </div>
 
                         <div id="nested-container" class="mt-3 mb-3">
                            <div id="nested-incident">
                               <label for="child-age" class="mb-2">Child Age (Numbers only)</label>
-                              <input type="number" id="child-age" name="child_age" placeholder="Child Name" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                              <input type="number" id="child-age" name="child_age[]" placeholder="Child Name" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                            </div>
                         </div>
 
                         <div id="nested-container" class="mt-3 mb-3">
                            <div id="nested-incident">
                               <label for="child-gender" class="mb-2">Gender</label>
-                              <select id="child-gender" name="child_gender" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                              <select id="child-gender" name="child_gender[]" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                                  <option value="" default>Please specify:</option>
                                  <option value="male">Male</option>
                                  <option value="female">Female</option>
@@ -331,14 +337,14 @@
                         <div id="nested-container" class="mt-3 mb-3">
                            <div id="nested-incident">
                               <label for="child-age" class="mb-2">Current Address</label>
-                              <input type="text" id="child-address" name="child_address" placeholder="Current address of children" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
+                              <input type="text" id="child-address" name="child_address[]" placeholder="Current address of children" style="width: 100%; padding: 13px; font-size: 1rem; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;">
                            </div>
                         </div>
                      </div>
-
+                     <!-- 
                      <div style="width: 100%; display: flex; align-items: center; justify-content: center; margin-top: 20px;">
                         <button id="add-children-btn" type="button" style="font-size: 20px; background-color: #009717; color: #ffffff; border-radius: 50%; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;">+</button>
-                     </div>
+                     </div> -->
 
                      <div id="header-label-bcpc" class="mt-3">
                         <span class="mb-2 d-block">Parents / Guardian</span>

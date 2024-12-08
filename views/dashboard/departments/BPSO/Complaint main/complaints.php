@@ -90,7 +90,7 @@ usort($complaints, function ($a, $b) {
    $dateB = strtotime($b['case_created']['S']);
    return $dateB <=> $dateA; // Descending order
 });
-
+#
 ?>
 
 <!DOCTYPE html>
@@ -140,12 +140,12 @@ usort($complaints, function ($a, $b) {
                   </ul>
                </div>
                <!-- Case table -->
-               <table id="tablecase" class="table table-bordered" style="border: 1px solid #d4d4d4; text-align: center;">
+               <!-- <table id="tablecase" class="table table-bordered" style="border: 1px solid #d4d4d4; text-align: center;">
                   <thead>
                      <tr>
                         <th scope="col">Case Number</th>
                         <th scope="col">Case Created</th>
-                        <th scope="col">Case Type</th>
+                        <th scope="col">Case Types</th>
                         <th scope="col">Case Status</th>
                         <th scope="col">Actions</th>
                      </tr>
@@ -155,14 +155,14 @@ usort($complaints, function ($a, $b) {
                         <tr>
                            <td><?= formatCaseNumber($complaint['case_number']['N']) ?></td> 
                            <td><?= formatCaseCreatedDate($complaint['case_created']['S']) ?></td>
-                           <td><?= $complaint['case_type']['S'] ?></td>
+                           <td><?= $complaint['case_types']['S'] ?></td>
                            <td><?= $complaint['case_status']['S'] ?></td>
                            <td>
                               <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#viewDetailsModal" onclick="
                                  populateModal(
                                     '<?= isset($complaint['case_number']['N']) ? formatCaseNumber($complaint['case_number']['N']) : '' ?>',
                                     '<?= isset($complaint['incident_case_time']['S']) && isset($complaint['incident_case_issued']['S']) ? formatIncidentDateTime($complaint['incident_case_time']['S'], $complaint['incident_case_issued']['S']) : '' ?>',
-                                    '<?= isset($complaint['case_type']['S']) ? $complaint['case_type']['S'] : '' ?>',
+                                    '<?= isset($complaint['case_types']['S']) ? $complaint['case_types']['S'] : '' ?>',
                                     '<?= isset($complaint['case_status']['S']) ? $complaint['case_status']['S'] : '' ?>',
                                     '<?= isset($complaint['case_complainants']) ? formatNames($complaint['case_complainants']) : '' ?>',
                                     '<?= isset($complaint['case_respondents']) ? formatNames($complaint['case_respondents']) : '' ?>',
@@ -174,7 +174,7 @@ usort($complaints, function ($a, $b) {
                         </tr>
                      <?php endforeach; ?>
                   </tbody>
-               </table>
+               </table> -->
             </div>
          </div>
       </div>

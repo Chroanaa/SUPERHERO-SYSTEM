@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             types: ['Forgery', 'Financial Fraud', 'Identity Theft']
         },
         harassmentInvolved: {
-            keywords: ['pangha-harass', 'pananakot', 'hipo', 'verbal abuse', 'pambabastos', 'bastos'],
+            keywords: ['pangha-harass', 'pananakot', 'hipo', 'hipoan', 'verbal abuse', 'pambabastos', 'bastos'],
             types: ['Bullying', 'Sexual Harassment', 'Workplace Harassment']
         },
         publicDisturbance: {
@@ -45,13 +45,24 @@ document.addEventListener('DOMContentLoaded', function () {
             types: ['Public Nuisance', 'Unlawful Assembly', 'Disorderly Conduct']
         },
         cyberCrimeInvolved: {
-            keywords: ['hacking', 'pagnanakaw ng impormasyon', 'online scam', 'cyber bullying'],
+            keywords: ['hacking', 'pagnanakaw ng impormasyon', 'online scam', 'sinisirahan sa FB', 'messenger', 'facebook', 'pinost', 'cyber bullying'],
             types: ['Hacking', 'Identity Theft', 'Cyber Harassment']
         },
         trespassingInvolved: {
             keywords: ['panghihimasok', 'nanghihimasok', 'pagpasok sa hindi pagmay-ari', 'hindi may ari', 'trespassing', 'pang-aabala'],
             types: ['Unauthorized Entry', 'Property Trespassing', 'Breaking and Entering']
-        }
+        },
+        illegalParkingInvolved: {
+            keywords: [
+                "ilegal na paradahan", 
+                "walang pahintulot na paradahan", 
+                "nakaharang na sasakyan", 
+                "sagabal sa kalsada", 
+                "walang parking", 
+                "paradahan sa kalsada"
+            ],
+            types: [],
+        },
     };
 
     function checkInputs() {
@@ -85,26 +96,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateCaseTypeDropdown(detectedCases) {
         const caseTypeContainer = document.getElementById('caseTypeContainer');
+        caseTypeContainer.innerHTML = ''; // Clear previous content
 
-        // Clear the previous dropdown buttons and menus
-        caseTypeContainer.innerHTML = '';
-
-        // If no cases are detected, disable all dropdowns
         if (detectedCases.length === 0) {
             dropdownCategory.disabled = true;
             dropdownCategory.textContent = 'Case Type';
         } else {
             detectedCases.forEach(caseId => {
-                // Create a new dropdown button for each detected case
+                // Create dropdown button and hidden input
                 const caseTypeButton = document.createElement('div');
                 caseTypeButton.id = `${caseId}Button`;
                 caseTypeButton.style = "display: flex; justify-content: flex-start; margin-top: 24px;";
 
                 const hiddenCategory = document.createElement('input');
                 hiddenCategory.type = 'hidden';
-                hiddenCategory.name = 'case_type';
+                hiddenCategory.name = `case_type[${caseId}]`; // Unique name for each case type
                 hiddenCategory.id = `${caseId}HiddenCategory`;
-                hiddenCategory.value = '';
+                hiddenCategory.value = ''; // Default empty value
 
                 const dropdownBtn = document.createElement('button');
                 dropdownBtn.className = 'btn btn-info dropdown-toggle';
@@ -112,34 +120,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 dropdownBtn.setAttribute('data-bs-toggle', 'dropdown');
                 dropdownBtn.setAttribute('aria-expanded', 'false');
                 dropdownBtn.style = "width: 100%; height: 50px; font-size: 1rem; background-color: #ffffff; border: 1px solid #b1b1b1;";
-                dropdownBtn.disabled = false;  // Enable the dropdown if cases are detected
-                dropdownBtn.textContent = `Case Type for ${caseId.replace(/([A-Z])/g, ' $1').trim()}`;
+                dropdownBtn.disabled = false;
+                dropdownBtn.textContent = `Select Case Type for ${caseId.replace(/([A-Z])/g, ' $1').trim()}`;
 
                 const caseTypeDropdown = document.createElement('ul');
                 caseTypeDropdown.className = 'dropdown-menu';
                 caseTypeDropdown.id = `${caseId}TypeDropdown`;
 
-                // Add dropdown button and menu to the container
-                caseTypeButton.appendChild(hiddenCategory);
-                caseTypeButton.appendChild(dropdownBtn);
-                caseTypeButton.appendChild(caseTypeDropdown);
-                caseTypeContainer.appendChild(caseTypeButton);
-
-                // Fill the dropdown menu with case types
+                // Fill dropdown menu with case types
                 caseTypes[caseId].types.forEach(type => {
                     const li = document.createElement('li');
                     li.innerHTML = `<a class="dropdown-item" href="#">${type}</a>`;
                     li.querySelector('a').addEventListener('click', function (e) {
                         e.preventDefault();
-                        document.getElementById(`${caseId}HiddenCategory`).value = this.textContent;
-                        dropdownBtn.textContent = this.textContent;
+                        hiddenCategory.value = type; // Update hidden input value
+                        dropdownBtn.textContent = type; // Update button text
+                        console.log(`Selected Case Type for ${caseId}: ${type}`); // Debug log
                     });
                     caseTypeDropdown.appendChild(li);
                 });
+
+                // Append elements to the container
+                caseTypeButton.appendChild(hiddenCategory);
+                caseTypeButton.appendChild(dropdownBtn);
+                caseTypeButton.appendChild(caseTypeDropdown);
+                caseTypeContainer.appendChild(caseTypeButton);
             });
         }
     }
-
 
     complainantInputs.forEach(input => input.addEventListener('input', checkInputs));
     respondentInputs.forEach(input => input.addEventListener('input', checkInputs));

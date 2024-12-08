@@ -65,38 +65,35 @@ function updateButtonText(text, buttonId, event) {
 
 document.addEventListener('DOMContentLoaded', function () {
     const minorInvolvedCheckbox = document.getElementById('minorInvolved');
-    const bcpcFormContainer = document.getElementById('bcpc-form-container');
-    const specialCaseDropdown = document.getElementById('specialcasedrop');
-
-    console.log(minorInvolvedCheckbox)
-    
-    // Listen for checkbox change event
-    minorInvolvedCheckbox.addEventListener('change', function () {
-        if (minorInvolvedCheckbox.checked) {
-            // Show the BCPC form container if Minor Involved is checked and special case is BCPC
-            bcpcFormContainer.style.display = 'block';
-        } else {
-            // Hide it if the condition is not met
-            bcpcFormContainer.style.display = 'none';
-        }
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
     const drugInvolvedCheckbox = document.getElementById('drugInvolved');
+    const bcpcFormContainer = document.getElementById('bcpc-form-container');
     const badacFormContainer = document.getElementById('badac-form-container');
     const specialCaseDropdown = document.getElementById('specialcasedrop');
 
-    console.log(drugInvolvedCheckbox)
-    
-    // Listen for checkbox change event
+    // Modal elements
+    const minorInvolvedModal = new bootstrap.Modal(document.getElementById('minorInvolvedModal'));
+    const drugInvolvedModal = new bootstrap.Modal(document.getElementById('drugInvolvedModal'));
+
+    // Listen for minor involved checkbox change
+    minorInvolvedCheckbox.addEventListener('change', function () {
+        if (minorInvolvedCheckbox.checked) {
+            // Show the BCPC form container and display the Minor Involved modal
+            bcpcFormContainer.style.display = 'block';
+            minorInvolvedModal.show(); // Show the modal
+        } else {
+            // Hide the BCPC form container
+            bcpcFormContainer.style.display = 'none';
+        }
+    });
+
+    // Listen for drug involved checkbox change
     drugInvolvedCheckbox.addEventListener('change', function () {
         if (drugInvolvedCheckbox.checked) {
-            // Show the BCPC form container if Minor Involved is checked and special case is BCPC
+            // Show the BADAC form container and display the Drug Involved modal
             badacFormContainer.style.display = 'block';
+            drugInvolvedModal.show(); // Show the modal
         } else {
-            // Hide it if the condition is not met
+            // Hide the BADAC form container
             badacFormContainer.style.display = 'none';
         }
     });
