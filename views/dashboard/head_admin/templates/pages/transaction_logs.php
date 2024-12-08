@@ -77,8 +77,8 @@ function getTransactions($url)
                         <?php
                         foreach (getTransactions($BADAC_ENV) as $data) {
                             foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name);
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name);
+                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name ?? 'N/A');
+                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name ?? 'N/A');
                                 echo "<tr id='{$d->case_number}'>";
                                 echo "<td>{$d->case_number}</td>";
                                 echo "<td>{$d->case_description}</td>";
@@ -91,7 +91,6 @@ function getTransactions($url)
                                         onclick='populateModal(
                                             \"" . htmlspecialchars($d->case_number) . "\",
                                             \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_type) . "\",
                                             \"" . htmlspecialchars($d->case_status) . "\",
                                             \"" . htmlspecialchars($d->case_description) . "\",
                                             \"" . $complainant_name . "\",
@@ -119,7 +118,6 @@ function getTransactions($url)
                                         onclick='populateModal(
                                             \"" . htmlspecialchars($d->case_number) . "\",
                                             \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_type) . "\",
                                             \"" . htmlspecialchars($d->case_status) . "\",
                                             \"" . htmlspecialchars($d->case_description) . "\",
                                             \"" . $complainant_name . "\",
@@ -147,7 +145,6 @@ function getTransactions($url)
                                         onclick='populateModal(
                                             \"" . htmlspecialchars($d->case_number) . "\",
                                             \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_type) . "\",
                                             \"" . htmlspecialchars($d->case_status) . "\",
                                             \"" . htmlspecialchars($d->case_description) . "\",
                                             \"" . $complainant_name . "\",
@@ -212,10 +209,9 @@ function getTransactions($url)
 
         <!-- Add this script section before closing body tag -->
         <script>
-            function populateModal(caseNumber, incidentTime, caseType, status, description, complainant, respondent) {
+            function populateModal(caseNumber, incidentTime,  status, description, complainant, respondent) {
                 document.getElementById('modal-case-number').textContent = caseNumber;
                 document.getElementById('modal-incident-time').textContent = incidentTime;
-                document.getElementById('modal-case-type').textContent = caseType;
                 document.getElementById('modal-case-status').textContent = status;
                 document.getElementById('modal-case-description').textContent = description;
                 document.getElementById('modal-case-complainantName').textContent = complainant;

@@ -56,21 +56,17 @@
 <body>
     <div id="app">
         <header class="header">
-
         </header>
-
         <div class="main-content">
             <div class="welcome-message">
                 <h2 class="text-danger">City Ordinances</h2>
             </div>
 
-            <div class="city-ordinance-action d-flex justify-content-end align-items-center" style="gap: 5px">
-               <div class="search">
-                  <label for="">Search:</label>
-                    <input type="text" class = "form-control" id = "searchInput">          
-                </div>
-           </div>
+          
             <div class="city-ordinance-page shadow bg-light rounded-3 py-5 px-4 container-fluid">
+                <div class="search">
+                  <button class = "btn btn-primary" data-bs-toggle = "modal" data-bs-target = "#searchModal">Search Ordinance</button>       
+                </div>
                 <div class="city-ordinance-header d-flex justify-content-end align-items-center">
                     <label for="ordinanceNumber">Select from what Council: </label>
                     <select name="ordinanceNumber" id="ordinanceNumber">
@@ -92,11 +88,8 @@
                         <option value="pre-war">pre-war</option>
                     </select>
                 </div>
-                <div class="city-ordinance-body row row-cols-sm-2">
-                    
-                   
+                <div class="city-ordinance-body row row-cols-sm-2">       
                 </div>
-
             </div>
 
 
@@ -127,6 +120,47 @@
             </div>
         </div>
 
+        <!--- Search Modal --->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="serachModal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-dialog-centered here -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="searchOrdinancemodalTitle">Search Ordinance</h5>
+                        <button class = "btn-close" data-bs-dismiss = "modal"></button>
+                    </div>
+                    <div class="modal-body">
+                         <div class="form-group">
+                            <label for="query">Search: </label>
+                        <input type="text" name = "query" id = "query" class = "form-control">
+                        <label for="ordinanceNumberModal">Select from what ordinance:</label>
+                        <select name="ordinanceNumberModal" class = "mt-3 form-control mb-3" id="ordinanceNumberModal">
+                            <option value="9" >9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="pre-war">pre-war</option>
+
+                        </select>
+                         </div>
+                        <button class = "btn btn-primary" id="submitSearch">Submit</button>
+                    </div>
+                    <div class="cityOrdinaceBodyModal row row-cols-sm-2">
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js"></script>
@@ -139,15 +173,27 @@
 <script>
     const selectOrdinance =document.querySelector('#ordinanceNumber');
     const ordinanceBody = document.querySelector('.city-ordinance-body');
-    const search = document.querySelector('#searchInput');
+    const search = document.querySelector('#submitSearch');
+    const ordinanceBodyModal = document.querySelector('.cityOrdinaceBodyModal');
+    const searchModal = document.querySelector('#searchModal');
     let limit = 6;
-   let currentOrdinance = {}
+    let offset = 6;
+    let isModalOpen = false
+     searchModal.addEventListener('show.bs.modal', () => {
+        isModalOpen = true;
+    });
 
-    search.addEventListener('change', (e) => {
-     if(e.target.value){
-        const filtered = Object.values(currentOrdinance).filter(ordinance => ordinance.title.toLowerCase().includes(e.target.value.toLowerCase()));
-        console.log(filtered);
-     }
+    searchModal.addEventListener('hide.bs.modal', () => {
+        isModalOpen = false;
+        window.location.reload();
+    });
+    search.addEventListener('click',  () => {
+       const query = document.querySelector('#query').value;
+       const ordinanceNumberModal = document.querySelector('#ordinanceNumberModal').value;
+         getSearchData(query, ordinanceNumberModal );    
+    });
+    document.querySelector('.btn-close').addEventListener('click', () => {
+        console.log('modal closed');
     });
         selectOrdinance.addEventListener('change', (e) => {
         getNewOrdinanceData(e.target.value, limit);
@@ -156,8 +202,8 @@
      const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if(entry.isIntersecting){
-                limit += 5;
-                getOrdinanceData(selectOrdinance.value ? selectOrdinance.value : 9, limit);
+                offset += 6;
+                getNextOrdinanceData(selectOrdinance.value ? selectOrdinance.value : 9, limit, offset);
                 
             }
             
@@ -166,6 +212,9 @@
         threshold: 1,
         rootMargin:'100px'
     });
+
+    
+    // get new ordinance i.e from another council
     const getNewOrdinanceData = async (number, limit) =>{
       ordinanceBody.innerHTML = '';
        try{
@@ -174,20 +223,19 @@
         data.slice(0, limit).forEach(ordinance => {
             ordinanceBody.innerHTML += `
             <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
+                        <div class="city-ordinance-card p-3 m-3 shadow rounded-3" >
                             <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No: <a href class = "ordinance-link" =${ordinance.href}>${ordinance.link}</a> </h5>
+                                <p>Approved No: <a href = "${ordinance.href}" target = _blank  class = "ordinance-link" =${ordinance.href}>${ordinance.link}</a> </h5>
                             </div>
                             <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
                             <p class = "ordinance-title">Title: ${ordinance.title ?? "no title"} </p>
-                                <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
                             
                             </div>
+                            <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
                         </div>
                     </div>
             `    
         });
-        populateObject();
         const cards = document.querySelectorAll('.city-ordinance-card');
         const lastCard = cards[cards.length - 1];
         observer.observe(lastCard);
@@ -197,29 +245,28 @@
               console.log(error);
          }
     }
-
-   const getOrdinanceData = async (number, limit) => {
+//get the next ordinance data
+   const getNextOrdinanceData = async (number, limit,offset) => {
          try{
-        const response = await fetch(`./get_ordinance_controller.php?number=${number}&limit=${limit}`);
+        const response = await fetch(`./get_ordinance_controller.php?number=${number}&limit=${limit}&offset=${offset}`);
         const data = await response.json();
         data.slice(0, limit).forEach(ordinance => {
             ordinanceBody.innerHTML += `
             <div class="col p-2">
-                        <div class="city-ordinance-card p-3 border">
+                        <div class="city-ordinance-card  p-3 m-3 shadow rounded-3" >
                             <div class="city-ordinance-header d-flex justify-content-between align-items-center">
-                                <p>Approved No: <a href class = "ordinance-link" =${ordinance.href}>${ordinance.link}</a> </h5>
+                                <p>Approved No: <a href = "${ordinance.href}" target = _blank  class = "ordinance-link">${ordinance.link}</a> </h5>
                             </div>
                             <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
                             <p class = "ordinance-title">Title: ${ordinance.title ?? "no title"} </p>
-                                <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
                             
                             </div>
+                            <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
                         </div>
                     </div>
                     
             `
         });
-          populateObject();
         const cards = document.querySelectorAll('.city-ordinance-card');
         const lastCard = cards[cards.length - 1];
         observer.observe(lastCard);
@@ -229,21 +276,33 @@
          }finally{
          }
     }
-const populateObject = () => {
-    currentOrdinance = {};
-    const cards = document.querySelectorAll('.city-ordinance-card');
-    cards.forEach((card, key) => {
-            
-            currentOrdinance[key] = {
-            title: document.querySelector('.ordinance-title').textContent,
-            author: document.querySelector('.ordinance-author').textContent,
-            link: document.querySelector('.ordinance-link').textContent,
-           href: document.querySelector('.ordinance-link').href,
-            }
-        });
-console.log(currentOrdinance)
-}
+const getSearchData = async(query, number) =>{
+    try {
+        ordinanceBodyModal.innerHTML = '';
+        const response = await fetch(`./search_ordinance_controller.php?query=${query}&ordinanceNumberModal=${number}`);
+        const data = await response.json();
+        const ordinance =data['data'];
+        ordinance.forEach(ordinance => {
+            ordinanceBodyModal.innerHTML += `
+            <div class="container-fluid  vw-100">
+                        <div class="city-ordinance-card vw-75 p-3 m-3 shadow rounded-3">
+                            <div class="city-ordinance-header d-flex justify-content-between align-items-center">
+                                <p>Approved No: <a href = "${ordinance.href}" target = _blank  class = "ordinance-link">${ordinance.link}</a> </h5>
+                            </div>
+                            <div class="city-ordinance-footer d-flex justify-content-between align-items-center">
+                            <p class = "ordinance-title">Title: ${ordinance.title ?? "no title"} </p>
+                            
+                            </div>
+                            <p class = "ordinance-author">Author: ${ordinance.author ?? "no author"}</p>
+                        </div>
+                        </div>
+            `
+        })
+    }catch(error){
+        console.log(error);
+    }
 
+}
 
 </script>
 </html>
