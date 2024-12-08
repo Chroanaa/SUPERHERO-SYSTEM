@@ -51,10 +51,7 @@
             </div>
 
             <div class="view-disregarded-action d-flex justify-content-end align-items-center" style="gap: 5px">
-                <div class="search">
-                    <label for="">Search:</label>
-                    <input type="text">
-                </div>
+                
             </div>
             <div class="container">
 
