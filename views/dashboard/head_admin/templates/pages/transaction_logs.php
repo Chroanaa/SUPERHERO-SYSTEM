@@ -5,9 +5,7 @@ require_once '../../../../../vendor/autoload.php'; // Include Composer autoloade
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../../../');
 $dotenv->load();
 
-$BCPC_ENV = isset($_ENV['BCPC_API_URL']) ? $_ENV['BCPC_API_URL'] : '';
-$BPSO_ENV = isset($_ENV['BPSO_API_URL']) ? $_ENV['BPSO_API_URL'] : '';
-$BADAC_ENV = isset($_ENV['BADAC_API_URL']) ? $_ENV['BADAC_API_URL'] : '';
+$TRANSACTIONS_ENV = $_ENV['TRANSACTION_LOGS_API_URL'];
 
 function getTransactions($url)
 {
@@ -17,6 +15,7 @@ function getTransactions($url)
     }
     return json_decode($response);
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,11 +30,8 @@ function getTransactions($url)
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
-    <link href="../../../../../custom/css/index.css" rel="stylesheet">
+     <link href="../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../../dist/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Onboarding as Super Admin for Brgy. Management">
     <meta property="og:description" content="Still in development phase.">
@@ -57,109 +53,13 @@ function getTransactions($url)
 
         <div class="main-content">
             <div class="welcome-message">
-                <h2 class="text-danger">Transactions</h2>
+                <h2 class="text-danger">Transaction Logs</h2>
                 <p>This contains real-time processes made by other departments to record their transactions.</p>
             </div>
+          <div class="card-container">
 
-            <div class="transaction-page shadow bg-light rounded-3 py-5 px-4 container-fluid mt-2">
-                <table class="table table-striped table-bordered" id="tableData">
-                    <thead>
-                        <tr>
-                            <th>Transaction No.</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach (getTransactions($BADAC_ENV) as $data) {
-                            foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name ?? 'N/A');
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name ?? 'N/A');
-                                echo "<tr id='{$d->case_number}'>";
-                                echo "<td>{$d->case_number}</td>";
-                                echo "<td>{$d->case_description}</td>";
-                                echo "<td>{$d->affiliated_dept_case}</td>";
-                                echo "<td>" . date("d-m-Y", strtotime($d->case_created)) . "</td>";
-                                echo "<td>{$d->case_status}</td>";
-                                echo "<td>
-                                    <button class='btn btn-primary' id='{$d->case_number}' data-id='{$d->case_number}' type='button'
-                                        data-bs-toggle='modal' data-bs-target='#viewDetailsModal'
-                                        onclick='populateModal(
-                                            \"" . htmlspecialchars($d->case_number) . "\",
-                                            \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_status) . "\",
-                                            \"" . htmlspecialchars($d->case_description) . "\",
-                                            \"" . $complainant_name . "\",
-                                            \"" . $respondent_name . "\"
-                                        )'>
-                                        View
-                                    </button>
-                                </td>";
-                                echo "</tr>";
-                            }
-                        }
-                        foreach (getTransactions($BCPC_ENV) as $data) {
-                            foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name);
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name);
-                                echo "<tr id='{$d->case_number}'>";
-                                echo "<td>{$d->case_number}</td>";
-                                echo "<td>{$d->case_description}</td>";
-                                echo "<td>{$d->affiliated_dept_case}</td>";
-                                echo "<td>" . date("d-m-Y", strtotime($d->case_created)) . "</td>";
-                                echo "<td>{$d->case_status}</td>";
-                                echo "<td>
-                                    <button class='btn btn-primary' id='{$d->case_number}' data-id='{$d->case_number}' type='button'
-                                        data-bs-toggle='modal' data-bs-target='#viewDetailsModal'
-                                        onclick='populateModal(
-                                            \"" . htmlspecialchars($d->case_number) . "\",
-                                            \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_status) . "\",
-                                            \"" . htmlspecialchars($d->case_description) . "\",
-                                            \"" . $complainant_name . "\",
-                                            \"" . $respondent_name . "\"
-                                        )'>
-                                        View
-                                    </button>
-                                </td>";
-                                echo "</tr>";
-                            }
-                        }
-                        foreach (getTransactions($BPSO_ENV) as $data) {
-                            foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name);
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name);
-                                echo "<tr id='{$d->case_number}'>";
-                                echo "<td>{$d->case_number}</td>";
-                                echo "<td>{$d->case_description}</td>";
-                                echo "<td>{$d->affiliated_dept_case}</td>";
-                                echo "<td>" . date("d-m-Y", strtotime($d->case_created)) . "</td>";
-                                echo "<td>{$d->case_status}</td>";
-                                echo "<td>
-                                    <button class='btn btn-primary' id='{$d->case_number}' data-id='{$d->case_number}' type='button'
-                                        data-bs-toggle='modal' data-bs-target='#viewDetailsModal'
-                                        onclick='populateModal(
-                                            \"" . htmlspecialchars($d->case_number) . "\",
-                                            \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_status) . "\",
-                                            \"" . htmlspecialchars($d->case_description) . "\",
-                                            \"" . $complainant_name . "\",
-                                            \"" . $respondent_name . "\"
-                                        )'>
-                                        View
-                                    </button>
-                                </td>";
-                                echo "</tr>";
-                            }
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+          </div>
+                
         </div>
 
         <!-- Sign Out Confirmation Modal -->
@@ -184,40 +84,9 @@ function getTransactions($url)
         </div>
 
         <!-- View Details Modal -->
-        <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="viewDetailsModalLabel">Case Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>Case Number:</strong> <span id="modal-case-number"></span></p>
-                        <p><strong>Incident Time:</strong> <span id="modal-incident-time"></span></p>
-                        <p><strong>Case Type:</strong> <span id="modal-case-type"></span></p>
-                        <p><strong>Status:</strong> <span id="modal-case-status"></span></p>
-                        <p><strong>Description:</strong> <span id="modal-case-description"></span></p>
-                        <p><strong>Complainant Name:</strong> <span id="modal-case-complainantName"></span></p>
-                        <p><strong>Respondent Name:</strong> <span id="modal-case-respondentName"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
 
-        <!-- Add this script section before closing body tag -->
-        <script>
-            function populateModal(caseNumber, incidentTime,  status, description, complainant, respondent) {
-                document.getElementById('modal-case-number').textContent = caseNumber;
-                document.getElementById('modal-incident-time').textContent = incidentTime;
-                document.getElementById('modal-case-status').textContent = status;
-                document.getElementById('modal-case-description').textContent = description;
-                document.getElementById('modal-case-complainantName').textContent = complainant;
-                document.getElementById('modal-case-respondentName').textContent = respondent;
-            }
-        </script>
+          
 
         <!-- Make sure Bootstrap JS is included -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -228,29 +97,41 @@ function getTransactions($url)
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script src="../diff-sidebar.js" type="module"></script>
-    <script src="../acc_manage.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
-    <script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.js"></script>
+    
 
     <script>
-        new DataTable('#tableData', {
-            responsive: true
-        });
-
-        const badac = <?= getTransactions($BADAC_ENV) ?>;
-        console.log(badac);
-
-        function populateModal(caseNumber, incidentTime, caseType, status, description) {
+        const container = document.querySelector('.card-container');
+        function populateModal(caseNumber, incidentTime, status, complainantName, respondentName) {
             document.getElementById('modal-case-number').textContent = caseNumber;
             document.getElementById('modal-incident-time').textContent = incidentTime;
-            document.getElementById('modal-case-type').textContent = caseType;
             document.getElementById('modal-case-status').textContent = status;
-            document.getElementById('modal-case-description').textContent = description;
+            document.getElementById('modal-case-complainantName').textContent = complainantName;
+            document.getElementById('modal-case-respondentName').textContent = respondentName;
         }
+        const transactions = <?php echo json_encode(getTransactions($_ENV['TRANSACTION_LOGS_API_URL'])); ?>;   
+        const transactionLogs = transactions.bms_resident_transaction_logs;
+        const records = Array.isArray(transactionLogs) ? transactionLogs : [];
+        console.log(records)
+        records.forEach(record =>{
+            container.innerHTML += `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title>Log Id: ${record.log_id}</h5>
+                    <p class="card-text">Resident Id: ${record.resident_id ?? "No Id"}</p>
+                    <p class="card-text">Log Date: ${record.log_date}</p>
+                    <p class="card-text">Log Time: ${record.log_time}</p>
+                    <p class="card-text">Payment: ${record.payment}</p>
+                    <p class="card-text">Status: ${record.status}</p>
+                    <p class="card-text">Staff Id: ${record.staff_id ?? "No Id"}</p>
+                    <p class="card-text">Type: ${record.type}</p>
+                </div>
+            </div>
+
+            `
+        })   
+
     </script>
 </body>
 

@@ -27,7 +27,6 @@ if (header) {
                     <div class="sidebar-submenu">
                         <div class="sidebar-submenu-item admin2-view-case-records">View Case Records </div>
                         <div class="sidebar-submenu-item admin2-city-ordinance"> City Ordinance</div>
-                        <div class="sidebar-submenu-item admin2-notify">Notifications</div>
                     </div>
                 </div>
 
