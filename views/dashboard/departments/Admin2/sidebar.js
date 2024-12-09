@@ -1,3 +1,7 @@
+// Add new Side Menu here
+const baseUrl = window.location.origin;
+const currentPath = window.location.pathname.split('/').slice(0, -1).join('/');
+
 const header = document.querySelector(".header");
 header.innerHTML = `
 <nav class="sidebar">
@@ -15,7 +19,6 @@ header.innerHTML = `
           </div>
         </div>
 
-
         <div class="sidebar-category">
           <div class="sidebar-category-header" data-bs-toggle="modal" data-bs-target="#signOutModal">
             <span><i class="fa-solid fa-door-open category-icon"></i>Sign Out</span>
@@ -27,9 +30,9 @@ header.innerHTML = `
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("dashboard")) {
     window.location.href =
-      "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/departments/Admin2/dashboard.php";
+      `${baseUrl}${currentPath}/dashboard.php`;
   } else if (e.target.classList.contains("expense")) {
     window.location.href =
-      "http://localhost:3000/SUPERHERO-SYSTEM/SUPERHERO-SYSTEM/views/dashboard/departments/Admin2/Expense.php";
+      `${baseUrl}${currentPath}/Expense.php`;
   }
 });
