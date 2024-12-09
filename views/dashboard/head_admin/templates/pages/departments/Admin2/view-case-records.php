@@ -34,6 +34,9 @@ function getTransactions($url)
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
     <link href="../../../../../../../custom/css/index.css" rel="stylesheet">
     <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Onboarding as Super Admin for Brgy. Management">
     <meta property="og:description" content="Still in development phase.">
@@ -61,7 +64,6 @@ function getTransactions($url)
             <div class="sort-container">
                 <select name="selectDept" id="selectDept">
                     <option value="" selected disabled>Select Department</option>
-                    <option value="ALL">ALL</option>
                     <option value="BADAC">BADAC</option>
                     <option value="BCPC">BCPC</option>
                     <option value="BPSO">BPSO</option>
@@ -69,7 +71,8 @@ function getTransactions($url)
                 </select>
             </div>
                
-                <table class="table table-striped table-bordered" id="tableData">
+            <div class="container-fluid mt-3">
+            <table class="table table-striped table-bordered"  id="tableData">
                     <thead>
                         <tr>
                             <th>Transaction No.</th>
@@ -81,115 +84,11 @@ function getTransactions($url)
                         </tr>
                     </thead>
                     <tbody class = "tableBody">
-                        <?php
-                        foreach (getTransactions($BADAC_ENV) as $data) {
-                            foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name ?? 'N/A');
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name ?? 'N/A');
-                                echo "<tr id='{$d->case_number}'>";
-                                echo "<td>{$d->case_number}</td>";
-                                echo "<td>{$d->case_description}</td>";
-                                echo "<td>{$d->affiliated_dept_case}</td>";
-                                echo "<td>" . date("d-m-Y", strtotime($d->case_created)) . "</td>";
-                                echo "<td>{$d->case_status}</td>";
-                                echo "<td>
-                                    <button class='btn btn-primary' id='{$d->case_number}' data-id='{$d->case_number}' type='button'
-                                        data-bs-toggle='modal' data-bs-target='#viewDetailsModal'
-                                        onclick='populateModal(
-                                            \"" . htmlspecialchars($d->case_number) . "\",
-                                            \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_status) . "\",
-                                            \"" . $complainant_name . "\",
-                                            \"" . $respondent_name . "\",
-                                        )'>
-                                        View
-                                    </button>
-                                </td>";
-                                echo "</tr>";
-                            }
-                        }
-                        foreach (getTransactions($BCPC_ENV) as $data) {
-                            foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name);
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name);
-                                echo "<tr id='{$d->case_number}'>";
-                                echo "<td>{$d->case_number}</td>";
-                                echo "<td>{$d->case_description}</td>";
-                                echo "<td>{$d->affiliated_dept_case}</td>";
-                                echo "<td>" . date("d-m-Y", strtotime($d->case_created)) . "</td>";
-                                echo "<td>{$d->case_status}</td>";
-                                echo "<td>
-                                    <button class='btn btn-primary' id='{$d->case_number}' data-id='{$d->case_number}' type='button'
-                                        data-bs-toggle='modal' data-bs-target='#viewDetailsModal'
-                                        onclick='populateModal(
-                                            \"" . htmlspecialchars($d->case_number) . "\",
-                                            \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_status) . "\",
-                                            \"" . $complainant_name . "\",
-                                            \"" . $respondent_name . "\"
-                                        )'>
-                                        View
-                                    </button>
-                                </td>";
-                                echo "</tr>";
-                            }
-                        }
-                        foreach (getTransactions($BPSO_ENV) as $data) {
-                            foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name);
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name);
-                                echo "<tr id='{$d->case_number}'>";
-                                echo "<td>{$d->case_number}</td>";
-                                echo "<td>{$d->case_description}</td>";
-                                echo "<td>{$d->affiliated_dept_case}</td>";
-                                echo "<td>" . date("d-m-Y", strtotime($d->case_created)) . "</td>";
-                                echo "<td>{$d->case_status}</td>";
-                                echo "<td>
-                                    <button class='btn btn-primary' id='{$d->case_number}' data-id='{$d->case_number}' type='button'
-                                        data-bs-toggle='modal' data-bs-target='#viewDetailsModal'
-                                        onclick='populateModal(
-                                            \"" . htmlspecialchars($d->case_number) . "\",
-                                            \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_status) . "\",
-                                            \"" . $complainant_name . "\",
-                                            \"" . $respondent_name . "\"
-                                        )'>
-                                        View
-                                    </button>
-                                </td>";
-                                echo "</tr>";
-                            }
-                        }
-                      
-                        foreach (getTransactions($VAWC_ENV) as $data) {
-                            foreach ($data as $d) {
-                                $complainant_name = htmlspecialchars($d->case_complainants[0]->name ?? 'N/A');
-                                $respondent_name = htmlspecialchars($d->case_respondents[0]->name ?? 'N/A');
-                                echo "<tr id='{$d->case_number}'>";
-                                echo "<td>{$d->case_number}</td>";
-                                echo "<td>{$d->case_description}</td>";
-                                echo "<td>{$d->affiliated_dept_case}</td>";
-                                echo "<td>" . date("d-m-Y", strtotime($d->case_created)) . "</td>";
-                                echo "<td>{$d->case_status}</td>";
-                                echo "<td>
-                                    <button class='btn btn-primary' id='{$d->case_number}' data-id='{$d->case_number}' type='button'
-                                        data-bs-toggle='modal' data-bs-target='#viewDetailsModal'
-                                        onclick='populateModal(
-                                            \"" . htmlspecialchars($d->case_number) . "\",
-                                            \"" . date("H:i", strtotime($d->incident_case_time)) . "\",
-                                            \"" . htmlspecialchars($d->case_status) . "\",
-                                            \"" . $complainant_name . "\",
-                                            \"" . $respondent_name . "\"
-                                        )'>
-                                        View
-                                    </button>
-                                </td>";
-                                echo "</tr>";
-                            }
-                        }
-                        ?>
+                     
                     </tbody>
                 </table>
+            </div>
+                
         </div>
 
         <!-- Sign Out Confirmation Modal -->
@@ -248,7 +147,12 @@ function getTransactions($url)
     <script src="../../../diff-sidebar.js" type="module"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.js"></script>
 
     <script>
   
@@ -313,6 +217,12 @@ getTransactionPerDeptSelector.addEventListener("change", async (e) => {
         console.error('Error fetching data:', error);
         alert('Failed to fetch case records. Please try again.');
     }
+});
+    </script>
+
+    <script>
+        new DataTable('#example', {
+    responsive: true
 });
     </script>
 </body>

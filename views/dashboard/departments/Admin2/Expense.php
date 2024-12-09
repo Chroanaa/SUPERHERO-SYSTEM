@@ -40,7 +40,28 @@ session_start();
    <div id="app">
       <header class="header"></header>
       <div class="main-content">
-
+             <form action="./treasurer.php" method = "POST" class="bg-light shadow rounded-3 p-3">
+               <h2>Expense:</h2>
+               <div class="form-group mt-3"> 
+               <label for="department">Department: </label>
+               <input type="text" id="department" name = "department" class="form-control">
+               </div>
+               
+               <div class="form-group mt-3"> 
+               <label for="id">Treasurer_id: </label>
+               <input type="text" id="id" name = "id" class="form-control">
+               </div>
+               <div class="form-group mt-3"> 
+               <label for="amount">Cost: </label>
+               <input type="text" id="amount" name = "amount" class="form-control">
+               </div>
+               
+               <div class="form-group mt-3"> 
+               <label for="description">Desciption: </label>
+               <textarea name="description" id="description" class="form-control"></textarea>
+               </div>
+               <button type = "submit" class = "btn btn-primary mt-3">Submit</button>
+             </form>
          
          </div>
 
