@@ -10,7 +10,7 @@ $userCredentials = [
     ['email' => 'test_user@badac.ph', 'password' => 'kenneth', 'user_type' => 'BADAC'],
     ['email' => 'test_user@bpso.ph', 'password' => 'kenneth', 'user_type' => 'BPSO'],
     ['email' => 'test_user@admin1.ph', 'password' => 'kenneth', 'user_type' => 'Admin1'],
-    ['email' => 'test_user@admin2.ph', 'password' => 'kenneth', 'user_type' => 'Admin2'],
+    ['email' => 'test_user@treasurer.ph', 'password' => 'kenneth', 'user_type' => 'Admin2'],
     ['email' => 'test_user@bcpc.ph', 'password' => 'kenneth', 'user_type' => 'BCPC'],
     ['email' => 'test_user@lupon.ph', 'password' => 'kenneth', 'user_type' => 'LUPON']
 ];
@@ -23,7 +23,7 @@ function getTemplatePath($userType) {
         'BADAC' => 'views/dashboard/departments/BADAC/templates/dashboard.php',
         'BPSO' => 'views/dashboard/departments/BPSO/Dashboard/dashboard.php',
         'Admin1' => 'views/dashboard/departments/Admin1/templates/dashboard.php',
-        'Admin2' => 'views/dashboard/departments/Admin2/templates/dashboard/dashboard.twig',
+        'Admin2' => '/views/dashboard/departments/Admin2/dashboard.php',
         'BCPC' => 'views/dashboard/departments/BCPC/dashboard.php',
         'LUPON' => 'views/dashboard/departments/LUPON/dashboard/dashboard.php'
     ];
