@@ -1,17 +1,11 @@
 <?php
-// Dynamically include the DB connection file
-include_once __DIR__ . '/controllers/db_connection.php';
+// I just remove about that shit (DB Backend)
+include_once 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
 
-try {
-    // SQL Query to count distinct case numbers
-    $sql = "SELECT COUNT(DISTINCT case_number) AS total_cases FROM complaint";
-    $stmt = $pdo->query($sql);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_cases = $row['total_cases'];
-} catch (PDOException $e) {
-    // Handle database connection or query errors
-    die("Error fetching data: " . $e->getMessage());
-}
+$sql = "SELECT COUNT(DISTINCT case_number) AS total_cases FROM complaint";
+$stmt = $pdo->query($sql);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$total_cases = $row['total_cases'];
 
 ?>
 
