@@ -186,7 +186,7 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
                </div>
                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                   <p><strong>Case Number:</strong> <?= htmlspecialchars($complaint['case_number']) ?></p>
-                  <p><strong>Incident Date:</strong> <?= htmlspecialchars($formatted_date) ?></p>
+                  <p><strong>Incident Date & Time:</strong> <?= htmlspecialchars($formatted_date) ?></p>
                   <p><strong>Case Type:</strong></p>
                   <ul class="d-flex flex-column ps-3">
                      <?php foreach ($complaint['case_type'] ?? [] as $type): ?>
@@ -208,6 +208,9 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
                      <!-- <button class="btn btn-danger w-100 mt-2">Monitor & Review</button> -->
                   </ul>
                   <p><strong>Description:</strong> <?= htmlspecialchars($complaint['case_description']) ?></p>
+                  <p><strong>Drug Related Case:</strong> 
+                  <p><strong>Ano ang kanilang ebidensya?</strong>
+                  <?= htmlspecialchars($complaint['case_drug_related_information']) ?></p>
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#UpdateModal">Update</button>
@@ -238,6 +241,7 @@ if (isset($complaints['badac_all_complaints']) && count($complaints['badac_all_c
       </div>
    </div>
 
+   <!-- Update Case Details (BADAC) -->
    <form action="../../../../../controllers/departments/BADAC/handler.php" method="post">
       <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
          <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">

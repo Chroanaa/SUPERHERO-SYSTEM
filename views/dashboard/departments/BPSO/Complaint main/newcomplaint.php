@@ -142,6 +142,10 @@
                               <input type="radio" name="is_respondent_resident[]" value="no" class="form-check-input">
                               No
                            </label>
+                           <label>
+                              <input type="radio" name="is_respondent_resident[]" value="Unidentified" class="form-check-input">
+                              Unidentified
+                           </label>
                         </div>
                         <!-- <button type="button" id="hideGreen" onclick="addRespondent()">+</button>
                         <button type="button" id="respondent-both-btn" onclick="bothCheckedAddRespondent()">+</button> -->
@@ -367,6 +371,7 @@
                         <ul class="dropdown-menu" style="position: absolute; top: 100%; left: 0; width: 100%; max-width: 400px;">
                            <li type="button" onclick="updateButtonText('BADAC & BCPC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BADAC & BCPC</li>
                            <li type="button" onclick="updateButtonText('BCPC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BCPC</li>
+                           <li type="button" onclick="updateButtonText('VAWC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">VAWC (under BCPC)</li>
                            <li type="button" onclick="updateButtonText('BADAC', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BADAC</li>
                            <li type="button" onclick="updateButtonText('BPSO', 'specialcasedrop', event)" class="dropdown-item" style="cursor: pointer;">BPSO</li>
                         </ul>
@@ -396,7 +401,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
-                  This complaint involves a minor so this case will be automatically forwarded to Barangay Council for the Protection of Children (BCPC).
+                  This complaint involves a minor so this case should be forwarded to Barangay Council for the Protection of Children (BCPC).
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
@@ -414,7 +419,25 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
-                  This complaint has drug related so this case will be automatically forwarded to Barangay Anti-Drug Abuse Council (BADAC).
+                  This complaint has drug related so this case should be forwarded to Barangay Anti-Drug Abuse Council (BADAC).
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Modal for VAWC  -->
+      <div id="VAWCInvolvedModal" class="modal" tabindex="-1" aria-labelledby="VAWCModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="VAWCModalLabel">Important Notice</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  This complaint has sexual harassment related so this case should be forwarded to Violence Against Women and Children (under BCPC).
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
@@ -451,7 +474,7 @@
       crossorigin="anonymous"></script>
    <script src="../sidebar.js" type="module"></script>
    <script src="./dashboard.js"></script>
-   <script src="./evaluateData/evaluateBtn.js"></script>
+   <script src="./evaluateData/evaluateBtn.js" type="module"></script>
    <script>
 
    </script>
