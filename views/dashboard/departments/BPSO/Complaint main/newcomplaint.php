@@ -474,7 +474,7 @@
       crossorigin="anonymous"></script>
    <script src="../sidebar.js" type="module"></script>
    <script src="./dashboard.js"></script>
-   <script src="./evaluateData/evaluateBtn.js"></script>
+   <script src="./evaluateData/evaluateBtn.js" type="module"></script>
    <script>
 
    </script>

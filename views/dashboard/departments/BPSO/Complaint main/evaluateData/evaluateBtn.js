@@ -1,3 +1,6 @@
+import { caseTypes } from './caseTypes.js';
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const complaintDescription = document.getElementById('complaint-description');
     const evaluateBtn = document.getElementById('evaluateBtn');
@@ -7,69 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const dropdownCategory = document.getElementById('dropdowncategory');
     const caseTypeDropdown = document.getElementById('caseTypeDropdown');
 
-    const caseTypes = {
-        minorInvolved: {
-            keywords: ['bata', 'binugbog ang aking anak', 'inabuso yung bata', 'pagpapabaya sa bata'],
-            types: ['Juvenile Delinquency', 'Child Endangerment', 'Neglection or Exploitation']
-        },
-        drugInvolved: {
-            keywords: ['may bentahan ng droga', 'pinagbantaan ako dahil sa droga', 'droga', 'gamot na ipinagbabawal'],
-            types: ['Drug Related Offense', 'Substance Trafficking', 'Rehabilitation Case']
-        },
-        theftInvolved: {
-            keywords: ['nakawan', 'ninakawan', 'magnanakaw', 'pagnanakaw'],
-            types: ['Stealing']
-        },
-        violenceInvolved: {
-            keywords: ['may suntukan', 'sapakan', 'nagbabanta', 'patayan', 'may pinatay', 'karahasan'],
-            types: ['Assault', 'Homicide or Attempted Murder', 'Gender-Based Violence']
-        },
-        domesticIssue: {
-            keywords: ['abuso', 'karahasan sa tahanan', 'alitan sa pamilya', 'diskriminasyon'],
-            types: ['Domestic Violence', 'Family Feud or Custody Dispute', 'Emotional or Verbal Abuse']
-        },
-        vandalismInvolved: {
-            keywords: ['sulat sa pader', 'sira ang ari-arian', 'pagvandal', 'paninira sa pampublikong lugar'],
-            types: ['Property Defacement', 'Public Infrastructure Damage', 'Graffiti Offense']
-        },
-        fraudInvolved: {
-            keywords: ['panloloko', 'pekeng dokumento', 'pekeng kontrata', 'pandaraya', 'scam'],
-            types: ['Forgery', 'Financial Fraud', 'Identity Theft']
-        },
-        harassmentInvolved: {
-            keywords: ['pangha-harass', 'pananakot', 'hipo', 'hipoan', 'verbal abuse', 'pambabastos', 'bastos'],
-            types: ['Bullying', 'Sexual Harassment', 'Workplace Harassment']
-        },
-        publicDisturbance: {
-            keywords: ['gulo sa kalsada', 'maingay', 'sigawan', 'away sa pampublikong lugar', 'videoke', 'ingay'],
-            types: ['Public Nuisance', 'Unlawful Assembly', 'Disorderly Conduct']
-        },
-        cyberCrimeInvolved: {
-            keywords: ['hacking', 'pagnanakaw ng impormasyon', 'online scam', 'sinisirahan sa FB', 'messenger', 'facebook', 'pinost', 'cyber bullying'],
-            types: ['Hacking', 'Identity Theft', 'Cyber Harassment']
-        },
-        trespassingInvolved: {
-            keywords: ['panghihimasok', 'nanghihimasok', 'pagpasok sa hindi pagmay-ari', 'hindi may ari', 'trespassing', 'pang-aabala'],
-            types: ['Unauthorized Entry', 'Property Trespassing', 'Breaking and Entering']
-        },
-        illegalParkingInvolved: {
-            keywords: [
-                "ilegal na paradahan",
-                "walang pahintulot na paradahan",
-                "nakaharang na sasakyan",
-                "sagabal sa kalsada",
-                "walang parking",
-                "paradahan sa kalsada"
-            ],
-            types: [
-                "Obstruction of Traffic",
-                "Parking Violation",
-                "Illegal Parking in Public Roadway",
-                "Disruption of Public Safety",
-                "Unlicensed Parking Activity"
-            ],
-        },
-    };
 
     function checkInputs() {
         const allComplainantFilled = Array.from(complainantInputs).every(input => input.value.trim() !== '');
