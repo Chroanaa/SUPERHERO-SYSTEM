@@ -1,9 +1,53 @@
 <?php
 include 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
-if (isset($_GET['case_number'])) { $case_number = $_GET['case_number']; $sql = "SELECT * FROM turnover WHERE case_number = :case_number"; 
-$stmt = $pdo->prepare($sql); $stmt->bindParam(':case_number', $case_number, PDO::PARAM_STR); $stmt->execute(); $case_details = $stmt->fetch(PDO::FETCH_ASSOC);
-if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit;}
+
+// Initialize $case_details and $api_case to null
+$case_details = null;
+$api_case = null;
+
+// Fetch case details from the API first
+if (isset($_GET['case_number'])) {
+    $case_number = $_GET['case_number'];
+
+    // API URL to fetch case details
+    $api_url = "https://yjme796l3k.execute-api.ap-southeast-2.amazonaws.com/dev/api/v1/brgy/lupon/complaint_records/";
+    $api_response = file_get_contents($api_url);
+
+    if ($api_response === FALSE) {
+        echo "Failed to retrieve data from the API.";
+        exit;
+    }
+
+    $api_data = json_decode($api_response, true);
+
+    // Check if the API response contains the necessary data
+    if (isset($api_data['lupon_all_complaints']) && is_array($api_data['lupon_all_complaints'])) {
+        // Find the complaint matching the provided case number
+        foreach ($api_data['lupon_all_complaints'] as $complaint) {
+            if ((string)$complaint['case_number'] === $case_number) {
+                $api_case = $complaint;
+                break;
+            }
+        }
+    }
+
+    if ($api_case) {
+        // Case found in the API
+        // You can merge or use $api_case directly as needed
+    } else {
+        // If no matching case is found in the API, check the database
+        $sql = "SELECT * FROM turnover WHERE case_number = :case_number";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':case_number', $case_number, PDO::PARAM_STR);
+        $stmt->execute();
+        $case_details = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+} else {
+    echo "No case number provided.";
+    exit;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -125,7 +169,7 @@ if (!$case_details) { echo "No case."; exit;}} else { echo "No casenumber.";exit
         <div style="width: 400px;">
             <label style="font-size: 20px; font-weight: 600;">Complainant 1</label>
             <div id="complainant-container" style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="text" name="complainant_name" value="<?php echo htmlspecialchars($case_details['complainant_name']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
+                <input type="text" name="complainant_name" value="<?php echo htmlspecialchars($case_details['complainant_name'] ?? ''); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
                 <input type="text" name="complainant_address" value="<?php echo htmlspecialchars($case_details['complainant_address']); ?>" style="padding: 15px; font-size: 1rem; height: 50px; width: 100%; border-radius: 3px; border: 1px solid #d4d4d4; background-color: #ffffff;" disabled>
             </div>
         </div>
