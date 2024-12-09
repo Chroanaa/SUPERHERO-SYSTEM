@@ -1,5 +1,5 @@
 // Import sidebar routes
-// import { sidebarRoutes } from "./sidebarRoutes.js";
+import { sidebarRoutes } from "./sidebarRoutes.js";
 
 const header = document.querySelector(".header");
 
@@ -15,8 +15,8 @@ if (header) {
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="sidebar-submenu show">
-                        <div class="sidebar-submenu-item view-authorize"><a href = "/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/view_authority.php"> Authorization</a></div>
-                        <div class="sidebar-submenu-item transactions"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/transaction_logs.php"> Transactions </a></div>
+                        <div class="sidebar-submenu-item view-authorize"> Authorization</div>
+                        <div class="sidebar-submenu-item transactions"> Transactions </div>
                     </div>
                 </div>
                 <div class="sidebar-category">
@@ -25,10 +25,8 @@ if (header) {
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="sidebar-submenu">
-                        <div class="sidebar-submenu-item admin2-view-pending"><a href= "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-request.php">View Pending Request </a></div>
-                        <div class="sidebar-submenu-item admin2-view-approval"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-pending-approval.php">View Approval Process </a></div>
-                        <div class="sidebar-submenu-item admin2-view-disregard"><a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/view-disregarded.php">View Disregarded Process </a></div>
-                        <div class="sidebar-submenu-item admin2-city-ordinance"> <a href = "http://localhost:3000/SUPERHERO-SYSTEM/views/dashboard/head_admin/templates/pages/departments/Admin2/city-ordinance.php">City Ordinance </a></div>
+                        <div class="sidebar-submenu-item admin2-view-case-records">View Case Records </div>
+                        <div class="sidebar-submenu-item admin2-city-ordinance"> City Ordinance</div>
                         <div class="sidebar-submenu-item admin2-notify">Notifications</div>
                     </div>
                 </div>
@@ -70,20 +68,20 @@ if (header) {
   });
 
   // Event listener for sidebar redirection based on class matching in sidebarRoutes
-  // document.addEventListener("click", (e) => {
-  //   const targetClass = [...e.target.classList].find((className) =>
-  //     sidebarRoutes.some((route) => route.className === className)
-  //   );
+  document.addEventListener("click", (e) => {
+    const targetClass = [...e.target.classList].find((className) =>
+      sidebarRoutes.some((route) => route.className === className)
+    );
 
-  //   if (targetClass) {
-  //     const route = sidebarRoutes.find(
-  //       (route) => route.className === targetClass
-  //     );
-  //     if (route) {
-  //       window.location.pathname = route.path;
-  //     }
-  //   }
-  // });
+    if (targetClass) {
+      const route = sidebarRoutes.find(
+        (route) => route.className === targetClass
+      );
+      if (route) {
+        window.location.pathname = route.path;
+      }
+    }
+  });
 }
 
 function createRipple(event) {
