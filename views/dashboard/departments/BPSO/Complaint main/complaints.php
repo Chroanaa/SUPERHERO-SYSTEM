@@ -221,8 +221,14 @@ usort($complaints, function ($a, $b) {
                   <p><strong>Case Description:</strong> <?= isset($complaint['case_description']['S']) ? htmlspecialchars($complaint['case_description']['S']) : 'N/A' ?></p>
                </div>
                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger">Turnover (LUPON)</button>
-               </div>
+               <form method="POST" action="turnover_lupon.php">
+               <input type="hidden" name="case_number" value="<?= $complaint['case_number']['N'] ?>">
+               <input type="hidden" name="case_description" value="<?= htmlspecialchars($complaint['case_description']['S']) ?>">
+               <input type="hidden" name="incident_case_time" value="<?= htmlspecialchars($complaint['incident_case_time']['S']) ?>">
+               <!-- Add other necessary hidden fields from the complaint -->
+               <button type="submit" class="btn btn-danger">Turnover (LUPON)</button>
+            </form>
+         </div>
             </div>
          </div>
       </div>

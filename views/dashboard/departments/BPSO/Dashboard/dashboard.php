@@ -1,11 +1,11 @@
 <?php
 // I just remove about that shit (DB Backend)
-include_once 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
+// include_once 'C:\xampp\htdocs\SUPERHERO-SYSTEM\controllers\db_connection.php';
 
-$sql = "SELECT COUNT(DISTINCT case_number) AS total_cases FROM complaint";
-$stmt = $pdo->query($sql);
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
-$total_cases = $row['total_cases'];
+// $sql = "SELECT COUNT(DISTINCT case_number) AS total_cases FROM complaint";
+// $stmt = $pdo->query($sql);
+// $row = $stmt->fetch(PDO::FETCH_ASSOC);
+// $total_cases = $row['total_cases'];
 
 ?>
 
@@ -45,13 +45,13 @@ $total_cases = $row['total_cases'];
             </div>
             <div class="container">
                 <div class="row">
-                    <!-- Column 1 -->
+                    <!-- Column 1  -->
                     <div class="col-md-6 mb-4">
                         <a href="../Complaint%20main/complaints.php" class="text-decoration-none">
                             <div id="total-case" class="clickable-div" style="width: 100%; padding: 20px; font-weight: 600; text-align: center; background-color: #ffffff; color: #004084; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px rgba(56, 56, 56, 0.5);">
                                 <span style="background-color: #cfdfef; padding: 5px 20px; border-radius: 15px; border: 2px solid #006bdd;">Total Complaint</span>
                                 <h1 class="mt-3" style="color: #303030; font-weight: 500;">
-                                    <?php echo number_format($total_cases); ?>
+                                    0
                                 </h1>
                             </div>
                         </a>
