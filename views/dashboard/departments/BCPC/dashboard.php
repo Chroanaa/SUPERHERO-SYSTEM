@@ -23,13 +23,13 @@ if (!$complaints || $http_code !== 200 || !isset($complaints['bcpc_all_complaint
 }
 
 // Sort complaints by 'case_created' field in descending order
-if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_complaints']) > 0) {
-   usort($complaints['bcpc_all_complaints'], function ($a, $b) {
-      $dateA = new DateTime($a['case_created']);
-      $dateB = new DateTime($b['case_created']);
-      return $dateB <=> $dateA; // Sort newest first
-   });
-}
+// if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_complaints']) > 0) {
+//    usort($complaints['bcpc_all_complaints'], function ($a, $b) {
+//       $dateA = new DateTime($a['case_created']);
+//       $dateB = new DateTime($b['case_created']);
+//       return $dateB <=> $dateA; // Sort newest first
+//    });
+// }
 ?>
 
 <!-- CUSTOM PROGRAM (FEEL FREE TO CHANGE IT) -->
@@ -261,7 +261,7 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
                         <?php endforeach; ?>
                         <!-- <button class="btn btn-danger w-100 mt-2">Monitor & Review</button> -->
                      </ul>
-                     
+
                      <p><strong>Description:</strong> <?= htmlspecialchars($complaint['case_description']) ?></p>
 
                      <!-- Display BCPC Children Infos -->
@@ -277,14 +277,41 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
                   </div>
                   <div class="modal-footer">
                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#UpdateModal">Update</button>
-                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                        data-bs-target="#ConfirmModal">Turnover (DSWD)</button>
-                     <button type="button" class="btn btn-primary">Message</button>
+                     <!-- <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#ConfirmModal">Turnover (DSWD)</button> -->
+                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#MessageModal">Message</button>
                   </div>
                </div>
             </div>
          </div>
       <?php endforeach; ?>
+
+      <!-- Modal for sending message -->
+      <div class="modal fade" id="MessageModal" tabindex="-1" aria-labelledby="MessageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="signOutModalLabel">Send this case to Agencies</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <div class="mb-3">
+                     <h6>Department of Social Welfare and Development (DSWD)</h6>
+                     <button type="button" class="btn btn-danger w-100" id="sendToDSWD" data-bs-dismiss="modal">Proceed</button>
+                  </div>
+                  <div class="mb-3">
+                     <h6>Department of the Interior and Local Government (DILG)</h6>
+                     <button type="button" class="btn btn-danger w-100" id="sendToDILG" data-bs-dismiss="modal">Proceed</button>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
 
       <!-- Update Case Details (BCPC) -->
       <form action="../../../../../controllers/departments/BCPC/handler.php" method="post">
@@ -367,6 +394,7 @@ if (isset($complaints['bcpc_all_complaints']) && count($complaints['bcpc_all_com
          crossorigin="anonymous"></script>
       <script src="./javascript/sidebar.js" type="module"></script>
       <script src="./javascript/addCaseForm.js"></script>
+      <script src="./javascript/sendMessage.js"></script>
       <script>
          function viewDetails(caseData) {
             // Parse the case data passed to the function
