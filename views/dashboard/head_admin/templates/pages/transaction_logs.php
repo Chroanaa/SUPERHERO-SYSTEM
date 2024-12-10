@@ -56,7 +56,7 @@ function getTransactions($url)
                 <h2 class="text-danger">Transaction Logs</h2>
                 <p>This contains real-time processes made by other departments to record their transactions.</p>
             </div>
-          <div class="card-container">
+          <div class="card-container d-flex justify-content-center align-items-center" style="flex-wrap: wrap; gap:1rem ">
 
           </div>
                 
@@ -117,8 +117,10 @@ function getTransactions($url)
         records.forEach(record =>{
             container.innerHTML += `
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title>Log Id: ${record.log_id}</h5>
+
+            
+                <div class="card-body" style="width:400px; font-size: 15px;">
+                    <p class="card-title</p>
                     <p class="card-text">Resident Id: ${record.resident_id ?? "No Id"}</p>
                     <p class="card-text">Log Date: ${record.log_date}</p>
                     <p class="card-text">Log Time: ${record.log_time}</p>

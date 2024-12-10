@@ -1,5 +1,16 @@
 <?php
 session_start();
+require_once '../../../../vendor/autoload.php'; // Include Composer autoloader
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../../');
+$dotenv->load();
+$TREASURER_ENV = $_ENV['TREASURER_API_URL'];
+function getTreasurerData($url){
+$response = file_get_contents($url);
+return json_decode($response, true);
+
+}
+$records = getTreasurerData($TREASURER_ENV);
 ?>
 <!-- CUSTOM PROGRAM (FEEL FREE TO CHANGE IT) -->
 <!DOCTYPE html>
@@ -40,10 +51,46 @@ session_start();
    <div id="app">
       <header class="header"></header>
       <div class="main-content">
+             <form action="./treasurer.php" method = "POST" class="bg-light shadow rounded-3 p-3">
+               <h2>Expense: </h2>
+               <div class="form-group mt-3"> 
+               <label for="department">Department: </label>
+               <input type="text" id="department" name = "department" class="form-control" required>
+               </div>
+               
+               <div class="form-group mt-3"> 
+               <label for="id">Treasurer_id: </label>
+               <input type="number" id="id" name = "id" class="form-control" required>
+               </div>
+               <div class="form-group mt-3"> 
+               <label for="amount">Cost: </label>
+               <input type="number" id="amount" name = "amount" class="form-control" required>
+               </div>
+               
+               <div class="form-group mt-3"> 
+               <label for="description">Description: </label>
+               <textarea name="description" id="description" class="form-control" required></textarea>
+               </div>
+               <button type = "submit" id="btn" class = "btn btn-primary mt-3">Submit</button>
+             </form>
 
+             <table class="table mt-3">
+   <thead>
+      <tr>
+         <th>Treasurer Id</th>
+         <th>Department</th>
+         <th>Amount</th>
+         <th>Date</th>
+         <th>description</th>
+      </tr>
+   </thead>
+   <tbody class = "tBody">
+    
+   </tbody>
+</table>
          
          </div>
-
+   
 
          <!-- Sign Out Confirmation Modal -->
          <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true"
@@ -74,5 +121,27 @@ session_start();
          crossorigin="anonymous"></script>
       <script src="./sidebar.js" type="module"></script>
 </body>
+<script>
+   const container = document.querySelector('.tBody');
+   const records = <?php echo json_encode($records); ?>;
+   const record =records.records
+   record.forEach(record =>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+      <td>${record.treasurer_id}</td>
+      <td>${record.department}</td>
+      <td>${record.amount}</td>
+      <td>${record.date_created}</td>
+      <td>${record.description}</td>
+      `;
+      container.appendChild(tr);
+   })
+</script>
 
+<script>
+   let btn = document.getElementById('btn');
+   btn.addEventListener('click', function(){
+      alert("Submitted Successfully");
+   })
+</script>
 </html>

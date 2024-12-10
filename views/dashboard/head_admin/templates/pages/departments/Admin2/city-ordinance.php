@@ -131,7 +131,7 @@
                     <div class="modal-body">
                          <div class="form-group">
                             <label for="query">Search: </label>
-                        <input type="text" name = "query" id = "query" class = "form-control">
+                        <input type="text" name = "query" id = "query" class = "form-control" placeholder = "09172-32"> 
                         <label for="ordinanceNumberModal">Select from what ordinance:</label>
                         <select name="ordinanceNumberModal" class = "mt-3 form-control mb-3" id="ordinanceNumberModal">
                             <option value="9" >9</option>
