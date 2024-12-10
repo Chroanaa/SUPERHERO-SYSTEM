@@ -56,7 +56,7 @@ function getTransactions($url)
     <div id="app">
         <header class="header"></header>
 
-        <div class="main-content">
+        <div class="main-content" style="overflow: hidden;">
             <div class="welcome-message">
                 <h2 class="text-danger">View Case Records</h2>
                 <p>This contains real-time processes made by other departments to record their transactions.</p>
@@ -71,7 +71,7 @@ function getTransactions($url)
                 </select>
             </div>
                
-            <div class="container-fluid mt-3">
+            <div class="container-fluid mt-3" style="overflow-y: scroll;">
             <table class="table table-striped table-bordered"  id="tableData">
                     <thead>
                         <tr>
@@ -180,7 +180,7 @@ getTransactionPerDeptSelector.addEventListener("change", async (e) => {
         }else if(e.target.value == "BPSO"){
             deptData = data.bpso_all_complaints
         }else if(e.target.value == "VAWC"){
-            deptData = data.vawc_all_complaints
+            deptData = data.vawc_case_records
         }else if(e.target.value == "ALL"){
             deptData = data
         }
