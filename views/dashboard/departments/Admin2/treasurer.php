@@ -35,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             'description' => ['S' => $description]
         ]
     ]);
-    header('Location:./dashboard.php ');
+    header('Location:./Expense.php ');
 }
 
 
