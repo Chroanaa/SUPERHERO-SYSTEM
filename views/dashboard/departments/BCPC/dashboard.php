@@ -47,7 +47,7 @@ if (!$complaints || $http_code !== 200 || !isset($complaints['bcpc_all_complaint
    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.0/css/perfect-scrollbar.css">
    <link rel="icon" href="../../dist/images/favicon.ico" type="image/x-icon">
-   <link rel="stylesheet" href="../../../../../custom/css/index.css">
+   <link rel="stylesheet" href="../../../../custom/css/index.css">
    <!-- Open Graph Meta Tags -->
    <meta property="og:title" content="Onboarding as BADAC Officer for Brgy. Management">
    <meta property="og:description" content="Still in development phase.">
