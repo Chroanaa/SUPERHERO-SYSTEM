@@ -166,12 +166,21 @@ function getTransactions($url)
             document.getElementById('modal-case-complainantName').textContent = complainantName;
             document.getElementById('modal-case-respondentName').textContent = respondentName;
         }
+        let loading = false
+
         const getTransactionPerDeptSelector = document.getElementById("selectDept");
+        const tableBody = document.querySelector(".tableBody");
 getTransactionPerDeptSelector.addEventListener("change", async (e) => {
     try {
-        const response = await fetch(`getTransacPerDeptController.php?dept_name=${encodeURIComponent(e.target.value)}`);
+        tableBody.innerHTML = `
+        <div class='d-flex justify-content-center'>
+            <div class='spinner-border' role='status'>
+                <span class='visually-hidden'>Loading...</span>
+            </div>
+        </div>
+    `;        const response = await fetch(`getTransacPerDeptController.php?dept_name=${encodeURIComponent(e.target.value)}`);
         const data = await response.json();
-        const tableBody = document.querySelector(".tableBody");
+        
         let deptData = ""
         if(e.target.value == "BADAC"){
             deptData = data.badac_all_complaints
@@ -183,13 +192,11 @@ getTransactionPerDeptSelector.addEventListener("change", async (e) => {
             deptData = data.vawc_case_records
         }else if(e.target.value == "ALL"){
             deptData = data
-        }
+      }
        
-        tableBody.innerHTML = "";
-        
         // Handle both single department and "ALL" cases
         const records = Array.isArray(deptData) ? deptData : (deptData[e.target.value] || []);
-        
+       tableBody.innerHTML = "";
         records.forEach(data =>{
             tableBody.innerHTML += `
             <tr id='${data.case_number}'>
