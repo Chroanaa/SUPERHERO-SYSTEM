@@ -1,0 +1,15 @@
+{
+    "require": {
+        "twig/twig": "*",
+        "vlucas/phpdotenv": "*",
+        "kreait/firebase-php": "^5.26",
+        "google/apiclient": "*",
+        "hybridauth/hybridauth": "^3.11",
+        "symfony/mailer": "^7.1",
+        "symfony/google-mailer": "^7.1",
+        "aws/aws-sdk-php": "^3.334"
+    },
+    "config": {
+        "process-timeout": 1200
+    }
+}

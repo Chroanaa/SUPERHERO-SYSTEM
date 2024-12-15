@@ -1,0 +1,17 @@
+{
+  "name": "superhero-system",
+  "version": "1.0.0",
+  "description": "SBIT-3K SUPER SYSTEM (Web)",
+  "main": "index.php",
+  "scripts": {
+    "start": "browser-sync start --proxy '' --files 'views/**/*.html, controllers/**/*.php, dist/css/*.css, views/templates/**/*.twig'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^3.0.3",
+    "gulp": "^5.0.0",
+    "gulp-twig": "^1.2.0"
+  }
+}
