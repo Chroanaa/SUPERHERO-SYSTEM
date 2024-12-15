@@ -1,0 +1,40 @@
+# STANDARD PROGRAM (DON'T CHANGE IT)
+
+# Ignore Composer dependencies
+/vendor/
+
+# Twig Rendering (dist/) this contains every htmls from twig file
+dist/
+
+# Ignore cache and logs
+/cache/
+logs/
+*.log
+
+# Ignore PHPStorm and VSCode project files
+.idea/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore environment configuration files including Gmail API
+google-gmail-api.json
+.env
+tmp/
+
+# Ignore backup and temporary files
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# for composer
+composer.lock
+
+# nodeJS
+node_modules/
+package-lock.json
+
+# for face capturing
+uploads/

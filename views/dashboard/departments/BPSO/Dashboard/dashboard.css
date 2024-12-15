@@ -1,0 +1,9 @@
+.clickable-div {
+    transition: all 0.3s ease; 
+  }
+
+  .clickable-div:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 8px 16px rgba(56, 56, 56, 0.7);
+    background-color: aqua;
+  }

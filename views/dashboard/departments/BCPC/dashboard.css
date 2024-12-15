@@ -1,0 +1,117 @@
+/** CUSTOM PROGRAM (FELL FREE TO CHANGE IT) **/
+
+/** import rules **/
+@import url("./modules/Login.module.css");
+@import url("./modules/superadmin/Sidebar.module.css");
+@import url("./modules/superadmin/Sidebar.module.css");
+
+/** custom rules **/
+
+* {
+    font-family: "Lexend", sans-serif;
+}
+html,body {
+    background: #e1e8f1;
+}
+body{
+    display: block;
+}
+.content-area {
+    margin-top: 100px;
+    margin-left: 320px;
+    padding: 1px;
+    background-color: #e1e8f1;
+}
+#content{
+    border-radius: 5px;
+    background-color: white;
+    padding: 15px;
+    
+    
+}
+.form-group{
+    padding: 0 0 40px 0;
+}
+/* I-frame container */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr auto; /* 1fr for text, auto width for iframe */
+    /* align-items: center; Vertically center-aligns items */
+    margin-top: 0;
+  }
+  .grid-container p {
+    margin-right: 20px; /* Add space between text and iframe */
+  }
+/* file a case input type style */
+input[type="text"]{
+    border-radius: 6.5px;
+    border: 1px solid #e1e8f1;
+    box-sizing: border-box;
+    width: 40%;
+
+}
+/* Notications.html-Container(table) stlye */
+.container{
+    display: grid;
+    grid-template-rows: 30px 25px 30px 30px;
+    grid-template-columns: 180px 110px 160px 100px 200px 150px 90px;
+    margin-left: -10px;
+}
+/* container elements style */
+.container-item{
+    border: 1px solid #000;
+    box-sizing: border-box;
+    text-align: center;
+}
+.cHead-1{
+    grid-area: 1 / 1 / 3 / 2;
+    align-content: end;
+}
+.cHead-2{
+    grid-area: 1 / 2 / 2 / 6;
+}
+.cHead-3{
+    grid-area: 1 / 6 / 3 / 7;
+    align-content: end;
+}
+.cHead-4{
+    grid-area: 1 / 7 / 3 / 8;
+    align-content: end;
+}
+.cHead-21{
+    grid-area: 2 / 2 / 3 / 3;
+}
+.cHead-22{
+    grid-area: 2 / 3 / 3 / 4;
+}
+.cHead-23{
+    grid-area: 2 / 4 / 3 / 5;
+}
+.cHead-24{
+    grid-area: 2 / 5 / 3 / 6;
+}
+/* cBody style */
+.cBody{
+    text-align: center;
+}
+.cBody-1{
+    grid-area: 3 / 1 / 4 / 2;
+}
+.cBody-2{
+    grid-area: 3 / 2 / 4 / 3;
+}
+.cBody-3{
+    grid-area: 3 / 3 / 4 / 4;
+}
+.cBody-4{
+    grid-area: 3 / 4 / 4 / 5;
+}
+.cBody-5 {
+    grid-area: 3 / 5 / 4 / 6;
+}
+.cBody-6 {
+    grid-area: 3 / 6 / 4 / 7;
+}
+.cBody-7 {
+    grid-area: 3 / 7 / 4 / 8;
+}

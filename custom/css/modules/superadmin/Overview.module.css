@@ -1,0 +1,77 @@
+.main-content {
+    margin-left: 320px;
+    padding: 30px;
+    transition: all 0.3s;
+}
+
+.welcome-message {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-message h2 {
+    /* color: #007bff; */
+    margin-bottom: 0.5rem;
+}
+
+.user-table {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-table h2 {
+    color: #343a40;
+    margin-bottom: 1.5rem;
+}
+
+.table {
+    margin-bottom: 1.5rem;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.pagination {
+    margin-top: 1.5rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-link {
+    color: #007bff;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+}
+
+.pagination .page-item .page-link {
+    color: #dc3545;
+    background-color: #fff;
+    border-color: #dc3545;
+}
+
+.pagination .page-item.active .page-link {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+.pagination .page-item .page-link:focus {
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
+}
