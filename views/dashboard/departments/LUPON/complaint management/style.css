@@ -1,6 +1,0 @@
-.clickable-div {
-    transition: transform 0.3s ease;
-}
-.clickable-div:hover {
-    transform: scale(1.05); 
-}
