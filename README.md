@@ -1,3 +1,3 @@
-## This kind of version is deprecated
+## This project is now working.
 
-Please proceed to `main` branch instead.
+You can check `vanilla-php` for old codebase.
