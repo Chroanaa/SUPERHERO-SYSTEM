@@ -65,7 +65,7 @@ if (isset($_SESSION['message'])) {
                         <input type="password" name="password" class="form-control" id="password" required>
                     </div>
                     <button type="submit" class="btn btn-danger w-100 mb-3">Login</button>
-                    <a href="./register-option.php" class="btn btn-light w-100">Sign Up</a>
+                    <a href="./views/registration/signup.php" class="btn btn-light w-100">Sign Up</a>
                 </form>
             </div>
         </section>

@@ -52,9 +52,9 @@ if (isset($_SESSION['message'])) {
         <section id="login-container" class="d-none d-md-flex align-items-center justify-content-center vh-100">
             <div class="login-wrapper">
                 <!-- ./views/registration/signup.php -->
-                <a href="./views/dashboard/departments/Admin1/Registration/register.php" class="btn btn-danger w-100 btn-lg mb-3" style="font-size: 20px;">
+                <!-- <a href="./views/dashboard/departments/Admin1/Registration/register.php" class="btn btn-danger w-100 btn-lg mb-3" style="font-size: 20px;">
                     Registration for Residents
-                </a>
+                </a> -->
                 <a href="./views/registration/signup.php" class="btn btn-danger w-100 btn-lg" style="font-size: 20px;">
                     Registration for Brgy. Staffs
                 </a>

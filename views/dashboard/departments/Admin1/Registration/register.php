@@ -163,9 +163,9 @@
                                 </div>
                                 <button class="btn btn-danger border-dark-subtle focus-ring focus-ring-dark d-block btn-user w-100" type="submit" style="margin-top: 30px; margin-bottom: 30px;"><strong>Proceed</strong></button>
                             </form>
-                            <div class="text-center">
+                            <!-- <div class="text-center">
                                 <a class="small" href="../../../../../" style="color: rgb(0,0,0);">Already have an record? Back to Login!</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
