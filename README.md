@@ -11,6 +11,10 @@ You can check `vanilla-php` branch for old codebase and in terms of new latest p
 - AWS DynamoDB (We had existing here before)
 - Google Cloud Platform
 
+## Backend (Partial)
+
+- SQLite
+
 ## Language
 TypeScript / React
 

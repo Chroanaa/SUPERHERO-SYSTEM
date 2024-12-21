@@ -9,7 +9,9 @@
     "editorconfig.editorconfig",
     "prisma.prisma",
     "graphql.vscode-graphql",
-    "tamasfe.even-better-toml"
+    "tamasfe.even-better-toml",
+    "csstools.postcss",
+    "bradlc.vscode-tailwindcss"
   ],
   "unwantedRecommendations": []
 }

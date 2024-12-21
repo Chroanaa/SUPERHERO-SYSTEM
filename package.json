@@ -7,8 +7,10 @@
     ]
   },
   "devDependencies": {
+    "@redwoodjs/cli-storybook-vite": "8.4.1",
     "@redwoodjs/core": "8.4.1",
-    "@redwoodjs/project-config": "8.4.1"
+    "@redwoodjs/project-config": "8.4.1",
+    "prettier-plugin-tailwindcss": "^0.5.12"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
