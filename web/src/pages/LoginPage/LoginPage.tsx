@@ -18,7 +18,7 @@ const LoginPage = () => {
         description="Login first..."
       />
 
-      <div id="login-wrapper" className="p-6 max-w-md">
+      <div id="login-wrapper" className="p-6 max-w-md mx-auto">
         <div id="login-header" className="mb-4">
           <h2 className="text-2xl font-semibold text-gray-800">Login</h2>
           <p className="text-sm text-gray-600">For barangay staffs in Brgy. Sta Lucia</p>
@@ -69,8 +69,9 @@ const LoginPage = () => {
         </form>
         <div id="other-details" className="mt-4 text-sm text-gray-600">
           Don't have an account?{' '}
-          <a href="#"
-className="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <a
+            href="#"
+            className="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Register
           </a>
