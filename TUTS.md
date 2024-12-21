@@ -1,5 +1,11 @@
 ## To run project (Priority yet partial)
 
+Please ensure that you already had NodeJS installed targeted versions for Redwood projects is v20x.
+
+```powershell
+npm install --global yarn
+```
+
 ```powershell
 yarn install
 ```
@@ -7,6 +13,10 @@ yarn install
 ```powershell
 yarn rw dev
 ```
+
+# Aftermath of Installation (Ensure that project is working now)
+
+Bago mag-undergo here mismo sa section!!!
 
 ## This will create you automatically root page /
 
