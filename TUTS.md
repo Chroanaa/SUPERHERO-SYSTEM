@@ -12,6 +12,8 @@ In order to do yarn install please run this command either in Command Prompt or 
 corepack enable
 ```
 
+Then after that you may now proceed to project directory so do this now :point_down:
+
 ```powershell
 yarn install
 ```
