@@ -1,3 +1,13 @@
+## To run project (Priority yet partial)
+
+```powershell
+yarn install
+```
+
+```powershell
+yarn rw dev
+```
+
 ## This will create you automatically root page /
 
 ```powershell
@@ -20,7 +30,6 @@ https://developers.google.com/search/docs/advanced/appearance/good-titles-snippe
 PS D:\Users\russe\Desktop\KEN\SUPERHERO-SYSTEM>
 ```
 
-
 ## This will create you automaticaly others pages
 
 ```powershell
@@ -41,14 +50,4 @@ to good SEO. Check out this page for best practices:
 
 https://developers.google.com/search/docs/advanced/appearance/good-titles-snippets
 PS D:\Users\russe\Desktop\KEN\SUPERHERO-SYSTEM>
-```
-
-## To run project
-
-```powershell
-yarn install
-```
-
-```powershell
-yarn rw dev
 ```

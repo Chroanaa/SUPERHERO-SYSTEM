@@ -1,6 +1,6 @@
 ## This project is now working.
 
-You can check `vanilla-php` branch for old codebase.
+You can check `vanilla-php` branch for old codebase and in terms of new latest project please refer to [our tutorial](./TUTS.md)
 
 ## Frontend (partial)
 
