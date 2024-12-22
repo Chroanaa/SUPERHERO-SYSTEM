@@ -4,7 +4,7 @@ You can check `vanilla-php` branch for old codebase and in terms of new latest p
 
 ## Frontend (partial)
 
-- Shadcn
+- Shadcn (Tailwind Library)
 
 ## APIs and Third Party Libraries
 
