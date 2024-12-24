@@ -26,7 +26,7 @@ export default function RootLayout({
       >
       <SidebarProvider>
         <AppSidebar />
-        <main>
+        <main id="sta-lucia-container">
           <SidebarTrigger />
           {children}
         </main>
