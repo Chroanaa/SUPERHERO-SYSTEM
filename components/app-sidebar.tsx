@@ -12,6 +12,7 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  Building
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -25,30 +26,21 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { ScrollArea } from "@radix-ui/react-scroll-area"
 
 // This is sample data.
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "https://i.pinimg.com/originals/de/20/88/de2088abde1c2752d911e49cbe7b5008.jpg",
   },
   teams: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+      name: "Brgy. Sta Lucia",
+      logo: Building,
+      plan: "Head Admin / Secretary Team",
+    }
   ],
   navMain: [
     {

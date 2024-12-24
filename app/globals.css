@@ -92,3 +92,25 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #2d3748;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #edf2f7;
+  border-radius: 8px;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border));
+}
