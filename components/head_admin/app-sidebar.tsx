@@ -13,7 +13,7 @@ import { NavMain } from "@/components/head_admin/nav-main"
 import { TreasurerMenu } from "@/components/head_admin/treasurer-menu"
 // import { NavProjects } from "@/components/head_admin/nav-projects"
 import { NavUser } from "@/components/head_admin/nav-user"
-import { TeamSwitcher } from "@/components/head_admin/team-switcher"
+import { NavHeader } from "@/components/head_admin/nav-header"
 import {
   Sidebar,
   SidebarContent,
@@ -113,7 +113,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <NavHeader teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

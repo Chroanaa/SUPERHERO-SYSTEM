@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-export function TeamSwitcher({
+export function NavHeader({
   teams,
 }: {
   teams: {
