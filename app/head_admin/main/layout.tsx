@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google'
-import "@/app/globals.css";
 import {
     SidebarInset,
     SidebarProvider,
@@ -24,7 +23,6 @@ export const metadata: Metadata = {
     applicationName: "Rigma",
     referrer: "origin-when-cross-origin",
     creator: "Kenneth Obsequio",
-    icons: "./favicon.ico",
     formatDetection: {
         email: false,
         address: false,
