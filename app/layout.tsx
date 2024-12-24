@@ -10,7 +10,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Brgy. Sta Lucia Portal",
+  title: "Login first - Brgy. Sta Lucia Portal",
   description: "Generated and empowered by Next app",
 };
 

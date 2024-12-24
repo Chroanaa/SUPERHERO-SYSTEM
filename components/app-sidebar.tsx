@@ -12,7 +12,9 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-  Building
+  Building,
+  Users,
+  BookUser,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -44,86 +46,36 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Authorization",
       url: "#",
-      icon: SquareTerminal,
+      icon: Users,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Pending Request",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Approved Request",
           url: "#",
         },
         {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
+          title: "Disapproved Request",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Secretary Portal",
       url: "#",
-      icon: BookOpen,
+      icon: BookUser,
       items: [
         {
-          title: "Introduction",
+          title: "Transactions",
           url: "#",
         },
         {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Case Records",
           url: "#",
         },
       ],

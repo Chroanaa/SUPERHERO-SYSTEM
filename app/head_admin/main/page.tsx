@@ -16,12 +16,8 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 
-export default function Login() {
+export default function Page() {
   return (
-    <header className="">
-      <div className="">
-        tell me 
-      </div>
-    </header>
+    <div>s</div>
   )
 }
