@@ -6,7 +6,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/components/head_admin/app-sidebar"
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
         telephone: false,
     },
     /* SEO things starts at metadataBase */
-    metadataBase: new URL("http://localhost:3000/head_admin/main"),
+    metadataBase: new URL("http://localhost:0000/head_admin/main"),
     alternates: {
         canonical: "/",
         languages: {

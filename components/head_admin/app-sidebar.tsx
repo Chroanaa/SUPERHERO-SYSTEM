@@ -2,25 +2,18 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
+  ChartNetwork,
   Building,
   Users,
   BookUser,
+  FileChartLine,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from "@/components/head_admin/nav-main"
+import { TreasurerMenu } from "@/components/head_admin/treasurer-menu"
+// import { NavProjects } from "@/components/head_admin/nav-projects"
+import { NavUser } from "@/components/head_admin/nav-user"
+import { TeamSwitcher } from "@/components/head_admin/team-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -81,21 +74,37 @@ const data = {
       ],
     },
   ],
-  projects: [
+  treasurerPortal: [
     {
-      name: "Design Engineering",
+      title: "Statistics",
       url: "#",
-      icon: Frame,
+      icon: ChartNetwork,
+      isActive: true,
+      items: [
+        {
+          title: "Dashboard",
+          url: "#",
+        },
+      ],
     },
     {
-      name: "Sales & Marketing",
+      title: "Analytics",
       url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      icon: FileChartLine,
+      items: [
+        {
+          title: "Reports",
+          url: "#",
+        },
+        {
+          title: "Fund Tracking",
+          url: "#",
+        },
+        {
+          title: "Transaction History",
+          url: "#",
+        },
+      ],
     },
   ],
 }
@@ -108,7 +117,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <TreasurerMenu items={data.treasurerPortal} />
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
