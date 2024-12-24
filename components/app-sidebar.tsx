@@ -33,9 +33,9 @@ import { ScrollArea } from "@radix-ui/react-scroll-area"
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "https://i.pinimg.com/originals/de/20/88/de2088abde1c2752d911e49cbe7b5008.jpg",
+    name: "Kenneth O.",
+    email: "k80308392@gmail.com",
+    avatar: "",
   },
   teams: [
     {

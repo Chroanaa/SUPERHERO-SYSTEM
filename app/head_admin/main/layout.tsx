@@ -91,7 +91,6 @@ export default function DashboardLayout({
                     {children}
                 </SidebarInset>
             </SidebarProvider>
-            {children}
         </section>
     );
 }
