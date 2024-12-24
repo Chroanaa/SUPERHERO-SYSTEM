@@ -6,7 +6,7 @@ You can check `vanilla-php` branch for old codebase and in terms of new latest p
 
 - Shadcn (Tailwind Library)
 
-## APIs and Third Party Libraries
+## Backend + APIs and Third Party Libraries
 
 - AWS DynamoDB (We had existing here before)
 - Google Cloud Platform
