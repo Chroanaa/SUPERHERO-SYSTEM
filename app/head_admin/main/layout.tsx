@@ -80,7 +80,7 @@ export default function DashboardLayout({
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator className="hidden md:block" />
                                     <BreadcrumbItem>
-                                        <BreadcrumbPage>Secretary and Treasurer Portal</BreadcrumbPage>
+                                        <BreadcrumbPage>Welcome Page</BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
