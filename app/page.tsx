@@ -2,6 +2,7 @@ import { Building } from "lucide-react"
 import { LoginForm } from "@/components/login-form"
 import Image from "next/image"
 
+
 export default function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -32,6 +33,7 @@ export default function LoginPage() {
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
+
     </div>
   )
 }
