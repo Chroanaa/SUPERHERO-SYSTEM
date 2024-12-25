@@ -17,4 +17,4 @@ TypeScript / React
 
 ## Overview
 
-This project now uses Next for seamlessly developer experience we're thrilled to have an opportunity to work with these one by the power of AI Code Pairing although our knowledge we may not be good enough to explore more deep concepts inside React Ecosystem but we will try our best to maximize our learnings inside the Object Oriented Programming scenarios.
+This project now uses Next v15 for seamlessly developer experience we're thrilled to have an opportunity to work with these one by the power of AI Code Pairing although our knowledge we may not be good enough to explore more deep concepts inside React Ecosystem but we will try our best to maximize our learnings inside the Object Oriented Programming scenarios.
