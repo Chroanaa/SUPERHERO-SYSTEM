@@ -9,13 +9,27 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border bg-card text-card-foreground shadow",
+      "rounded-xl border bg-card text-card-foreground shadow overflow-hidden",
       className
     )}
     {...props}
   />
 ))
 Card.displayName = "Card"
+
+// This applies for my case - Keyn
+
+const CardBanner = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("w-full h-[240px]", className)}
+    {...props}
+  />
+))
+CardBanner.displayName = "CardBanner"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
@@ -35,7 +49,7 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("font-semibold leading-none tracking-tight", className)}
+    className={cn("font-bold leading-none tracking-tight", className)}
     {...props}
   />
 ))
@@ -73,4 +87,4 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+export { Card, CardHeader, CardBanner, CardFooter, CardTitle, CardDescription, CardContent }
