@@ -1,6 +1,6 @@
 ## To run project (Priority yet partial)
 
-Please ensure that you already had NodeJS installed targeted versions for Redwood projects is v20x.
+Please ensure that you already had NodeJS installed targeted versions for Next projects is starting from v18x.
 
 ```powershell
 npm install --global pnpm
