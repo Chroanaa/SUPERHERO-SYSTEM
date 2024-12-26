@@ -44,7 +44,7 @@ const cardData = [
     imageAlt: "Card 3",
     actions: [
       { label: "Learn More", variant: "outline" },
-      { label: "Get Started", variant: "default" },
+      { label: "Explore", variant: "default" },
     ],
   },
 ]

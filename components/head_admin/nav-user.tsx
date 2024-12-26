@@ -43,26 +43,6 @@ import {
 
 import { useState } from "react";
 
-{/* <AlertDialog>
-  <AlertDialogTrigger asChild>
-    <DropdownMenuItem>
-      <LogOut />
-      Log out
-    </DropdownMenuItem>
-  </AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Please fill in all fields!</AlertDialogTitle>
-      <AlertDialogDescription>
-        Both email and password are required to login.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogAction>Close</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog> */}
-
 export function NavUser({
   user,
 }: {
@@ -73,7 +53,6 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const [isLogOutOpen, setIsLogOutOpen] = useState(false);
 
   return (
     <SidebarMenu>
