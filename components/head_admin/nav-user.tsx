@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function NavUser({
   user,
@@ -53,7 +54,23 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const router = useRouter();
 
+  const handleLogout = () => {
+    // Clear all session or local data (optional)
+    // For now, this will just redirect to the root
+    // Redirect to login page immediately
+    router.push("/");
+    
+    // Force a hard reload to ensure the state is fully reset
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 100);
+
+    // Clear browser history state
+    window.history.replaceState(null, "", "/");
+  };
+  
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -122,7 +139,7 @@ export function NavUser({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Proceed</AlertDialogAction>
+              <AlertDialogAction onClick={handleLogout}>Proceed</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

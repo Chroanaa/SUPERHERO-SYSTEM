@@ -86,7 +86,7 @@ export function LoginForm({
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        ) : null}
+        ) : <Button type="submit">Login</Button>}
         {/* Rest of your form */}
       </div>
       <div className="text-center text-sm">

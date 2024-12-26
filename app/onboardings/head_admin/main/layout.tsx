@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     generator: "Next.js",
     applicationName: "Rigma",
     referrer: "origin-when-cross-origin",
-    creator: "Kenneth Obsequio",
+    creator: "SBIT-3K (1st Semester) from Quezon City University",
     formatDetection: {
         email: false,
         address: false,
