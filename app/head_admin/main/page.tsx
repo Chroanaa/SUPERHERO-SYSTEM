@@ -61,7 +61,7 @@ export default function Page() {
       <div className="font-medium text-gray-400 mb-6">
         As a head administrator here's your responsibilities...
       </div>
-      <aside className="grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 pb-6">
+      <aside className="grid md:grid-cols-2 sm:grid-cols-1 gap-4 pb-6">
         {cardData.map((card) => (
           <Card key={card.id}>
             <CardBanner>
@@ -70,7 +70,7 @@ export default function Page() {
                 width={1920}
                 height={1080}
                 alt={card.imageAlt}
-                className="h-full object-cover"
+                className="h-full object-cover select-none pointer-events-none"
               />
             </CardBanner>
             <CardHeader>
