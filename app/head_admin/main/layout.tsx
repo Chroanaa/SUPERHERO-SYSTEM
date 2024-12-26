@@ -74,13 +74,13 @@ export default function DashboardLayout({
                             <Breadcrumb>
                                 <BreadcrumbList>
                                     <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="#">
+                                        <BreadcrumbLink>
                                             Onboarding
                                         </BreadcrumbLink>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator className="hidden md:block" />
                                     <BreadcrumbItem>
-                                        <BreadcrumbPage>Secretary and Treasurer Portal</BreadcrumbPage>
+                                        <BreadcrumbPage>Welcome Page</BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
