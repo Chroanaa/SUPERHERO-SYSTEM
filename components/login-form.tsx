@@ -15,22 +15,61 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (event: any) => {
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     if (email === "" || password === "") {
+      setError("Please fill in both email and password.");
       return;
     }
-    // Submit form data (handle successful or failed login here)
-  }
+
+    try {
+      // Debug: Log the environment URL
+      console.log("Fetching accounts from:", process.env.NEXT_PUBLIC_BRGY_STAFF_ACCOUNTS);
+
+      // Fetch BRGY_STAFF_ACCOUNTS data
+      const accountsResponse = await axios.get(
+        process.env.NEXT_PUBLIC_BRGY_STAFF_ACCOUNTS as string
+      );
+
+      const accounts = accountsResponse.data.bms_account_staffs;
+      console.log("Fetched accounts data:", accounts);
+
+      // Check if credentials match any account
+      const matchingAccount = accounts.find(
+        (account: any) => account.brgy_email === email && account.brgy_password === password
+      );
+
+      if (!matchingAccount) {
+        setError("Invalid email or password.");
+        return;
+      }
+
+      // Proceed to log the login attempt
+      // await axios.post(process.env.NEXT_PUBLIC_BRGY_STAFF_LOGIN_ATTEMPTS as string, {
+      //   brgy_account_id: matchingAccount.brgy_account_id,
+      // });
+
+      // Redirect on successful login
+      router.push("/onboardings/head_admin/main");
+    } catch (error) {
+      console.error("Error during login:", error);
+      setError("Something went wrong. Please try again later.");
+    }
+  };
 
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
@@ -43,12 +82,12 @@ export function LoginForm({
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input 
-            id="email" 
-            type="email" 
+          <Input
+            id="email"
+            type="email"
             placeholder="m@example.com"
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="grid gap-2">
@@ -61,14 +100,13 @@ export function LoginForm({
               Forgot your password?
             </a>
           </div>
-          <Input 
-            id="password" 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {/* Conditionally render AlertDialog based on input values */}
         {email === "" || password === "" ? (
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -87,7 +125,6 @@ export function LoginForm({
             </AlertDialogContent>
           </AlertDialog>
         ) : <Button type="submit">Login</Button>}
-        {/* Rest of your form */}
       </div>
       <div className="text-center text-sm">
         Don't have an account?{" "}
