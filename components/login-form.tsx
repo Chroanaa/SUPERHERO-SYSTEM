@@ -49,9 +49,15 @@ export function LoginForm({
       console.log("Fetched accounts data:", accounts);
 
       // Check if credentials match any account
-      const matchingAccount = accounts.find(
-        (account: any) => account.brgy_email === email && account.brgy_password === password
-      );
+      // Check if credentials match any account and include brgy_account_id in the process
+      const matchingAccount = accounts.find((account: any) => {
+        return (
+          account.brgy_email === email &&
+          account.brgy_password === password &&
+          account.brgy_account_id
+        );
+      });
+
 
       if (!matchingAccount) {
         setError("Invalid email or password.");
@@ -59,9 +65,17 @@ export function LoginForm({
       }
 
       // Proceed to log the login attempt
-      // await axios.post(process.env.NEXT_PUBLIC_BRGY_STAFF_LOGIN_ATTEMPTS as string, {
-      //   brgy_account_id: matchingAccount.brgy_account_id,
-      // });
+      await axios.post(
+        process.env.NEXT_PUBLIC_BRGY_STAFF_LOGIN_ATTEMPTS as string,
+        {
+          brgy_account_id: matchingAccount.brgy_account_id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // Redirect on successful login
       router.push("/onboardings/head_admin/main");

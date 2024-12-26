@@ -24,7 +24,7 @@ export default function LoginPage() {
           This portal is only for staffs and employees in Brgy. Sta Lucia.
         </div>
       </div>
-      <div className="relative hidden bg-muted lg:block">
+      <div className="relative hidden bg-muted lg:block select-none">
         <Image
           src="/assets/login-banner.jpg"
           alt="Image"
