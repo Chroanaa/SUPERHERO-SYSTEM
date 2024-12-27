@@ -42,6 +42,7 @@ export function LoginForm({
 
     if (email === "" || password === "") {
       setError("Please fill in both email and password.");
+      setTimeout(() => setError(null), 3000);
       return;
     }
 
