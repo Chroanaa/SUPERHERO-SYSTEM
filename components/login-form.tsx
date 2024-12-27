@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -22,26 +22,42 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [inputType, setInputType] = useState("email");
+  const [loginValue, setLoginValue] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
   const router = useRouter();
 
+  // Function to determine input type dynamically
+  const handleLoginValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLoginValue(value);
+
+    // Detect if it's email or phone
+    if (/\S+@\S+\.\S+/.test(value)) {
+      setInputType("email");
+    } else if (/^\d+$/.test(value)) {
+      setInputType("phone");
+    } else {
+      setInputType("unknown");
+    }
+  };
+
   useEffect(() => {
     // Check if user is already logged in
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (isLoggedIn === 'true') {
-      router.replace('/onboardings/head_admin/main');
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      router.replace("/onboardings/head_admin/main");
     }
   }, [router]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (email === "" || password === "") {
-      setError("Please fill in both email and password.");
+    if (loginValue === "" || password === "") {
+      setError("Please fill up those missing fields.");
       setTimeout(() => setError(null), 3000);
       return;
     }
@@ -57,17 +73,20 @@ export function LoginForm({
       const accounts = accountsResponse.data.bms_account_staffs;
       console.log("Fetched accounts data:", accounts);
 
-      const matchingAccount = accounts.find((account: any) => {
-        return (
-          account.brgy_email === email &&
-          account.brgy_password === password &&
-          account.brgy_account_id
-        );
-      });
+      let matchingAccount;
 
+      if (inputType === "email") {
+        matchingAccount = accounts.find(
+          (account: any) => account.brgy_email === loginValue
+        );
+      } else if (inputType === "phone") {
+        matchingAccount = accounts.find(
+          (account: any) => account.phone_number === Number(loginValue)
+        );
+      }
 
       if (!matchingAccount) {
-        setError("Invalid email or password.");
+        setError("Invalid login value or password.");
         setTimeout(() => setError(null), 3000);
         return;
       }
@@ -92,9 +111,8 @@ export function LoginForm({
       router.push("/onboardings/head_admin/main");
 
       // Set login state in localStorage
-      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem("isLoggedIn", "true");
       router.replace("/onboardings/head_admin/main");
-      
     } catch (error) {
       console.error("Error during login:", error);
       setError("Something went wrong. Please try again later.");
@@ -120,18 +138,18 @@ export function LoginForm({
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-balance text-sm text-muted-foreground">
-          Enter your email below to login to your account
+          Provide user credentials
         </p>
       </div>
       <div className="grid gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="login">Email or Phone Number</Label>
           <Input
-            id="email"
-            type="email"
-            placeholder="m@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="login"
+            type="text"
+            placeholder="Enter email or phone number"
+            value={loginValue}
+            onChange={handleLoginValueChange}
           />
         </div>
         <div className="grid gap-2">
@@ -151,7 +169,7 @@ export function LoginForm({
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {email === "" || password === "" ? (
+        {loginValue === "" || password === "" ? (
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button type="submit">Login</Button>
@@ -160,7 +178,7 @@ export function LoginForm({
               <AlertDialogHeader>
                 <AlertDialogTitle>Please fill in all fields!</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Both email and password are required to login.
+                  You missed out those input fields required to login.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -168,7 +186,9 @@ export function LoginForm({
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        ) : <Button type="submit">Login</Button>}
+        ) : (
+          <Button type="submit">Login</Button>
+        )}
       </div>
       <div className="text-center text-sm">
         Don't have an account?{" "}
