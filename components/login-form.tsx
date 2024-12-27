@@ -25,6 +25,7 @@ export function LoginForm({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const router = useRouter();
 
@@ -40,7 +41,6 @@ export function LoginForm({
       // Debug: Log the environment URL
       console.log("Fetching accounts from:", process.env.NEXT_PUBLIC_BRGY_STAFF_ACCOUNTS);
 
-      // Fetch BRGY_STAFF_ACCOUNTS data
       const accountsResponse = await axios.get(
         process.env.NEXT_PUBLIC_BRGY_STAFF_ACCOUNTS as string
       );
@@ -48,8 +48,6 @@ export function LoginForm({
       const accounts = accountsResponse.data.bms_account_staffs;
       console.log("Fetched accounts data:", accounts);
 
-      // Check if credentials match any account
-      // Check if credentials match any account and include brgy_account_id in the process
       const matchingAccount = accounts.find((account: any) => {
         return (
           account.brgy_email === email &&
@@ -61,8 +59,12 @@ export function LoginForm({
 
       if (!matchingAccount) {
         setError("Invalid email or password.");
+        setTimeout(() => setError(null), 3000);
         return;
       }
+
+      // Set success state for login form
+      setSuccess(true);
 
       // Proceed to log the login attempt
       await axios.post(
@@ -87,6 +89,20 @@ export function LoginForm({
 
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
+      {/* Success Message */}
+      {success && (
+        <div className="w-full bg-green-500 p-4 text-white rounded-lg text-center">
+          Success! Wait for authentication...
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <div className="w-full bg-red-500 p-4 text-white rounded-lg text-center">
+          {error}
+        </div>
+      )}
+
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-balance text-sm text-muted-foreground">
