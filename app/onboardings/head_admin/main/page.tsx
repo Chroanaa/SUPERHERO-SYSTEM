@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress"
+import { useRouter } from "next/navigation";
 
 // Static data all the way (I could consider strapi next time for production hihi)..
 const cardData = [
@@ -54,8 +55,16 @@ const cardData = [
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(33);
+  const router = useRouter();
 
   useEffect(() => {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn !== 'true') {
+      router.replace('/');
+      return;
+    }
+
     const timer = setTimeout(() => {
       setProgress(80);
       setTimeout(() => {
@@ -66,7 +75,7 @@ export default function Page() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
+  return ( 
     <section className="px-8">
       {isLoading ? (
         <div className="flex justify-center items-center h-screen">

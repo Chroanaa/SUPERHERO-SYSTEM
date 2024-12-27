@@ -60,8 +60,12 @@ export function NavUser({
     // Clear all session or local data (optional)
     // For now, this will just redirect to the root
     // Redirect to login page immediately
-    router.push("/");
     
+    // Set the isLoggedIn item in localStorage to 'false'
+    localStorage.setItem('isLoggedIn', 'false');
+
+    router.replace("/");
+
     // Force a hard reload to ensure the state is fully reset
     setTimeout(() => {
       window.location.href = "/";
@@ -70,7 +74,7 @@ export function NavUser({
     // Clear browser history state
     window.history.replaceState(null, "", "/");
   };
-  
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -127,7 +131,7 @@ export function NavUser({
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          
+
           {/* and then tell it outside of corner */}
 
           <AlertDialogContent>

@@ -14,7 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -28,6 +28,14 @@ export function LoginForm({
   const [success, setSuccess] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      router.replace('/onboardings/head_admin/main');
+    }
+  }, [router]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -81,6 +89,11 @@ export function LoginForm({
 
       // Redirect on successful login
       router.push("/onboardings/head_admin/main");
+
+      // Set login state in localStorage
+      localStorage.setItem('isLoggedIn', 'true');
+      router.replace("/onboardings/head_admin/main");
+      
     } catch (error) {
       console.error("Error during login:", error);
       setError("Something went wrong. Please try again later.");
