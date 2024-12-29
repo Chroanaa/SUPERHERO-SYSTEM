@@ -18,7 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function IncidentMenu({
+export function LuponMenu({
   items,
 }: {
   items: {
@@ -34,7 +34,7 @@ export function IncidentMenu({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Incidents</SidebarGroupLabel>
+      <SidebarGroupLabel>Lupon Department</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/lupon/nav-main"
-import { IncidentMenu } from "@/components/lupon/incident-menu"
+import { LuponMenu } from "@/components/lupon/lupon-menu"
 // import { NavProjects } from "@/components/lupon/nav-projects"
 import { NavUser } from "@/components/lupon/nav-user"
 import { NavHeader } from "@/components/lupon/nav-header"
@@ -21,8 +21,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { ScrollArea } from "@radix-ui/react-scroll-area"
-import { ResidentMenu } from "./resident-menu"
+import { ResidentMenu } from "@/components/lupon/resident-menu"
 
 // This is sample data.
 const data = {
@@ -50,10 +49,6 @@ const data = {
           url: "#",
         },
         {
-          title: "Add New Case",
-          url: "#",
-        },
-        {
           title: "Case Reports",
           url: "#",
         },
@@ -67,31 +62,30 @@ const data = {
         },
       ],
     },
-    {
-      title: "Complaint Records",
-      url: "#",
-      icon: BookUser,
-      items: [
-        {
-          title: "Filing (New)",
-          url: "#",
-        },
-        {
-          title: "Complaint Lists",
-          url: "#",
-        },
-      ],
-    },
   ],
-  incidentMenu: [
+  luponMenu: [
     {
-      title: "Incident Records",
+      title: "Scheduling",
       url: "#",
       icon: Layers,
       isActive: true,
       items: [
         {
-          title: "Patawag / Blotter",
+          title: "Hearings",
+          url: "#",
+        },
+      ],
+    },
+  ],
+  scheduleData: [
+    {
+      title: "Case Reports",
+      url: "#",
+      icon: Layers,
+      isActive: true,
+      items: [
+        {
+          title: "Hearings",
           url: "#",
         },
       ],
@@ -121,7 +115,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <IncidentMenu items={data.incidentMenu} />
+        <LuponMenu items={data.luponMenu} />
         <ResidentMenu items={data.residentMenu} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>

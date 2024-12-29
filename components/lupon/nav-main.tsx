@@ -34,7 +34,7 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Case Management</SidebarGroupLabel>
+      <SidebarGroupLabel>Access Data (BPSO)</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
