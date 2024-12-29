@@ -18,7 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
+export function ResidentMenu({
   items,
 }: {
   items: {
@@ -34,7 +34,7 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Case Management</SidebarGroupLabel>
+      <SidebarGroupLabel>Residents</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

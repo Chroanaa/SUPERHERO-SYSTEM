@@ -18,7 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function TreasurerMenu({
+export function IncidentMenu({
   items,
 }: {
   items: {
@@ -34,7 +34,7 @@ export function TreasurerMenu({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Treasurers Portal</SidebarGroupLabel>
+      <SidebarGroupLabel>Incidents</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

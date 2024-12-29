@@ -2,18 +2,18 @@
 
 import * as React from "react"
 import {
-  ChartNetwork,
+  Layers,
   Building,
   Users,
   BookUser,
   FileChartLine,
 } from "lucide-react"
 
-import { NavMain } from "@/components/head_admin/nav-main"
-import { TreasurerMenu } from "@/components/head_admin/treasurer-menu"
-// import { NavProjects } from "@/components/head_admin/nav-projects"
-import { NavUser } from "@/components/head_admin/nav-user"
-import { NavHeader } from "@/components/head_admin/nav-header"
+import { NavMain } from "@/components/bpso/nav-main"
+import { IncidentMenu } from "@/components/bpso/incident-menu"
+// import { NavProjects } from "@/components/bpso/nav-projects"
+import { NavUser } from "@/components/bpso/nav-user"
+import { NavHeader } from "@/components/bpso/nav-header"
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
+import { ResidentMenu } from "./resident-menu"
 
 // This is sample data.
 const data = {
@@ -34,74 +35,77 @@ const data = {
     {
       name: "Brgy. Sta Lucia",
       logo: Building,
-      plan: "Head Admin / Secretary Team",
+      plan: "BPSO Portal",
     }
   ],
   navMain: [
     {
-      title: "Authorization",
+      title: "Case Records",
       url: "#",
       icon: Users,
       isActive: true,
       items: [
         {
-          title: "Pending Request",
+          title: "All Cases",
           url: "#",
         },
         {
-          title: "Approved Request",
+          title: "Add New Case",
           url: "#",
         },
         {
-          title: "Disapproved Request",
+          title: "Case Reports",
+          url: "#",
+        },
+        {
+          title: "Case Analytics",
+          url: "#",
+        },
+        {
+          title: "Escalated Cases",
           url: "#",
         },
       ],
     },
     {
-      title: "Secretary Portal",
+      title: "Complaint Records",
       url: "#",
       icon: BookUser,
       items: [
         {
-          title: "Transactions",
+          title: "Filing (New)",
           url: "#",
         },
         {
-          title: "Case Records",
+          title: "Complaint Lists",
           url: "#",
         },
       ],
     },
   ],
-  treasurerPortal: [
+  incidentMenu: [
     {
-      title: "Statistics",
+      title: "Incident Records",
       url: "#",
-      icon: ChartNetwork,
+      icon: Layers,
       isActive: true,
       items: [
         {
-          title: "Dashboard",
+          title: "Patawag / Blotter",
           url: "#",
         },
       ],
     },
+  ],
+  residentMenu: [
     {
-      title: "Analytics",
+      title: "Personal Records",
       url: "#",
-      icon: FileChartLine,
+      icon: Users,
+      isActive: true,
       items: [
         {
-          title: "Reports",
-          url: "#",
-        },
-        {
-          title: "Fund Tracking",
-          url: "#",
-        },
-        {
-          title: "Transaction History",
+          title: "Manage Residents",
           url: "#",
         },
       ],
@@ -117,7 +121,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <TreasurerMenu items={data.treasurerPortal} />
+        <IncidentMenu items={data.incidentMenu} />
+        <ResidentMenu items={data.residentMenu} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
