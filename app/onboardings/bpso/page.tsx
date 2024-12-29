@@ -67,7 +67,7 @@ export default function Page() {
   return (
     <section className="px-8">
       <aside className="mt-4 mb-8 space-y-2">
-        <span className="font-medium">Greetings, Head Admin!</span>
+        <span className="font-medium">Greetings, Officer!</span>
         <div className="font-bold text-3xl">
           Good Morning / Magandang Umaga!
         </div>

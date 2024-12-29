@@ -1,3 +1,11 @@
+/*****
+ * Developer Notes:
+ * 
+ * I modified the ButtonVariant to do type assertion for map arrays
+ * in order to check the parameter call from Omit construction typeof keyword
+ * does make the whole solution for this case.
+ */
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -34,10 +42,13 @@ const buttonVariants = cva(
   }
 )
 
+type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>["variant"]>
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    Omit<VariantProps<typeof buttonVariants>, "variant"> {
   asChild?: boolean
+  variant?: ButtonVariant | (string & {})
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -45,7 +56,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant: variant as ButtonVariant, size, className }))}
         ref={ref}
         {...props}
       />
