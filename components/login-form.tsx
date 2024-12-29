@@ -17,6 +17,7 @@ import {
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Link from "next/link";
 
 export function LoginForm({
   className,
@@ -192,9 +193,9 @@ export function LoginForm({
       </div>
       <div className="text-center text-sm">
         Don't have an account?{" "}
-        <a href="#" className="underline underline-offset-4">
+        <Link href="/registration" className="underline underline-offset-4">
           Sign up
-        </a>
+        </Link>
       </div>
     </form>
   );
