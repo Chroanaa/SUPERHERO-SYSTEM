@@ -27,10 +27,17 @@ This project is open-source and yet only applicable to school activities in orde
 
 This empowers our software development by scratch so we're thrilled to give them a huge thanks! 🌟
 
-- shadcn
-- axios
-- better-auth
-- next
-- react-phone-number
+| Libraries | Libraries| Libraries|
+| :-------- | :------- | :------- |
+| `shadcn` | `clsx` | `string` |
+| `axios` | `zod` | `string` |
+| `better-auth` | `string` | `string` |
+| `next` | `string` | `string` |
+| `react-phone-number` | `string` | `string` |
+| `react-webcam` | `string` | `string` |
+| `react-hook-form` | `string` | `string` |
+| `react-hook-form` | `string` | `string` |
+| `react-hook-form` | `string` | `string` |
+| `react-hook-form` | `string` | `string` |
 
 (will add more)
