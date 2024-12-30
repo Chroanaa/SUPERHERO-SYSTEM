@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { z } from "zod"
-import { FileIcon } from 'lucide-react'
+import { Paperclip } from 'lucide-react'
 
 export function StaffRegisterActualForm({
     className,
@@ -97,8 +97,9 @@ export function StaffRegisterActualForm({
                             id="picture"
                             type="file"
                             accept="image/*"
+                            className="cursor-pointer"
                         />
-                        <FileIcon className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                        <Paperclip className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
                     </div>
                 </div>
             </div>

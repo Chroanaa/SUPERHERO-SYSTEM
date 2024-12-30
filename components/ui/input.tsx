@@ -2,7 +2,8 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-// I just only refactor md:text-sm into sm for my design taste. - Keyn
+// I just only refactor this ff into sm for my design taste. - Keyn
+// md:text-sm && disabled:cursor-not-allowed
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {

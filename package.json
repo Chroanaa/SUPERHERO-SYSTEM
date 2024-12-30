@@ -36,6 +36,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.54.2",
     "react-phone-number-input": "^3.4.10",
+    "react-webcam": "^7.2.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
