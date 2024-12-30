@@ -21,3 +21,9 @@ pnpm run dev
 https://nextjs.org/docs
 
 Most of answers can be found here + stackoverflow things
+
+```powershell
+pnpm update
+```
+
+This will do upgrading into latest versions of all dependencies for system development.
