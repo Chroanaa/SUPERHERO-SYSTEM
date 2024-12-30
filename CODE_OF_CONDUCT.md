@@ -17,7 +17,7 @@ Our rights as a leading developers for this software will remain as leading auth
 * Larican [@angelo.larican.7](https://www.facebook.com/markangelo.larican.7)
 * Magnaye [@Magnaye16](https://github.com/Magnaye16)
 * Estares [@pseudoclans](https://github.com/pseudoclans)
-* Cañon [@Magnaye16](https://github.com/KaiYue25)
+* Cañon [@KaiYue25](https://github.com/KaiYue25)
 * Navat [@Zeirene](https://github.com/Zeirene)
 * Inso [@zyrusinso](https://github.com/zyrusinso)
 * and you (maybe sooner)
