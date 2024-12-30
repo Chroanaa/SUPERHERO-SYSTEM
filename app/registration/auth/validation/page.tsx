@@ -109,10 +109,10 @@ export default function StaffRegistration() {
                                 <SwitchCamera /> Switch
                             </Button>
                         </DialogTrigger>
-                        <Button variant="outline" disabled>
+                        <Button variant="outline" disabled={!isCameraAvailable || !hasCameraPermission}>
                             <RefreshCcw /> Retake Image
                         </Button>
-                        <Button type="submit">
+                        <Button type="submit" disabled={!isCameraAvailable || !hasCameraPermission}>
                             <Camera /> Capture
                         </Button>
                     </div>
