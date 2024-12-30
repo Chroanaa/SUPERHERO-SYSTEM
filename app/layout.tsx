@@ -24,9 +24,7 @@ export default function RootLayout({
       <body
         className={`${inter.className}`}
       >
-        <main id="sta-lucia-container">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );

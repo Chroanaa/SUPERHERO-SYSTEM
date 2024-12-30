@@ -1,4 +1,4 @@
-import { VerifyOTPForm } from "@/components/otp-verify";
+import { VerifyOTPForm } from "@/components/registration/otp-verify";
 
 export default function VerifyOTPPage() {
   return (

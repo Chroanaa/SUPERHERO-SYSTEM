@@ -31,5 +31,6 @@ This empowers our software development by scratch so we're thrilled to give them
 - axios
 - better-auth
 - next
+- react-phone-number
 
 (will add more)
