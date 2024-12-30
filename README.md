@@ -37,7 +37,7 @@ This empowers our software development by scratch so we're thrilled to give them
 | `react-webcam` | `string` | `string` |
 | `clsx` | `string` | `string` |
 | `zod` | `string` | `string` |
-| `string` | `string` | `string` |
+| `cva` | `string` | `string` |
 | `string` | `string` | `string` |
 
 (will add more)
