@@ -29,15 +29,15 @@ This empowers our software development by scratch so we're thrilled to give them
 
 | Libraries | Libraries| Libraries|
 | :-------- | :------- | :------- |
-| `shadcn` | `clsx` | `string` |
-| `axios` | `zod` | `string` |
+| `shadcn` | `string` | `string` |
+| `axios` | `string` | `string` |
 | `better-auth` | `string` | `string` |
 | `next` | `string` | `string` |
 | `react-phone-number` | `string` | `string` |
 | `react-webcam` | `string` | `string` |
-| `react-hook-form` | `string` | `string` |
-| `react-hook-form` | `string` | `string` |
-| `react-hook-form` | `string` | `string` |
-| `react-hook-form` | `string` | `string` |
+| `clsx` | `string` | `string` |
+| `zod` | `string` | `string` |
+| `string` | `string` | `string` |
+| `string` | `string` | `string` |
 
 (will add more)
