@@ -2,7 +2,7 @@
 
 This project was published in open source license so we will never do anything to accept any pull request this system is not very open to all by design it only specifically coverages in one place. If you really wanted to help us the only way is to make your first discussion with given social media platforms instead.
 
-[![Discord](https://skillicons.dev/icons?i=discord)](https://discordapp.com/users/1288054748359950346)&nbsp;&nbsp;
+[![Discord](https://skillicons.dev/icons?i=discord)](https://imgur.com/gallery/discord-is-awesome-naIJyNI)&nbsp;&nbsp;
 [![Facebook](https://skills-icons.vercel.app/api/icons?i=fb)](https://www.facebook.com/golashie)&nbsp;&nbsp;
 [![Google Mail](https://skillicons.dev/icons?i=gmail&theme=light)](https://mail.google.com/mail/?view=cm&fs=1&to=k80308392@gmail.com)&nbsp;&nbsp;
 
