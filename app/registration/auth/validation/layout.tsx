@@ -2,7 +2,7 @@ import { BackgroundForm, MarginSpaceForm } from "@/components/gform_clone/conten
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Fill up this form! - Brgy. Sta Lucia Portal",
+    title: "Last step! - Brgy. Sta Lucia Portal",
     description: "Generated and empowered by Next app",
 };
 
