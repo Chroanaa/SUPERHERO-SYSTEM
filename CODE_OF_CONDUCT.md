@@ -1,4 +1,4 @@
-## Notice to Devs
+## Notice to Developers
 
 This project is a open source but we will never do anything to accept any pull request this system is not very open to all by design it only specifically coverages in one place.
 
