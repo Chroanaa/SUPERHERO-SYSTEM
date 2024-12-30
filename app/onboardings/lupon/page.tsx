@@ -73,7 +73,7 @@ export default function Page() {
         </div>
       </aside>
       <div className="font-medium text-gray-400 mb-6">
-        As a goal to maintain peace and order for community in our system here's your duties.
+        As responsible for mediation and conciliation here in our system this is your duties.
       </div>
       <aside className="grid md:grid-cols-2 sm:grid-cols-1 gap-4 pb-6">
         {cardData.map((card) => (

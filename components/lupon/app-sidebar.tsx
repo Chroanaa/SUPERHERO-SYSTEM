@@ -2,18 +2,18 @@
 
 import * as React from "react"
 import {
-  ChartNetwork,
+  Layers,
   Building,
   Users,
   BookUser,
   FileChartLine,
 } from "lucide-react"
 
-import { NavMain } from "@/components/head_admin/nav-main"
-import { TreasurerMenu } from "@/components/head_admin/treasurer-menu"
-// import { NavProjects } from "@/components/head_admin/nav-projects"
-import { NavUser } from "@/components/head_admin/nav-user"
-import { NavHeader } from "@/components/head_admin/nav-header"
+import { NavMain } from "@/components/lupon/nav-main"
+import { LuponMenu } from "@/components/lupon/lupon-menu"
+// import { NavProjects } from "@/components/lupon/nav-projects"
+import { NavUser } from "@/components/lupon/nav-user"
+import { NavHeader } from "@/components/lupon/nav-header"
 import {
   Sidebar,
   SidebarContent,
@@ -21,8 +21,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { ScrollArea } from "@radix-ui/react-scroll-area"
-import { ResidentMenu } from "@/components/bpso/resident-menu"
+import { ResidentMenu } from "@/components/lupon/resident-menu"
 
 // This is sample data.
 const data = {
@@ -35,74 +34,58 @@ const data = {
     {
       name: "Brgy. Sta Lucia",
       logo: Building,
-      plan: "Head Admin / Secretary Team",
+      plan: "LUPON Tagapamayapa",
     }
   ],
   navMain: [
     {
-      title: "Authorization",
+      title: "Case Records",
       url: "#",
       icon: Users,
       isActive: true,
       items: [
         {
-          title: "Pending Request",
+          title: "All Cases",
           url: "#",
         },
         {
-          title: "Approved Request",
+          title: "Case Reports",
           url: "#",
         },
         {
-          title: "Disapproved Request",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Secretary Portal",
-      url: "#",
-      icon: BookUser,
-      items: [
-        {
-          title: "Transactions",
+          title: "Case Analytics",
           url: "#",
         },
         {
-          title: "Case Records",
+          title: "Escalated Cases",
           url: "#",
         },
       ],
     },
   ],
-  treasurerPortal: [
+  luponMenu: [
     {
-      title: "Statistics",
+      title: "Scheduling",
       url: "#",
-      icon: ChartNetwork,
+      icon: Layers,
       isActive: true,
       items: [
         {
-          title: "Dashboard",
+          title: "Hearings",
           url: "#",
         },
       ],
     },
+  ],
+  scheduleData: [
     {
-      title: "Analytics",
+      title: "Case Reports",
       url: "#",
-      icon: FileChartLine,
+      icon: Layers,
+      isActive: true,
       items: [
         {
-          title: "Reports",
-          url: "#",
-        },
-        {
-          title: "Fund Tracking",
-          url: "#",
-        },
-        {
-          title: "Transaction History",
+          title: "Hearings",
           url: "#",
         },
       ],
@@ -132,7 +115,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <TreasurerMenu items={data.treasurerPortal} />
+        <LuponMenu items={data.luponMenu} />
         <ResidentMenu items={data.residentMenu} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
