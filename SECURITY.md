@@ -4,4 +4,4 @@ If you found a vulnerability in this software or it is came from those unmaintai
 
 Email `k80308392@gmail.com` to disclose any issues about it.
 
-Written by Kenneth Obsequio (Maintainer & Lead Author)
+Written by Kenneth Obsequio (Maintainer)
