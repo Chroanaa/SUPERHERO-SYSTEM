@@ -1,6 +1,6 @@
 ## Notice to Developers
 
-This project was published in open source license so we will never do anything to accept any pull request this system is not very open to all by design it only specifically coverages in one place. If you really wanted to help us the only way is to make your first discussion with given social media platforms instead.
+This project was published in this platform without software license needed so we will never do anything to accept any pull request this system is not very open to all by design it only specifically coverages in one place. If you really wanted to help us the only way is to make your first discussion with given social media platforms instead.
 
 [![Discord](https://skillicons.dev/icons?i=discord)](https://imgur.com/gallery/discord-is-awesome-naIJyNI)&nbsp;&nbsp;
 [![Facebook](https://skills-icons.vercel.app/api/icons?i=fb)](https://www.facebook.com/golashie)&nbsp;&nbsp;
