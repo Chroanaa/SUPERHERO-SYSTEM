@@ -140,14 +140,14 @@ export default function StaffRegistration() {
                             <DialogDescription>
                                 Please make sure that you use the default or first camera in order to detect
                                 other cameras as well.
-                                <Link
-                                    href="https://imgur.com/gallery/tutorial-bms-sta-lucia-archive-s199nzz"
-                                    target="_blank"
-                                    className={`${buttonVariants({ variant: "link" })} px-0 py-0 ms-2`}
-                                >
-                                    Learn More
-                                </Link>
                             </DialogDescription>
+                            <Link
+                                href="https://imgur.com/gallery/tutorial-bms-sta-lucia-archive-s199nzz"
+                                target="_blank"
+                                className={`${buttonVariants({ variant: "outline" })}`}
+                            >
+                                Learn More
+                            </Link>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
