@@ -22,7 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
-import { ResidentMenu } from "@/components/bpso/resident-menu"
+// import { ResidentMenu } from "@/components/bpso/resident-menu"
 
 // This is sample data.
 const data = {
@@ -134,7 +134,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <TreasurerMenu items={data.treasurerPortal} />
-        <ResidentMenu items={data.residentMenu} />
+        {/* <ResidentMenu items={data.residentMenu} /> */}
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
