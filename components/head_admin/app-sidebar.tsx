@@ -36,6 +36,7 @@ const data = {
       name: "Brgy. Sta Lucia",
       logo: Building,
       plan: "Head Admin / Secretary Team",
+      url: "/onboardings/head_admin/main/",
     }
   ],
   navMain: [
@@ -47,7 +48,7 @@ const data = {
       items: [
         {
           title: "Pending Request",
-          url: "#",
+          url: "/onboardings/head_admin/main/pages/authorization",
         },
         {
           title: "Approved Request",

@@ -2,6 +2,42 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// This applies for my case - Keyn
+
+const CardBanner = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("w-full h-[240px]", className)}
+    {...props}
+  />
+))
+CardBanner.displayName = "CardBanner"
+
+const Cardboard = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("border-t-1 border p-6", className)}
+    {...props}
+  />
+))
+Cardboard.displayName = "Cardboard"
+
+const CardTableContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("pt-0", className)} {...props} />
+))
+CardTableContent.displayName = "CardTableContent"
+
+/******************************** ***************************/
+
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -16,20 +52,6 @@ const Card = React.forwardRef<
   />
 ))
 Card.displayName = "Card"
-
-// This applies for my case - Keyn
-
-const CardBanner = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("w-full h-[240px]", className)}
-    {...props}
-  />
-))
-CardBanner.displayName = "CardBanner"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
@@ -87,4 +109,5 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardBanner, CardFooter, CardTitle, CardDescription, CardContent }
+export { Card, Cardboard, CardHeader, CardBanner, 
+  CardFooter, CardTitle, CardDescription, CardContent, CardTableContent }

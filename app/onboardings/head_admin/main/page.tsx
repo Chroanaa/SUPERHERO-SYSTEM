@@ -100,7 +100,7 @@ export default function Page() {
       <section className="px-8">
         <aside className="mt-4 mb-8 space-y-2">
           <span className="font-medium">Greetings, Head Admin!</span>
-          <div className="font-bold text-3xl">
+          <div className="font-bold text-3xl tracking-tight">
             Good Morning / Magandang Umaga!
           </div>
         </aside>
