@@ -22,7 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
-// import { ResidentMenu } from "@/components/bpso/resident-menu"
+import { ResidentMenu } from "@/components/head_admin/resident-menu"
 
 // This is sample data.
 const data = {
@@ -47,16 +47,8 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Pending Request",
+          title: "Staffs Management",
           url: "/onboardings/head_admin/main/pages/authorization",
-        },
-        {
-          title: "Approved Request",
-          url: "#",
-        },
-        {
-          title: "Disapproved Request",
-          url: "#",
         },
       ],
     },
@@ -117,7 +109,7 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Manage Residents",
+          title: "Residents Management",
           url: "#",
         },
       ],
@@ -134,8 +126,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <TreasurerMenu items={data.treasurerPortal} />
-        {/* <ResidentMenu items={data.residentMenu} /> */}
-        {/* <NavProjects projects={data.projects} /> */}
+        <ResidentMenu items={data.residentMenu} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

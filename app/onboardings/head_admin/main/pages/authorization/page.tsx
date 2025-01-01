@@ -98,10 +98,10 @@ export default function Page() {
               {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">Status</TableHead>
-                  <TableHead className="w-[200px]">Names (LN, FN, MI)</TableHead>
-                  <TableHead className="w-[250px]">Email Address</TableHead>
-                  <TableHead className="w-[150px]">Phone Number</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Names (LN, FN, MI)</TableHead>
+                  <TableHead>Email Address</TableHead>
+                  <TableHead>Phone Number</TableHead>
                   <TableHead>Registered Date & Time</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
