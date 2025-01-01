@@ -87,41 +87,7 @@ export default function Page() {
             </div>
             <p className="font-medium max-w-[640px] break-words text-muted-foreground">This contains the streamlined processing of making all employees and staffs to have an access to our system.</p>
           </aside>
-          <aside className="mt-4 mb-8 space-y-2">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  View Statistics
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className="text-2xl">Statistics (Tally)</DialogTitle>
-                  <DialogDescription>
-                    See those types of requests that had been processed.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col items-start space-y-3 text-muted-foreground font-medium">
-                  <div id="pending-tally" className="flex items-center justify-between w-full">
-                    <span>Pending Request</span>
-                    <span>0</span>
-                  </div>
-                  <div id="pending-tally" className="flex items-center justify-between w-full">
-                    <span>Approved Request</span>
-                    <span>0</span>
-                  </div>
-                  <div id="pending-tally" className="flex items-center justify-between w-full">
-                    <span>Disapproved Request</span>
-                    <span>0</span>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline">Clear All Request</Button>
-                  <Button>Explore</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </aside>
+          
         </div>
         <Card>
           <Cardboard>
