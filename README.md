@@ -44,7 +44,8 @@ This empowers our software development by scratch so we're thrilled to give them
 
 ## Leading Inspirations
 
-We're thrilled to share our actually leading inspirations to fulfill the essential features based on what we need inside Barangay Management System don't forget to leave them a stars!
+We're thrilled to share our actually leading inspirations to fulfill the essential features based on what we need inside Barangay Management System don't forget to leave them a stars om case of having their public repository so we've decided to put still the similar alternatives as well!
 
 - https://github.com/rhalp10/BMIS
 - https://github.com/zyrusinso/barangay-management-system
+- Brgy E-Services Management for Rodriguez, Rizal (Private Repository)
