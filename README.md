@@ -41,3 +41,10 @@ This empowers our software development by scratch so we're thrilled to give them
 | `string` | `string` | `string` |
 
 (will add more)
+
+## Leading Inspirations
+
+We're thrilled to share our actually leading inspirations to fulfill the essential features based on what we need inside Barangay Management System don't forget to leave them a stars!
+
+- https://github.com/rhalp10/BMIS
+- https://github.com/zyrusinso/barangay-management-system
