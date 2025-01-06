@@ -10,7 +10,7 @@ You can check `vanilla-php` branch for old codebase and in terms of new latest p
 
 - AWS DynamoDB (We had existing here before)
 - Google Cloud Platform
-- SQLite (Local dbms)
+- Postgres (For managing brgy. staff / brgy. official accounts and residents / non-residents data)
 
 ## Language
 TypeScript / React
