@@ -49,6 +49,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default function Page() {
   const router = useRouter();
@@ -106,10 +107,12 @@ export default function Page() {
                 />
               </div>
               <div id="add-new-users">
-                <Button variant="outline">
-                  <Plus />
-                  Add New Staff
-                </Button>
+                <Link href="/onboardings/head_admin/main/pages/authorization/create-staff">
+                  <Button variant="outline">
+                    <Plus />
+                    Add New Staff
+                  </Button>
+                </Link>
               </div>
             </div>
           </Cardboard>
