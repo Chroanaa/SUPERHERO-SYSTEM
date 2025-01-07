@@ -29,7 +29,7 @@ const HeaderContainerBackground = React.forwardRef<
       )}
       {...props}
     >
-      <HeaderColorHighlight className="h-3" />
+      <HeaderColorHighlight className="h-2" />
       <div className="mt-3 flex items-start flex-col">
         {children}
       </div>
