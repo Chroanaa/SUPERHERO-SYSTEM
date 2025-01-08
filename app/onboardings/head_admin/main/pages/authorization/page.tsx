@@ -45,6 +45,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default function Page() {
   const router = useRouter();
@@ -57,6 +62,9 @@ export default function Page() {
       return;
     }
   }, []);
+
+  // Mock data for roles (test)
+  const mockRoles = ["Handle User", "BPSO", "Admin"];
 
   return (
     <Fragment>
@@ -80,73 +88,59 @@ export default function Page() {
         </div>
       </header>
       <section className="px-8">
-        <div className="flex items-start justify-between space-x-6">
+        <div className="flex items-start justify-between max-w-[640px] break-words">
           <aside className="mt-4 mb-8 space-y-2">
             <div className="font-bold text-3xl tracking-tight">
-              Pending Request
+              Staffs Management
             </div>
-            <p className="font-medium max-w-[640px] break-words text-muted-foreground">This contains the streamlined processing of making all employees and staffs to have an access to our system.</p>
-          </aside>
-          <aside className="mt-4 mb-8 space-y-2">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  View Statistics
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className="text-2xl">Statistics (Tally)</DialogTitle>
-                  <DialogDescription>
-                    See those types of requests that had been processed.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col items-start space-y-3 text-muted-foreground font-medium">
-                  <div id="pending-tally" className="flex items-center justify-between w-full">
-                    <span>Pending Request</span>
-                    <span>0</span>
-                  </div>
-                  <div id="pending-tally" className="flex items-center justify-between w-full">
-                    <span>Approved Request</span>
-                    <span>0</span>
-                  </div>
-                  <div id="pending-tally" className="flex items-center justify-between w-full">
-                    <span>Disapproved Request</span>
-                    <span>0</span>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline">Clear All Request</Button>
-                  <Button>Explore</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <p className="font-medium text-muted-foreground">This contains the streamlined processing of making all employees or staffs to have an access to our system.</p>
           </aside>
         </div>
         <Card>
           <Cardboard>
-            afsdgoksdfgkofsdgko
+            <div className="flex flex-row items-start justify-between space-x-3">
+              <div id="search-users">
+                <Input
+                  type="text"
+                  placeholder="Search by name"
+                  className="md:w-[480px] sm:w-full"
+                />
+              </div>
+              <div id="add-new-users">
+                <Link href="/onboardings/head_admin/main/pages/authorization/create-staff">
+                  <Button variant="outline">
+                    <Plus />
+                    Add New Staff
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </Cardboard>
           <CardTableContent>
             <Table>
               {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">Status</TableHead>
-                  <TableHead className="w-[200px]">Names (LN, FN, MI)</TableHead>
-                  <TableHead className="w-[250px]">Email Address</TableHead>
-                  <TableHead className="w-[150px]">Phone Number</TableHead>
-                  <TableHead>Registered Date & Time</TableHead>
+                  <TableHead>Names (LN, FN, MI)</TableHead>
+                  <TableHead>Email Address</TableHead>
+                  <TableHead>Phone Number</TableHead>
+                  <TableHead>Roles</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow>
-                  <TableCell>Pending</TableCell>
                   <TableCell className="max-w-[200px] truncate">Dela Cruz, Juan A.</TableCell>
                   <TableCell className="max-w-[250px] truncate">delacruzjuan@gmail.com</TableCell>
                   <TableCell>9952072434</TableCell>
-                  <TableCell>01/01/25 as of 07:33 AM</TableCell>
+                  <TableCell className="max-w-[200px] space-x-1.5">
+                    {mockRoles.slice(0, 1).map((role, index) => (
+                      <Badge key={index} variant="outline" className="rounded-full">{role}</Badge>
+                    ))}
+                    {mockRoles.length > 1 && (
+                      <Badge variant="outline" className="rounded-full">+{mockRoles.length - 1}</Badge>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <Button variant="default">
                       View Details

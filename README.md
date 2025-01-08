@@ -29,7 +29,7 @@ This empowers our software development by scratch so we're thrilled to give them
 
 | Libraries | Libraries| Libraries|
 | :-------- | :------- | :------- |
-| `shadcn` | `string` | `string` |
+| `shadcn` | `@aws-sdk/credential-providers` | `string` |
 | `axios` | `string` | `string` |
 | `better-auth` | `string` | `string` |
 | `next` | `string` | `string` |
@@ -38,7 +38,7 @@ This empowers our software development by scratch so we're thrilled to give them
 | `clsx` | `string` | `string` |
 | `zod` | `string` | `string` |
 | `cva` | `string` | `string` |
-| `string` | `string` | `string` |
+| `@aws-sdk/client-sts` | `string` | `string` |
 
 (will add more)
 
