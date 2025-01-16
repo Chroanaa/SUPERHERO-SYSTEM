@@ -8,9 +8,8 @@ You can check `vanilla-php` branch for old codebase and in terms of new latest p
 
 ## Backend + APIs and Third Party Libraries
 
-- AWS DynamoDB (We had existing here before)
-- Google Cloud Platform
-- Postgres (For managing brgy. staff / brgy. official accounts and residents / non-residents data)
+- AWS DynamoDB (Temporary we will not use)
+- MongoDB (Latest strategy for now)
 
 ## Language
 TypeScript / React
