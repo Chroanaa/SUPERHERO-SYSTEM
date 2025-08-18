@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef } from 'react';
-import { NavLink, Outlet, Link } from 'react-router-dom';
+import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, Equal, Download, Home, NotepadText, CircleUser, CroissantIcon } from 'lucide-react';
+import { Moon, Sun, Equal, Download, Home, NotepadText, CircleUser, CroissantIcon, Box } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import {
   Drawer,
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/drawer"
 import { RippleButton } from "@/components/magicui/ripple-button";
 import { Route } from 'lucide-react';
-// import Footer from './Footer';
+import Footer from './Footer';
 
 function Appbar_Layout() {
   const { theme, toggleTheme } = useTheme();
@@ -62,7 +62,7 @@ function Appbar_Layout() {
               </Button>
               <Button asChild variant="ghost">
                 <NavLink
-                  to="/"
+                  onClick={() => scrollToId("about-us")}
                   className={({ isActive }) =>
                     ` ${isActive ? 'underline' : ''}`
                   }
@@ -72,7 +72,7 @@ function Appbar_Layout() {
               </Button>
               <Button asChild variant="ghost">
                 <NavLink
-                  to="/"
+                  onClick={() => scrollToId("services")}
                   className={({ isActive }) =>
                     `${isActive ? 'underline' : ''}`
                   }
@@ -82,7 +82,7 @@ function Appbar_Layout() {
               </Button>
               <Button asChild variant="ghost">
                 <NavLink
-                  to="/"
+                  onClick={() => scrollToId("contacts")}
                   className={({ isActive }) =>
                     `hover:text-neutral-600 dark:hover:text-neutral-400 ${isActive ? 'underline' : ''}`
                   }
@@ -107,6 +107,15 @@ function Appbar_Layout() {
               </>
             )}
           </Button>
+          {/*      
+          <Button
+            variant="outline"
+            onClick={() => navigate("/login")}
+            className="text-card-foreground cursor-pointer"
+          >
+            <Box /> Login
+          </Button>
+          */}
           <Drawer>
             <DrawerTrigger>
               <Button size="icon" className="lg:hidden">
@@ -164,7 +173,7 @@ function Appbar_Layout() {
       <main id="main-page" className='pt-28'>
         <Outlet />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </Fragment>
   );
 }

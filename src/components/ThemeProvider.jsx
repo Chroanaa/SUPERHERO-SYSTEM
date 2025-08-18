@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ThemeProviderContext = createContext({
   theme: 'light',
   toggleTheme: () => null,
+  setTheme: () => null,
 });
 
 export function ThemeProvider({
@@ -19,6 +20,7 @@ export function ThemeProvider({
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
+    localStorage.setItem(storageKey, theme);
   }, [theme]);
 
   const value = {
@@ -27,6 +29,12 @@ export function ThemeProvider({
       const newTheme = theme === 'light' ? 'dark' : 'light';
       localStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
+    },
+    setTheme: (newTheme) => {
+      if (['light', 'dark'].includes(newTheme)) {
+        localStorage.setItem(storageKey, newTheme);
+        setTheme(newTheme);
+      }
     },
   };
 
