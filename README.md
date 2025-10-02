@@ -1,17 +1,5 @@
-## This project is now working.
-
-## Technologies
-
-- Shadcn, AWS API, AWS Lambda, MongoDB and WebSockets???
-
-## Language
-JavaScript / React
-
-## Acknowledgement
-
-The source code is public and yet it is only applicable to school activities this project dedicates to Brgy.Sta-Lucia for allowing us to provide our digitized solutions also this project dedicates to our Professor Norilyn for allowing us to make it happen.
-
-(will add more)
+> [!NOTE]
+> At this moment the development is still ongoing hoping to make it visible to public.
 
 ## Leading Inspirations
 
